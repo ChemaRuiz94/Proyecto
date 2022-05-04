@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Ptoyecto_TFG</string>
+
+    <string name="login">Login</string>
+    <string name="signUpTextLink">You do not have an account? Sign Up</string>
+    <string name="email">Email</string>
+    <string name="pwd">Password</string>
+
 </resources>
