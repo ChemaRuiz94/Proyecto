@@ -2,8 +2,14 @@
     <string name="app_name">Ptoyecto_TFG</string>
 
     <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
     <string name="signUpTextLink">You do not have an account? Sign Up</string>
+    <string name="userName">User Name</string>
     <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="cif">CIF</string>
     <string name="pwd">Password</string>
+    <string name="pwdRepeat">Repeat Password</string>
+
 
 </resources>

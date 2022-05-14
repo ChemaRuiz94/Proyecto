@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ptoyecto_TFG">
         <activity
+            android:name=".activities.SignUpArtistActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.LoginActivity"
             android:exported="true" />
         <activity
