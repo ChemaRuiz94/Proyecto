@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignUpActivity">
+    tools:context=".activities.SignUpArtistActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="75dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +20,7 @@
         app:layout_constraintVertical_bias="0.01">
 
         <ImageView
-            android:id="@+id/imgSignUpUser"
+            android:id="@+id/imgSignUpArtist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -32,36 +31,7 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
-        android:id="@+id/edTxtEmailSignUpUser"
-        android:layout_width="280dp"
-        android:layout_height="37dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edTxtPwdReapaetUser"
-        android:layout_width="280dp"
-        android:layout_height="37dp"
-        android:ems="10"
-        android:hint="@string/pwdRepeat"
-        android:inputType="textPassword"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
-
-    <EditText
-        android:id="@+id/edTxtUserNameSignUpUser"
+        android:id="@+id/edTxtUserNameSignUpArtist"
         android:layout_width="280dp"
         android:layout_height="37dp"
         android:ems="10"
@@ -70,28 +40,12 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.367" />
+        app:layout_constraintVertical_bias="0.263" />
 
     <EditText
-        android:id="@+id/edTxtPwdUser"
-        android:layout_width="280dp"
-        android:layout_height="37dp"
-        android:ems="10"
-        android:hint="@string/pwd"
-        android:inputType="textPassword"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632" />
-
-    <EditText
-        android:id="@+id/edTxtPhoneUser"
+        android:id="@+id/edTxtPhoneSignUpArtist"
         android:layout_width="280dp"
         android:layout_height="37dp"
         android:ems="10"
@@ -100,13 +54,54 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.872" />
+        app:layout_constraintVertical_bias="0.618" />
+
+    <EditText
+        android:id="@+id/edTxtPwdReapaetSignUpArtist"
+        android:layout_width="280dp"
+        android:layout_height="37dp"
+        android:ems="10"
+        android:hint="@string/pwdRepeat"
+        android:inputType="textPassword"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.525" />
+
+    <EditText
+        android:id="@+id/edTxtEmailSignUpArtist"
+        android:layout_width="280dp"
+        android:layout_height="37dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.348" />
+
+    <EditText
+        android:id="@+id/edTxtPwdSignUpArtist"
+        android:layout_width="280dp"
+        android:layout_height="37dp"
+        android:ems="10"
+        android:hint="@string/pwd"
+        android:inputType="textPassword"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.437" />
 
     <Button
-        android:id="@+id/btnSignUpUser"
+        android:id="@+id/btnSignUpArtist"
         android:layout_width="82dp"
         android:layout_height="36dp"
         android:text="@string/signup"
@@ -117,4 +112,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.986" />
 
+    <EditText
+        android:id="@+id/edTextCifSignUp"
+        android:layout_width="280dp"
+        android:layout_height="37dp"
+        android:ems="10"
+        android:hint="@string/cif"
+        android:inputType="textPersonName"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.698" />
+
+    <FrameLayout
+        android:id="@+id/frmMapa"
+        android:layout_width="329dp"
+        android:layout_height="122dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.897">
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
