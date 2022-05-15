@@ -3,13 +3,19 @@
 
     <string name="login">Login</string>
     <string name="signup">Sign Up</string>
-    <string name="signUpTextLink">You do not have an account? Sign Up</string>
+    <string name="signUpLink">Sign Up</string>
+    <string name="signUpTextLink">You do not have an account?</string>
+
     <string name="userName">User Name</string>
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="cif">CIF</string>
     <string name="pwd">Password</string>
     <string name="pwdRepeat">Repeat Password</string>
+
+    <string name="emptyCamps">Complete all fields</string>
+    <string name="pwdNotCoincide">Passwords not coincide</string>
+    <string name="phoneNotCorrect">Phone not correct</string>
 
 
 </resources>
