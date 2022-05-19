@@ -1,10 +1,12 @@
 package com.chema.ptoyecto_tfg.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -32,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         edTxtEmailLogin = findViewById(R.id.edTxtEmailLogin)
         edTxtPwdLogin = findViewById(R.id.edTxtPwdLogin)
+        txtSignUp = findViewById(R.id.txtSignUp)
 
         auth = Firebase.auth
 
@@ -42,6 +45,11 @@ class LoginActivity : AppCompatActivity() {
 
         btnGoogle.setOnClickListener{
 
+        }
+
+        txtSignUp.setOnClickListener{
+            val myIntent = Intent(this, SignUpActivity::class.java)
+            startActivity(myIntent)
         }
     }
 }

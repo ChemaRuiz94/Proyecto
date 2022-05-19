@@ -64,5 +64,10 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
-
+    //Para el funcionamiento de las corrutinas y el delay.
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-android
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-play-services
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0'
 }

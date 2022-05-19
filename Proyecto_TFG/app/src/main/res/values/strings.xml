@@ -13,9 +13,20 @@
     <string name="pwd">Password</string>
     <string name="pwdRepeat">Repeat Password</string>
 
+
+    <string name="chosePhoto">Chose phote</string>
+    <string name="strMensajeElegirFoto">How do you want to add the photo?</string>
+    <string name="strCamara">Camera</string>
+    <string name="strGaleria">Gallery</string>
+    <string name="addPhoto">Add Photo</string>
+
     <string name="emptyCamps">Complete all fields</string>
     <string name="pwdNotCoincide">Passwords not coincide</string>
     <string name="phoneNotCorrect">Phone not correct</string>
+
+    <string name="CORRECT">CORRECT</string>
+    <string name="ERROR">ERROR</string>
+    <string name="RegERROR">REG ERROR</string>
 
 
 </resources>
