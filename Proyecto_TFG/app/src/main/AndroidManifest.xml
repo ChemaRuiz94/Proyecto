@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ptoyecto_TFG">
         <activity
+            android:name=".navigation.basic.BasicUserNavDrawActivity"
+            android:exported="true"
+            android:label="@string/title_activity_basic_user_nav_draw"
+            android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />
+        <activity
             android:name=".activities.SignUpArtistActivity"
             android:exported="true" />
         <activity
@@ -17,7 +22,7 @@
             android:exported="true" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,9 +31,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

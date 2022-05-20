@@ -22,6 +22,7 @@ import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
+import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.firebase.ui.auth.data.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -196,10 +197,10 @@ class SignUpActivity : AppCompatActivity() {
             .document(id)
             .set(user)
             .addOnSuccessListener {
-                val myIntent = Intent(this,MainActivity::class.java)
+                val myIntent = Intent(this,BasicUserNavDrawActivity::class.java)
                 startActivity(myIntent)
 
-                Toast.makeText(this,"GO MAIN", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this,"GO MAIN", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this,R.string.ERROR , Toast.LENGTH_SHORT).show()
             }
