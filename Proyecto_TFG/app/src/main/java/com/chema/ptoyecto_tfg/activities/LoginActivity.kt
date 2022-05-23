@@ -1,13 +1,21 @@
 package com.chema.ptoyecto_tfg.activities
 
+import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.models.BasicUser
+import com.chema.ptoyecto_tfg.models.Rol
+import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
+import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
 
         //buttons
         btnLogin.setOnClickListener{
-
+            checkLogin()
         }
 
         btnGoogle.setOnClickListener{
@@ -51,5 +59,81 @@ class LoginActivity : AppCompatActivity() {
             val myIntent = Intent(this, SignUpActivity::class.java)
             startActivity(myIntent)
         }
+    }
+
+    /*
+    Comprueba que el login se haga correctamente
+     */
+    private fun checkLogin(){
+
+        if(checkCamposVacios()){
+            val email = edTxtEmailLogin.text.toString()
+            val pwd = edTxtPwdLogin.text.toString()
+
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email,pwd).addOnCompleteListener {
+                if (it.isSuccessful){
+
+                    VariablesCompartidas.emailUsuarioActual = (it.result?.user?.email?:"")
+                    findUserByEmail(email)
+
+                } else {
+                    Toast.makeText(this,R.string.LoginERROR , Toast.LENGTH_SHORT).show()
+                }
+            }
+        }else{
+            Toast.makeText(this,R.string.emptyCamps , Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /*
+    Comprueba que los campos esten rellenos
+     */
+    private fun checkCamposVacios():Boolean{
+
+        if(edTxtEmailLogin.text.toString().trim().isEmpty()){
+            return false
+        }
+        if(edTxtPwdLogin.text.toString().trim().isEmpty()){
+            return false
+        }
+        return true
+    }
+
+    /*
+    find basic user
+     */
+    private fun findUserByEmail(email: String){
+
+        Toast.makeText(this, email, Toast.LENGTH_SHORT).show()
+        db.collection("${Constantes.collectionUser}")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { users ->
+                //Existe
+                Log.d("login", "existen usuarios")
+                for (user in users) {
+                    var phone = 0;
+                    if (user.get("phone").toString() != ""){
+                        phone = user.get("phone").toString().toInt()
+                    }
+                    var us = BasicUser(
+                        user.get("userId").toString(),
+                        user.get("userName").toString(),
+                        user.get("email").toString(),
+                        phone,
+                        user.get("img").toString(),
+                        user.get("rol") as ArrayList<Rol>?,
+                        user.get("idFavoritos") as ArrayList<String>?
+
+                    )
+                    //check rol
+                    var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
+                    startActivity(myIntent)
+                }
+            }
+            .addOnFailureListener { exception ->
+                //No existe
+                Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+            }
     }
 }
