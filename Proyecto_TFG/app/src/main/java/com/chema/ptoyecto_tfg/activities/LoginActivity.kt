@@ -126,7 +126,7 @@ class LoginActivity : AppCompatActivity() {
                         user.get("idFavoritos") as ArrayList<String>?
 
                     )
-                    //check rol
+                    VariablesCompartidas.usuarioBasicoActual = us
                     var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
                     startActivity(myIntent)
                 }
