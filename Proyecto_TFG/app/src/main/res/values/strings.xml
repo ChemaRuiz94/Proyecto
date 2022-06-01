@@ -27,6 +27,8 @@
     <string name="CORRECT">CORRECT</string>
     <string name="ERROR">ERROR</string>
     <string name="RegERROR">REG ERROR</string>
+    <string name="LoginERROR">Login ERROR</string>
+
     <string name="title_activity_basic_user_nav_draw">BasicUserNavDrawActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

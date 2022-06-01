@@ -24,6 +24,7 @@ import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.firebase.ui.auth.data.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -192,6 +193,9 @@ class SignUpActivity : AppCompatActivity() {
             "listRoles" to listRoles,
             "listIdFavoritos" to listIdFavoritos
         )
+
+        var u = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
+        VariablesCompartidas.usuarioBasicoActual = u
 
         db.collection("${Constantes.collectionUser}")
             .document(id)
