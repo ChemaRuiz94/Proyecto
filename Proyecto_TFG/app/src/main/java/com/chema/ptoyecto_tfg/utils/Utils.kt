@@ -3,6 +3,7 @@ package com.chema.ptoyecto_tfg.utils
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
 object Utils {
@@ -16,4 +17,15 @@ object Utils {
             null
         }
     }
+
+    fun ImageToString(bitmap: Bitmap):String?{
+        val baos = ByteArrayOutputStream()
+        //val bitmap : Bitmap = imgUsuarioPerfil.drawToBitmap()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val imageBytes: ByteArray = baos.toByteArray()
+        var imageString : String? = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+        return imageString
+    }
+
+
 }

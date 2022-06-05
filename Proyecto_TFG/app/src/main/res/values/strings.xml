@@ -14,6 +14,9 @@
     <string name="pwdRepeat">Repeat Password</string>
 
 
+    <string name="saveEdit">Save edit</string>
+    <string name="strMensajeSaveEdit">Do yo want to save changes?</string>
+
     <string name="chosePhoto">Chose phote</string>
     <string name="strMensajeElegirFoto">How do you want to add the photo?</string>
     <string name="strCamara">Camera</string>
@@ -23,7 +26,12 @@
     <string name="emptyCamps">Complete all fields</string>
     <string name="pwdNotCoincide">Passwords not coincide</string>
     <string name="phoneNotCorrect">Phone not correct</string>
+    <string name="changePassword">Change Password</string>s
 
+
+    <string name="Cancel">CANCEL</string>
+    <string name="CONFIRM">CONFIRM</string>
+    <string name="Suscesfull">SUSCESFULL</string>
     <string name="CORRECT">CORRECT</string>
     <string name="ERROR">ERROR</string>
     <string name="RegERROR">REG ERROR</string>
@@ -41,5 +49,8 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+
+    <string name="menu_my_profile">My profile</string>
+    <string name="change_password">Change password</string>
 
 </resources>
