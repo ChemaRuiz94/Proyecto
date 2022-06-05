@@ -9,15 +9,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.R
@@ -26,9 +27,12 @@ import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
 import java.io.InputStream
@@ -36,22 +40,28 @@ import java.io.InputStream
 class BasicUserProfileFragment  : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var currentUser: FirebaseUser
+    private val db = FirebaseFirestore.getInstance()
+
+    lateinit var basciUserActual : BasicUser
+    private var photo: Bitmap? = null
 
     private lateinit var basicUserProfileViewModel: BasicUserProfileViewModel
     private var _binding: FragmentBasicUserProfileBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
-    private var photo: Bitmap? = null
-    lateinit var basciUserActual : BasicUser
 
     //componentes
     lateinit var imgUsuarioPerfil : ImageView
     lateinit var edTxtBasicUserName : EditText
     lateinit var edTxtBasicUserEmail : EditText
     lateinit var edTxtBasicUserPhone : EditText
+    lateinit var btn_enable_edit : FloatingActionButton
+    lateinit var btn_change_pwd : Button
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    //to change edit mode
+    private var editMode : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,9 +87,19 @@ class BasicUserProfileFragment  : Fragment() {
         edTxtBasicUserName = view.findViewById(R.id.ed_txt_userName_basic_profile)
         edTxtBasicUserEmail = view.findViewById(R.id.ed_txt_email_basic_profile)
         edTxtBasicUserPhone = view.findViewById(R.id.ed_txt_phone_basic_profile)
+        btn_enable_edit = view.findViewById(R.id.flt_btn_edit_basic_user_profile)
+        btn_change_pwd = view.findViewById(R.id.btn_change_password_basic_profile)
 
         imgUsuarioPerfil.setOnClickListener{
             cambiarFoto()
+        }
+
+        btn_enable_edit.setOnClickListener{
+            changeEditMode()
+        }
+
+        btn_change_pwd.setOnClickListener{
+            changePwd()
         }
 
         cargarDatosUser()
@@ -117,6 +137,134 @@ class BasicUserProfileFragment  : Fragment() {
     }
 
     /*
+    Habilita la edicion de los campos
+     */
+    fun changeEditMode(){
+        if(editMode){
+            checkSave()
+            btn_enable_edit.setImageResource(R.drawable.ic_edit)
+            imgUsuarioPerfil.isClickable = false
+            edTxtBasicUserName.isEnabled = false
+            edTxtBasicUserPhone.isEnabled = false
+            edTxtBasicUserEmail.isEnabled = false
+            btn_change_pwd.visibility = View.INVISIBLE
+            editMode = false
+        }else{
+            btn_enable_edit.setImageResource(R.drawable.ic_save)
+            imgUsuarioPerfil.isClickable = true
+            edTxtBasicUserName.isEnabled = true
+            edTxtBasicUserPhone.isEnabled = true
+            edTxtBasicUserEmail.isEnabled = true
+            btn_change_pwd.visibility = View.VISIBLE
+            editMode = true
+        }
+    }
+
+    /*
+    Pregunta al usuario si desea guardar los cambios editados
+     */
+    fun checkSave(){
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.saveEdit))
+            .setMessage(getString(R.string.strMensajeSaveEdit))
+            .setPositiveButton(getString(R.string.CONFIRM)) { view, _ ->
+                editar()
+                view.dismiss()
+            }
+            .setNegativeButton(getString(R.string.Cancel)) { view, _ ->
+
+                view.dismiss()
+            }
+            .setCancelable(true)
+            .create()
+            .show()
+    }
+
+    fun editar(){
+
+        if(edTxtBasicUserEmail.text.trim().isNotEmpty() && edTxtBasicUserPhone.text.trim().isNotEmpty() && edTxtBasicUserName.text.trim().isNotEmpty()){
+
+            var email_mod = edTxtBasicUserEmail.text.toString().trim()
+            var userName_mod = edTxtBasicUserName.text.toString().trim()
+            var phone_mod = edTxtBasicUserPhone.text.toString().trim().toInt()
+
+
+            photo = imgUsuarioPerfil.drawToBitmap()
+            val imgST = Utils.ImageToString(photo!!)
+
+
+            var basicUser = BasicUser(basciUserActual.userId,userName_mod,email_mod,phone_mod,imgST,basciUserActual.rol,basciUserActual.idFavoritos)
+
+
+            db.collection("${Constantes.collectionUser}")
+                .document(VariablesCompartidas.usuarioBasicoActual!!.userId.toString()) //Será la clave del documento.
+                .set(basicUser).addOnSuccessListener {
+
+                    //val us : User = user as User
+
+                    Log.i("profile", currentUser.email.toString())
+                    VariablesCompartidas.usuarioBasicoActual = basciUserActual
+
+                    currentUser!!.updateEmail(basicUser.email.toString())
+
+                    val navigationView: NavigationView =
+                        (context as AppCompatActivity).findViewById(R.id.nav_view)
+                    val header: View = navigationView.getHeaderView(0)
+                    val imgHe = header.findViewById<ImageView>(R.id.image_basic_user_header)
+                    val nameHead = header.findViewById<TextView>(R.id.txt_userName_header)
+                    val emailHead = header.findViewById<TextView>(R.id.txt_userEmail_header)
+
+                    imgHe.setImageBitmap(photo)
+                    nameHead.text = basicUser.userName
+                    emailHead.text = basicUser.email
+
+                    Toast.makeText( requireContext(), R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+
+                }.addOnFailureListener{
+                    Toast.makeText(requireContext(), R.string.ERROR, Toast.LENGTH_SHORT).show()
+                }
+        }else{
+            Toast.makeText(requireContext(),R.string.emptyCamps,Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    /*
+    Cambiar contraseña
+     */
+    fun changePwd() {
+        val dialog = layoutInflater.inflate(R.layout.password_changer, null)
+        val pass1 = dialog.findViewById<EditText>(R.id.edPassChanger)
+        val pass2 = dialog.findViewById<EditText>(R.id.edPass2Changer)
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.changePassword))
+            .setView(dialog)
+            .setPositiveButton("OK") { view, _ ->
+                val p1 = pass1.text.toString()
+                val p2 = pass2.text.toString()
+                if (p1 == p2) {
+                    currentUser.updatePassword(p1)
+                    Toast.makeText(
+                        context,
+                        getString(R.string.Suscesfull),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else Toast.makeText(
+                    context,
+                    getString(R.string.ERROR),
+                    Toast.LENGTH_SHORT
+                ).show()
+                view.dismiss()
+            }
+            .setNegativeButton(getString(R.string.Cancel)) { view, _ ->
+                view.dismiss()
+            }
+            .setCancelable(false)
+            .create()
+            .show()
+    }
+
+    /*
     Cambiar foto dando a escoger entre galeria o camara
      */
     fun cambiarFoto() {
@@ -136,6 +284,9 @@ class BasicUserProfileFragment  : Fragment() {
             .show()
     }
 
+    /*
+    Permite elegir una imagen de la galeria
+     */
     private fun elegirDeGaleria() {
         val intent = Intent()
         intent.type = "image/*"
@@ -146,6 +297,9 @@ class BasicUserProfileFragment  : Fragment() {
         )
     }
 
+    /*
+    Permite realizar una foto con la camara
+     */
     private fun hacerFoto() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
