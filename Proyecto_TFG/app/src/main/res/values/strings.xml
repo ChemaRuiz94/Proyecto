@@ -51,6 +51,19 @@
 
 
     <string name="menu_my_profile">My profile</string>
+    <string name="menu_search">Search</string>
     <string name="change_password">Change password</string>
+
+    <string name="search">Search</string>
+    <string name="map_mode">Map mode</string>
+    <string name="list_mode">List mode</string>
+    <string name="show_result_mode">Show result mode:</string>
+    <string name="max_size">Max. size</string>
+    <string name="max_price">Max. prcie</string>
+    <string name="max_distance">Max. distance</string>
+    <string name="cm">cm</string>
+    <string name="km">Km</string>d
+    <string name="price">€</string>d
+    <string name="search_by_name">Search by name...</string>d
 
 </resources>
