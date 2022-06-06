@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.chema.ptoyecto_tfg.MainActivity
+import androidx.appcompat.app.AlertDialog
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
@@ -56,8 +56,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         txtSignUp.setOnClickListener{
-            val myIntent = Intent(this, SignUpActivity::class.java)
-            startActivity(myIntent)
+            checkSignUp()
         }
     }
 
@@ -97,6 +96,29 @@ class LoginActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    /*
+    Pregunta al usuario con que tipo de cuenta
+    desea registrarse
+     */
+    fun checkSignUp(){
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.user_type))
+            .setMessage(getString(R.string.str_user_type))
+            .setPositiveButton(getString(R.string.basic_user)) { view, _ ->
+                val myIntent = Intent(this, SignUpBasicActivity::class.java)
+                startActivity(myIntent)
+                view.dismiss()
+            }
+            .setNegativeButton(getString(R.string.artist_user)) { view, _ ->
+                val myIntent = Intent(this, SignUpArtistActivity::class.java)
+                startActivity(myIntent)
+                view.dismiss()
+            }
+            .setCancelable(true)
+            .create()
+            .show()
     }
 
     /*

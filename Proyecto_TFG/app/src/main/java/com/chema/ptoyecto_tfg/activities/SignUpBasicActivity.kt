@@ -37,7 +37,7 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpBasicActivity : AppCompatActivity() {
 
 
     private val db = FirebaseFirestore.getInstance()

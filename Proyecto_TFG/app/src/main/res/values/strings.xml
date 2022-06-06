@@ -6,6 +6,11 @@
     <string name="signUpLink">Sign Up</string>
     <string name="signUpTextLink">You do not have an account?</string>
 
+    <string name="user_type">User type</string>
+    <string name="str_user_type">What type of acoutn do you want?</string>
+    <string name="artist_user">Artist user</string>
+    <string name="basic_user">Basic User</string>
+
     <string name="userName">User Name</string>
     <string name="email">Email</string>
     <string name="phone">Phone</string>

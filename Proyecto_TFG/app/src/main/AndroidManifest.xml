@@ -18,7 +18,7 @@
             android:name=".activities.SignUpArtistActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".activities.SignUpBasicActivity"
             android:exported="true" />
         <activity
             android:name=".activities.LoginActivity"
