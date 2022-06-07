@@ -17,6 +17,7 @@
     <string name="cif">CIF</string>
     <string name="pwd">Password</string>
     <string name="pwdRepeat">Repeat Password</string>
+    <string name="selectLocation">Your Studio´s location</string>
 
 
     <string name="saveEdit">Save edit</string>
@@ -69,6 +70,7 @@
     <string name="cm">cm</string>
     <string name="km">Km</string>d
     <string name="price">€</string>d
-    <string name="search_by_name">Search by name...</string>d
+    <string name="search_by_name">Search by name...</string>
+    <string name="title_activity_select_studio_maps">SelectStudioMapsActivity</string>d
 
 </resources>
