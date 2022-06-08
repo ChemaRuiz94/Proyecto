@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">Ptoyecto_TFG</string>
+    <string name="request_id_token">694797645424-f142hioc3bdj3ml09nbjqq0m7cqbtbmp.apps.googleusercontent.com</string>
 
     <string name="login">Login</string>
     <string name="signup">Sign Up</string>
     <string name="signUpLink">Sign Up</string>
     <string name="signUpTextLink">You do not have an account?</string>
+
+    <string name="user_type">User type</string>
+    <string name="str_user_type">What type of acoutn do you want?</string>
+    <string name="artist_user">Artist user</string>
+    <string name="basic_user">Basic User</string>
 
     <string name="userName">User Name</string>
     <string name="email">Email</string>
@@ -12,6 +18,7 @@
     <string name="cif">CIF</string>
     <string name="pwd">Password</string>
     <string name="pwdRepeat">Repeat Password</string>
+    <string name="selectLocation">Your Studio´s location</string>
 
 
     <string name="saveEdit">Save edit</string>
@@ -26,9 +33,13 @@
     <string name="emptyCamps">Complete all fields</string>
     <string name="pwdNotCoincide">Passwords not coincide</string>
     <string name="phoneNotCorrect">Phone not correct</string>
+    <string name="select_studio_location">Select studio location</string>
+    <string name="select_this_location">Select this location?</string>
     <string name="changePassword">Change Password</string>s
 
 
+    <string name="YES">YES</string>
+    <string name="NO">NO</string>
     <string name="Cancel">CANCEL</string>
     <string name="CONFIRM">CONFIRM</string>
     <string name="Suscesfull">SUSCESFULL</string>
@@ -36,6 +47,9 @@
     <string name="ERROR">ERROR</string>
     <string name="RegERROR">REG ERROR</string>
     <string name="LoginERROR">Login ERROR</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="ocurridoErrorAutenticacion">Se ha producido un error autenticando al usuairo</string>
+    <string name="accept_permissions">accept permissions</string>
 
     <string name="title_activity_basic_user_nav_draw">BasicUserNavDrawActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -52,6 +66,8 @@
 
     <string name="menu_my_profile">My profile</string>
     <string name="menu_search">Search</string>
+    <string name="menu_muro">Muro</string>
+
     <string name="change_password">Change password</string>
 
     <string name="search">Search</string>
@@ -64,6 +80,11 @@
     <string name="cm">cm</string>
     <string name="km">Km</string>d
     <string name="price">€</string>d
-    <string name="search_by_name">Search by name...</string>d
+    <string name="search_by_name">Search by name...</string>
+    <string name="title_activity_select_studio_maps">SelectStudioMapsActivity</string>
+
+    <string name="satellite_mode">Satellite Mode</string>
+    <string name="normal_mode">Normal Mode</string>
+    <string name="hybrid_mode">Hybrid Mode</string>
 
 </resources>

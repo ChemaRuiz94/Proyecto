@@ -42,11 +42,20 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_basic_user_nav_draw)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_search, R.id.nav_basic_profile, R.id.nav_slideshow
-            ), drawerLayout
-        )
+        if(VariablesCompartidas.usuarioBasicoActual != null){
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_slideshow
+                ), drawerLayout
+            )
+        }else{
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_slideshow, R.id.nav_muro
+                ), drawerLayout
+            )
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -57,10 +66,19 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         val navUserName = headerView.findViewById<View>(R.id.txt_userName_header) as TextView
         //val imgBasicUserHeader = headerView.findViewById<View>(R.id.image_basic_user_header) as ImageView
 
-        val u = VariablesCompartidas.usuarioBasicoActual as BasicUser
-        navUserName.text = u.userName.toString()
-        navUserEmail.setText(VariablesCompartidas.emailUsuarioActual.toString())
-        setHeaderImgUser(u)
+        if(VariablesCompartidas.usuarioBasicoActual != null){
+            val u = VariablesCompartidas.usuarioBasicoActual as BasicUser
+            val email = VariablesCompartidas.emailUsuarioActual.toString()
+            navUserName.text = u.userName.toString()
+            navUserEmail.setText(email)
+            setHeaderImgUser(u.img.toString())
+        }else{
+            val u = VariablesCompartidas.usuarioArtistaActual as BasicUser
+            val email = VariablesCompartidas.usuarioArtistaActual.toString()
+            navUserName.text = u.userName.toString()
+            navUserEmail.setText(email)
+            setHeaderImgUser(u.img.toString())
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,9 +92,9 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun setHeaderImgUser(u : BasicUser?){
-        if(u?.img != null){
-            var imgST : String? = u?.img.toString()
+    fun setHeaderImgUser(imgST : String?){
+        if(imgST != null){
+            //var imgST : String? = u?.img.toString()
             var photo: Bitmap? = Utils.StringToBitMap(imgST)
             val navigationView: NavigationView =
                 (this as AppCompatActivity).findViewById(R.id.nav_view)
