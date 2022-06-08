@@ -64,7 +64,7 @@ class SelectStudioMapsActivity : AppCompatActivity(), OnMapReadyCallback, Google
     }
 
     override fun onMapClick(p0: LatLng)  {
-        //mMap.clear()
+        mMap.clear()
         mMap.addMarker(MarkerOptions().position(p0!!).title("location"))
 
     }

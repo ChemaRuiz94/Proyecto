@@ -324,6 +324,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
                     ubicacionCambiada = true
 
                     val ubi = LatLng(VariablesCompartidas.latitudStudioSeleccionado.toString().toDouble(), VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble())
+                    mMap?.clear()
                     mMap?.addMarker(MarkerOptions().position(ubi).title("${edTxtArtistUserName.text}"))
                     mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(ubi,15f))
                 }
