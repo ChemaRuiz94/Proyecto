@@ -60,6 +60,8 @@ class LoginActivity : AppCompatActivity() {
         txtSignUp = findViewById(R.id.txtSignUp)
 
         auth = Firebase.auth
+        VariablesCompartidas.usuarioBasicoActual = null
+        VariablesCompartidas.usuarioArtistaActual = null
 
         //buttons
         btnLogin.setOnClickListener{
@@ -209,7 +211,7 @@ class LoginActivity : AppCompatActivity() {
                     )
                     VariablesCompartidas.usuarioArtistaActual = us
                     isBasicUser = true
-                    var myIntent = Intent(this, MainActivity::class.java)
+                    var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
                     startActivity(myIntent)
                 }
             }
@@ -302,9 +304,8 @@ class LoginActivity : AppCompatActivity() {
                 //val myIntent = Intent(this,BasicUserNavDrawActivity::class.java)
                 //startActivity(myIntent)
 
-                //Toast.makeText(this,"GO MAIN", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
-                //Toast.makeText(this,R.string.ERROR , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,R.string.ERROR , Toast.LENGTH_SHORT).show()
             }
     }
 

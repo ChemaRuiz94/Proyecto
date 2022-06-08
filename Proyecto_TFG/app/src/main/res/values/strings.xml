@@ -66,6 +66,8 @@
 
     <string name="menu_my_profile">My profile</string>
     <string name="menu_search">Search</string>
+    <string name="menu_muro">Muro</string>
+
     <string name="change_password">Change password</string>
 
     <string name="search">Search</string>

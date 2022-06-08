@@ -229,7 +229,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
             .document(id)
             .set(user)
             .addOnSuccessListener {
-                val myIntent = Intent(this, MainActivity::class.java)
+                val myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
                 startActivity(myIntent)
 
                 //Toast.makeText(this,"GO MAIN", Toast.LENGTH_SHORT).show()
