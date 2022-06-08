@@ -10,6 +10,7 @@ object Constantes {
     const val rolAdminUser = "admin"
 
 
-    const val CODE_GALLERY = 1
+    const val CODE_MAP= 1
+    const val CODE_GALLERY = 2
     const val CODE_CAMERA = 1888
 }

@@ -24,6 +24,7 @@ import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.firebase.ui.auth.data.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -260,7 +261,7 @@ class SignUpBasicActivity : AppCompatActivity() {
                 if (resultCode == Activity.RESULT_OK) {
                     photo = data?.extras?.get("data") as Bitmap
                     imgSignUpUser.setImageBitmap(photo)
-                    photoSt = ImageToString(photo)
+                    photoSt = Utils.ImageToString(photo)
                 }
             }
             Constantes.CODE_GALLERY -> {
@@ -281,29 +282,11 @@ class SignUpBasicActivity : AppCompatActivity() {
                         val bmp = BitmapFactory.decodeStream(imageStream)
                         photo = Bitmap.createScaledBitmap(bmp, 200, 300, true)
                         imgSignUpUser.setImageBitmap(photo)
-                        photoSt = ImageToString(photo)
+                        photoSt = Utils.ImageToString(photo)
                     }
                 }
             }
         }
     }
 
-    fun ImageToString(bitmap: Bitmap?):String?{
-        val baos = ByteArrayOutputStream()
-        //val bitmap : Bitmap = imgUsuarioPerfil.drawToBitmap()
-        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val imageBytes: ByteArray = baos.toByteArray()
-        var imageString : String? = Base64.encodeToString(imageBytes, Base64.DEFAULT)
-        return imageString
-    }
-
-    fun StringToBitMap(encodedString: String?): Bitmap? {
-        return try {
-            val encodeByte: ByteArray = Base64.decode(encodedString, Base64.DEFAULT)
-            BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
-        } catch (e: Exception) {
-            e.message
-            null
-        }
-    }
 }

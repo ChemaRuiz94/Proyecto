@@ -18,10 +18,10 @@ object Utils {
         }
     }
 
-    fun ImageToString(bitmap: Bitmap):String?{
+    fun ImageToString(bitmap: Bitmap?):String?{
         val baos = ByteArrayOutputStream()
         //val bitmap : Bitmap = imgUsuarioPerfil.drawToBitmap()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val imageBytes: ByteArray = baos.toByteArray()
         var imageString : String? = Base64.encodeToString(imageBytes, Base64.DEFAULT)
         return imageString

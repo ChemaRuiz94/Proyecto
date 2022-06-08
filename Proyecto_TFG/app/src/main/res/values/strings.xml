@@ -32,9 +32,13 @@
     <string name="emptyCamps">Complete all fields</string>
     <string name="pwdNotCoincide">Passwords not coincide</string>
     <string name="phoneNotCorrect">Phone not correct</string>
+    <string name="select_studio_location">Select studio location</string>
+    <string name="select_this_location">Select this location?</string>
     <string name="changePassword">Change Password</string>s
 
 
+    <string name="YES">YES</string>
+    <string name="NO">NO</string>
     <string name="Cancel">CANCEL</string>
     <string name="CONFIRM">CONFIRM</string>
     <string name="Suscesfull">SUSCESFULL</string>
@@ -42,6 +46,7 @@
     <string name="ERROR">ERROR</string>
     <string name="RegERROR">REG ERROR</string>
     <string name="LoginERROR">Login ERROR</string>
+    <string name="accept_permissions">accept permissions</string>
 
     <string name="title_activity_basic_user_nav_draw">BasicUserNavDrawActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -71,6 +76,10 @@
     <string name="km">Km</string>d
     <string name="price">€</string>d
     <string name="search_by_name">Search by name...</string>
-    <string name="title_activity_select_studio_maps">SelectStudioMapsActivity</string>d
+    <string name="title_activity_select_studio_maps">SelectStudioMapsActivity</string>
+
+    <string name="satellite_mode">Satellite Mode</string>
+    <string name="normal_mode">Normal Mode</string>
+    <string name="hybrid_mode">Hybrid Mode</string>
 
 </resources>
