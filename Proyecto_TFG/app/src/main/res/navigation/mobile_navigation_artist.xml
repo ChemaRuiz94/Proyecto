@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/mobile_navigation_artist"
     app:startDestination="@+id/nav_search">
 
     <fragment
@@ -23,4 +23,9 @@
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
+    <fragment
+        android:id="@+id/nav_muro"
+        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment"
+        android:label="@string/menu_muro"
+        tools:layout="@layout/fragment_muro" />
 </navigation>

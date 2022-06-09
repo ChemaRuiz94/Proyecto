@@ -14,7 +14,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.chema.ptoyecto_tfg.R
-import com.chema.ptoyecto_tfg.databinding.ActivityBasicUserNavDrawBinding
+import com.chema.ptoyecto_tfg.databinding.ActivityArtistUserNavDrawBinding
+//import com.chema.ptoyecto_tfg.databinding.ActivityBasicUserNavDrawBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Utils
@@ -24,19 +25,19 @@ import com.google.android.material.navigation.NavigationView
 class ArtistUserNavDrawActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityBasicUserNavDrawBinding
+    private lateinit var binding: ActivityArtistUserNavDrawBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityBasicUserNavDrawBinding.inflate(layoutInflater)
+        binding = ActivityArtistUserNavDrawBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarBasicUserNavDraw.toolbar)
+        setSupportActionBar(binding.appBarArtistUserNavDraw.toolbar)
 
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
+        val drawerLayout: DrawerLayout = binding.drawerArtistLayout
+        val navView: NavigationView = binding.navViewArtist
         val navController = findNavController(R.id.nav_host_fragment_content_basic_user_nav_draw)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -52,7 +53,7 @@ class ArtistUserNavDrawActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         //COMPONENTES DE CABECERA
-        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        val navigationView = findViewById<View>(R.id.nav_view_artist) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         val navUserEmail = headerView.findViewById<View>(R.id.txt_userEmail_header) as TextView
         val navUserName = headerView.findViewById<View>(R.id.txt_userName_header) as TextView
@@ -83,7 +84,7 @@ class ArtistUserNavDrawActivity : AppCompatActivity() {
             //var imgST : String? = u?.img.toString()
             var photo: Bitmap? = Utils.StringToBitMap(imgST)
             val navigationView: NavigationView =
-                (this as AppCompatActivity).findViewById(R.id.nav_view)
+                (this as AppCompatActivity).findViewById(R.id.nav_view_artist)
             val header: View = navigationView.getHeaderView(0)
             val imgHe = header.findViewById<ImageView>(R.id.image_basic_user_header)
             imgHe.setImageBitmap(photo)
