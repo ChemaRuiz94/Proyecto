@@ -17,6 +17,7 @@ import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
+import com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
@@ -211,14 +212,14 @@ class LoginActivity : AppCompatActivity() {
                     )
                     VariablesCompartidas.usuarioArtistaActual = us
                     isBasicUser = true
-                    var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
+                    var myIntent = Intent(this, ArtistUserNavDrawActivity::class.java)
                     startActivity(myIntent)
                 }
             }
             .addOnFailureListener { exception ->
                 //No existe
                 isBasicUser = false
-                //Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                Log.d("CHE_TAG", "Error getting documents: ", exception)
             }
     }
 

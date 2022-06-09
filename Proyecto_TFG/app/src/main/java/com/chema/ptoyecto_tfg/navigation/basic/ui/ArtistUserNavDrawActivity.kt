@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.navigation.basic
+package com.chema.ptoyecto_tfg.navigation.basic.ui
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -6,24 +6,22 @@ import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.databinding.ActivityBasicUserNavDrawBinding
+import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
+import com.google.android.material.navigation.NavigationView
 
-//import com.chema.ptoyecto_tfg.navigation.basic.databinding.ActivityBasicUserNavDrawBinding
-
-class BasicUserNavDrawActivity : AppCompatActivity() {
+class ArtistUserNavDrawActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityBasicUserNavDrawBinding
@@ -42,10 +40,10 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_basic_user_nav_draw)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        if(VariablesCompartidas.usuarioBasicoActual != null){
+        if(VariablesCompartidas.usuarioArtistaActual != null){
             appBarConfiguration = AppBarConfiguration(
                 setOf(
-                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_slideshow
+                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_slideshow, R.id.nav_muro
                 ), drawerLayout
             )
         }
@@ -60,9 +58,9 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         val navUserName = headerView.findViewById<View>(R.id.txt_userName_header) as TextView
         //val imgBasicUserHeader = headerView.findViewById<View>(R.id.image_basic_user_header) as ImageView
 
-        if(VariablesCompartidas.usuarioBasicoActual != null){
-            val u = VariablesCompartidas.usuarioBasicoActual as BasicUser
-            val email = VariablesCompartidas.emailUsuarioActual.toString()
+        if(VariablesCompartidas.usuarioArtistaActual != null){
+            val u = VariablesCompartidas.usuarioArtistaActual as ArtistUser
+            val email = VariablesCompartidas.usuarioArtistaActual!!.email.toString()
             navUserName.text = u.userName.toString()
             navUserEmail.setText(email)
             setHeaderImgUser(u.img.toString())

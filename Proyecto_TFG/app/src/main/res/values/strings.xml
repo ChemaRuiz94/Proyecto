@@ -52,6 +52,7 @@
     <string name="accept_permissions">accept permissions</string>
 
     <string name="title_activity_basic_user_nav_draw">BasicUserNavDrawActivity</string>
+    <string name="title_activity_artist_user_nav_draw">ArtistUserNavDrawActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

@@ -39,6 +39,11 @@
             android:label="@string/title_activity_basic_user_nav_draw"
             android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />
         <activity
+            android:name=".navigation.basic.ui.ArtistUserNavDrawActivity"
+            android:exported="true"
+            android:label="@string/title_activity_artist_user_nav_draw"
+            android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />
+        <activity
             android:name=".activities.SignUpArtistActivity"
             android:exported="true" />
         <activity
