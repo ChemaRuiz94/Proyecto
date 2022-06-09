@@ -45,7 +45,7 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         if(VariablesCompartidas.usuarioBasicoActual != null){
             appBarConfiguration = AppBarConfiguration(
                 setOf(
-                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_slideshow
+                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_favorites
                 ), drawerLayout
             )
         }
