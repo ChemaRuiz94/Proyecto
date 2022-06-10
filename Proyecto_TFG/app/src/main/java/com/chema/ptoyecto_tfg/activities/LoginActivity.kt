@@ -168,6 +168,7 @@ class LoginActivity : AppCompatActivity() {
 
                     )
                     VariablesCompartidas.usuarioBasicoActual = us
+                    VariablesCompartidas.usuarioArtistaActual = null
                     isBasicUser = true
                     var myIntent = Intent(this, TabBasicUserActivity::class.java)
                     startActivity(myIntent)
@@ -209,6 +210,7 @@ class LoginActivity : AppCompatActivity() {
 
                     )
                     VariablesCompartidas.usuarioArtistaActual = us
+                    VariablesCompartidas.usuarioBasicoActual = null
                     isBasicUser = true
                     var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
                     startActivity(myIntent)

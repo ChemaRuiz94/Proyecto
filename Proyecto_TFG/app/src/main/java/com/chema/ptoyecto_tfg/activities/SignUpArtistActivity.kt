@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
@@ -101,7 +102,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if(checkPwdIguales()){
 
-                if(checkMovil(edTxtArtistPhone.text.toString().trim())){
+                if(Utils.checkMovil(edTxtArtistPhone.text.toString().trim())){
 
                     if(latitudStudio != null && longitudStudio != null){
                         //SIGN UP
@@ -157,20 +158,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
         return false
     }
 
-    /*
-    * Comprueba si el numero de telefono es correcto
-    */
-    private fun checkMovil(target: CharSequence?): Boolean {
-        return if (target == null) {
-            false
-        } else {
-            if (target.length < 6 || target.length > 13) {
-                false
-            } else {
-                Patterns.PHONE.matcher(target).matches()
-            }
-        }
-    }
+
 
     /*
    Comprobar si se puede crear el usuario en Firebase
@@ -221,8 +209,8 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
 
         )
 
-        var u = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
-        VariablesCompartidas.usuarioBasicoActual = u
+        var u = ArtistUser(id,userName,email,phone,img,listRoles,listIdFavoritos,cif,latitudStudio,longitudStudio)
+        VariablesCompartidas.usuarioArtistaActual = u
 
         db.collection("${Constantes.collectionArtistUser}")
             .document(id)

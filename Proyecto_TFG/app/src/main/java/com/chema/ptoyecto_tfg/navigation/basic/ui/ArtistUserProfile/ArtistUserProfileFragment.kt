@@ -222,7 +222,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
 
     fun editar(){
 
-        if(edTxtArtistUserEmail.text.trim().isNotEmpty() && edTxtArtistUserPhone.text.trim().isNotEmpty() && edTxtArtistUserName.text.trim().isNotEmpty()  && edTxtArtistUserCif.text.trim().isNotEmpty()){
+        if(edTxtArtistUserEmail.text.trim().isNotEmpty() && edTxtArtistUserPhone.text.trim().isNotEmpty() && edTxtArtistUserName.text.trim().isNotEmpty()  && edTxtArtistUserCif.text.trim().isNotEmpty() && Utils.checkMovil(edTxtArtistUserPhone.text.toString().trim())){
 
             var email_mod = edTxtArtistUserEmail.text.toString().trim()
             var userName_mod = edTxtArtistUserName.text.toString().trim()

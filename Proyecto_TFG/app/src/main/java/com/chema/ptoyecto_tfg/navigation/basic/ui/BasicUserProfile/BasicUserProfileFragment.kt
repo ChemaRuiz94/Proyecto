@@ -182,7 +182,7 @@ class BasicUserProfileFragment  : Fragment() {
 
     fun editar(){
 
-        if(edTxtBasicUserEmail.text.trim().isNotEmpty() && edTxtBasicUserPhone.text.trim().isNotEmpty() && edTxtBasicUserName.text.trim().isNotEmpty()){
+        if(edTxtBasicUserEmail.text.trim().isNotEmpty() && edTxtBasicUserPhone.text.trim().isNotEmpty() && edTxtBasicUserName.text.trim().isNotEmpty() && Utils.checkMovil(edTxtBasicUserPhone.text.toString().trim())){
 
             var email_mod = edTxtBasicUserEmail.text.toString().trim()
             var userName_mod = edTxtBasicUserName.text.toString().trim()

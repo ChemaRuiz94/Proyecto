@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Patterns
 import androidx.appcompat.app.AlertDialog
 import com.chema.ptoyecto_tfg.R
 import java.io.ByteArrayOutputStream
@@ -56,5 +57,19 @@ object Utils {
         dialog.show()
     }
 
+    /*
+   * Comprueba si el numero de telefono es correcto
+   */
+    fun checkMovil(target: CharSequence?): Boolean {
+        return if (target == null) {
+            false
+        } else {
+            if (target.length < 6 || target.length > 13) {
+                false
+            } else {
+                Patterns.PHONE.matcher(target).matches()
+            }
+        }
+    }
 
 }
