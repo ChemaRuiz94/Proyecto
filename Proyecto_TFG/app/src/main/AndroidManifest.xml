@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.chema.ptoyecto_tfg">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -16,7 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ptoyecto_TFG">
-
+        <activity
+            android:name=".TabBasicUserActivity"
+            android:exported="true"
+            android:label="@string/title_activity_tab_basic_user"
+            android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -39,7 +42,7 @@
             android:label="@string/title_activity_basic_user_nav_draw"
             android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />
         <activity
-            android:name=".navigation.basic.ui.ArtistUserNavDrawActivity"
+            android:name=".navigation.basic.ArtistUserNavDrawActivity"
             android:exported="true"
             android:label="@string/title_activity_artist_user_nav_draw"
             android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />

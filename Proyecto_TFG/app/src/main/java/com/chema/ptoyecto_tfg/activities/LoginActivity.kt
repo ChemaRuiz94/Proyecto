@@ -1,6 +1,5 @@
 package com.chema.ptoyecto_tfg.activities
 
-import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -11,13 +10,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.TabBasicUserActivity
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
-import com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserNavDrawActivity
+import com.chema.ptoyecto_tfg.navigation.basic.ArtistUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
@@ -171,7 +170,7 @@ class LoginActivity : AppCompatActivity() {
                     )
                     VariablesCompartidas.usuarioBasicoActual = us
                     isBasicUser = true
-                    var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
+                    var myIntent = Intent(this, TabBasicUserActivity::class.java)
                     startActivity(myIntent)
                 }
             }

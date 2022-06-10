@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui
+package com.chema.ptoyecto_tfg.navigation.basic
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -17,7 +17,6 @@ import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.databinding.ActivityArtistUserNavDrawBinding
 //import com.chema.ptoyecto_tfg.databinding.ActivityBasicUserNavDrawBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
-import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.material.navigation.NavigationView
@@ -44,7 +43,7 @@ class ArtistUserNavDrawActivity : AppCompatActivity() {
         if(VariablesCompartidas.usuarioArtistaActual != null){
             appBarConfiguration = AppBarConfiguration(
                 setOf(
-                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_slideshow, R.id.nav_muro
+                    R.id.nav_search, R.id.nav_basic_profile, R.id.nav_favorites, R.id.nav_muro
                 ), drawerLayout
             )
         }
