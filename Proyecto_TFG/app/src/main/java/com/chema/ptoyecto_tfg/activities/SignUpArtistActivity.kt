@@ -53,7 +53,6 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var btnSelectStudio: Button
 
     private var ubiActual : LatLng? = LatLng(40.416, -3.703)
-    private var ubicacionCambiada = false
     private var latitudStudio : Double? = null
     private var longitudStudio: Double? = null
     private var photo: Bitmap? = null
@@ -321,7 +320,6 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
                     longitudStudio = VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble()
 
                     ubiActual = LatLng(latitudStudio!!,longitudStudio!!)
-                    ubicacionCambiada = true
 
                     val ubi = LatLng(VariablesCompartidas.latitudStudioSeleccionado.toString().toDouble(), VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble())
                     mMap?.clear()
