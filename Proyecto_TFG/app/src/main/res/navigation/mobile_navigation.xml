@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_basic_user_search" />
 
     <fragment
-        android:id="@+id/nav_basic_profile"
-        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment"
+        android:id="@+id/nav_artist_profile"
+        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserProfile.ArtistUserProfileFragment"
         android:label="@string/menu_my_profile"
-        tools:layout="@layout/fragment_basic_user_profile" />
+        tools:layout="@layout/fragment_artist_user_profile" />
 
     <fragment
         android:id="@+id/nav_favorites"

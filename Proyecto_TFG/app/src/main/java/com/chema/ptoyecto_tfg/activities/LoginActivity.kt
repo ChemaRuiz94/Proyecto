@@ -211,7 +211,7 @@ class LoginActivity : AppCompatActivity() {
                     )
                     VariablesCompartidas.usuarioArtistaActual = us
                     isBasicUser = true
-                    var myIntent = Intent(this, ArtistUserNavDrawActivity::class.java)
+                    var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)
                     startActivity(myIntent)
                 }
             }

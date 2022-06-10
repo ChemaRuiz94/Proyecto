@@ -10,9 +10,10 @@ import com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserSearch.BasicUserSearc
 import com.chema.ptoyecto_tfg.navigation.basic.ui.favorites.FavoritesFragment
 
 private val TAB_TITLES = arrayOf(
+
+    R.string.menu_favorites,
     R.string.menu_search,
     R.string.menu_my_profile,
-    R.string.menu_favorites,
 )
 
 /**
@@ -27,13 +28,13 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
         // Return a PlaceholderFragment (defined as a static inner class below).
         when(position){
             0 -> {
-                return BasicUserSearchFragment()
+                return FavoritesFragment()
             }
             1 -> {
-                return BasicUserProfileFragment()
+                return BasicUserSearchFragment()
             }
             2 -> {
-                return FavoritesFragment()
+                return BasicUserProfileFragment()
             }
 
         }
