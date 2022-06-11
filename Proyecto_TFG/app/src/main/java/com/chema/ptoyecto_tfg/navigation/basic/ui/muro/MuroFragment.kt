@@ -37,7 +37,7 @@ class MuroFragment : Fragment() {
     private  var userBasicActual : BasicUser? = null
 
     private lateinit var fltBtnFav : FloatingActionButton
-    private lateinit var txtUserNane : TextView
+    private lateinit var txtUserName : TextView
     private lateinit var txtEmail : TextView
     private lateinit var txtUbi : TextView
     private lateinit var txtWeb : TextView
@@ -65,18 +65,25 @@ class MuroFragment : Fragment() {
 
         fltBtnFav = view.findViewById(R.id.fl_btn_fav_artist_muro)
         btnContactEdit = view.findViewById(R.id.btn_contact_edit)
-        txtUserNane = view.findViewById(R.id.txt_artist_user_name_muro)
+        txtUserName = view.findViewById(R.id.txt_artist_user_name_muro)
+        txtEmail = view.findViewById(R.id.txt_email_artist_muro)
+        imgArtist = view.findViewById(R.id.img_user_artist_muro)
 
         fltBtnFav.setOnClickListener{
-            //checkFav()
-            changeFavArtist()
+            changeFav()
         }
 
         cargarDatosArtist()
         checkFav()
     }
 
-
+    private fun changeFav() {
+        if(VariablesCompartidas.usuarioBasicoActual != null){
+            changeFavBasic()
+        }else{
+            changeFavArtist()
+        }
+    }
 
 
     override fun onDestroyView() {
@@ -102,7 +109,7 @@ class MuroFragment : Fragment() {
             var userMod : ArtistUser? = userArtistActual
             userMod!!.idFavoritos!!.remove(userMuro!!.userId.toString())
             db.collection("${Constantes.collectionArtistUser}")
-                .document("${userArtistActual!!.userId}")
+                .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
                     Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userArtistActual = userMod
@@ -110,24 +117,12 @@ class MuroFragment : Fragment() {
                 }.addOnFailureListener{
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
-
-            /*
-            AlertDialog.Builder(context).setTitle(R.string.disapointEvent)
-                .setPositiveButton(R.string.aceptar) { view, _ ->
-
-
-                }.setNegativeButton(R.string.cancelar) { view, _ ->//cancela
-                    view.dismiss()
-                }.create().show()
-
-
-             */
         }else{
             //SI NO LO SIGUE, LO DA FOLLOW
             var userMod : ArtistUser? = userArtistActual
             userMod!!.idFavoritos!!.add(userMuro!!.userId.toString())
             db.collection("${Constantes.collectionArtistUser}")
-                .document("${userArtistActual!!.userId}")
+                .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
                     Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userArtistActual = userMod
@@ -138,6 +133,40 @@ class MuroFragment : Fragment() {
 
         }
     }
+
+    private fun changeFavBasic(){
+        val db = FirebaseFirestore.getInstance()
+
+        if(favorite){
+            //SI YA LO SIGUE, LO DA UNFOLLOW
+            var userMod : BasicUser? = userBasicActual
+            userMod!!.idFavoritos!!.remove(userMuro!!.userId.toString())
+            db.collection("${Constantes.collectionUser}")
+                .document("${userMod!!.userId}")
+                .set(userMod!!).addOnSuccessListener {
+                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+                    userBasicActual = userMod
+                    fltBtnFav.setImageResource(R.drawable.ic_unfavorite)
+                }.addOnFailureListener{
+                    Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
+                }
+        }else{
+            //SI NO LO SIGUE, LO DA FOLLOW
+            var userMod : BasicUser? = userBasicActual
+            userMod!!.idFavoritos!!.add(userMuro!!.userId.toString())
+            db.collection("${Constantes.collectionUser}")
+                .document("${userMod!!.userId}")
+                .set(userMod!!).addOnSuccessListener {
+                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+                    userBasicActual = userMod
+                    fltBtnFav.setImageResource(R.drawable.ic_favorite)
+                }.addOnFailureListener{
+                    Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
+                }
+
+        }
+    }
+
     private fun checkFav() {
         if(VariablesCompartidas.usuarioBasicoActual != null){
             userBasicActual = VariablesCompartidas.usuarioBasicoActual
@@ -165,8 +194,9 @@ class MuroFragment : Fragment() {
         if(VariablesCompartidas.idUserArtistVisitMode != null){
             userMuro = VariablesCompartidas.usuarioArtistaVisitaMuro
 
-            //imgArtist.setImageBitmap(Utils.StringToBitMap(userArtMuro!!.img.toString()))
-            txtUserNane.text = (userMuro!!.userName.toString())
+            imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
+            txtUserName.text = (userMuro!!.userName.toString())
+            txtEmail.text = (userMuro!!.email.toString())
             btnContactEdit.setText(R.string.contact)
             fltBtnFav.visibility = View.VISIBLE
             if(VariablesCompartidas.usuarioArtistaActual != null && userMuro!!.userId!!.equals(VariablesCompartidas!!.usuarioArtistaActual!!.userId) ){
@@ -177,10 +207,11 @@ class MuroFragment : Fragment() {
         }
         if(VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null){
             userMuro = VariablesCompartidas.usuarioArtistaActual
-            txtUserNane.setText(userMuro!!.userName.toString())
+            txtUserName.setText(userMuro!!.userName.toString())
             btnContactEdit.setText(R.string.edit_muro)
+            txtEmail.text = (userMuro!!.email.toString())
             fltBtnFav.visibility = View.INVISIBLE
-            //imgArtist.setImageBitmap(Utils.StringToBitMap(userArtMuro!!.img.toString()))
+            imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
         }
     }
 
