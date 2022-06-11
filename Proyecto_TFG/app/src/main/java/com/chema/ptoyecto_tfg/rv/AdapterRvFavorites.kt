@@ -19,6 +19,7 @@ import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
 import android.content.Intent
 import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
 import com.chema.ptoyecto_tfg.databinding.ActivityArtistMuroConatinerBinding
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 
 
 class AdapterRvFavorites (
@@ -46,11 +47,16 @@ class AdapterRvFavorites (
 
         holder.nombreFav.setOnClickListener{
             Toast.makeText(context, "${usuario.userName.toString()}", Toast.LENGTH_SHORT).show()
+            VariablesCompartidas.userArtistVisitMode = true
+            VariablesCompartidas.idUserArtistVisitMode = usuario.userId.toString()
+            VariablesCompartidas.usuarioArtistaVisitaMuro = usuario
             goToArtistMuroContainer()
         }
 
         holder.imgArtistaFav.setOnClickListener{
             Toast.makeText(context, "${usuario.userName.toString()}", Toast.LENGTH_SHORT).show()
+            VariablesCompartidas.userArtistVisitMode = true
+            VariablesCompartidas.idUserArtistVisitMode = usuario.userId.toString()
             goToArtistMuroContainer()
         }
     }
@@ -65,7 +71,7 @@ class AdapterRvFavorites (
     }
 
 
-    */
+
 
     private fun goToArtistMuro(){
         val nextFrag = MuroFragment()
@@ -74,6 +80,7 @@ class AdapterRvFavorites (
             .addToBackStack(null)
             .commit()
     }
+    */
 
     private fun goToArtistMuroContainer(){
         val intent = Intent(context, ArtistMuroConatinerActivity::class.java)

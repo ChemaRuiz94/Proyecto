@@ -110,6 +110,7 @@
         android:id="@+id/fl_btn_fav_artist_muro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:clickable="true"
         android:src="@drawable/ic_unfavorite"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -120,9 +121,10 @@
         app:layout_constraintVertical_bias="0.038" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_contact_edit"
         android:layout_width="144dp"
         android:layout_height="38dp"
+        android:visibility="visible"
         android:text="@string/contact"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
