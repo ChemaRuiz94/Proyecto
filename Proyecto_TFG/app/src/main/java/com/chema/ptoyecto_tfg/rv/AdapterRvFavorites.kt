@@ -13,12 +13,11 @@ import com.chema.ptoyecto_tfg.utils.Utils
 
 class AdapterRvFavorites (
     private val context: AppCompatActivity,
-    private val usuariosFav: ArrayList<ArtistUser>,
-    private val editMode: Boolean
+    private val usuariosFav: ArrayList<ArtistUser>?,
 ) : RecyclerView.Adapter<AdapterRvFavorites.ViewHolder>()  {
 
     override fun getItemCount(): Int {
-        return usuariosFav.size
+        return usuariosFav!!.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,9 +30,13 @@ class AdapterRvFavorites (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //holder?.item.text = this.valores!![position].toString()
-        var usuario: ArtistUser = usuariosFav[position]
+        var usuario: ArtistUser = usuariosFav!![position]
         holder.nombreFav.text = usuario.userName
         holder.imgArtistaFav.setImageBitmap(Utils.StringToBitMap(usuario.img))
+
+        holder.nombreFav.setOnClickListener{
+            //GO TO MURO
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

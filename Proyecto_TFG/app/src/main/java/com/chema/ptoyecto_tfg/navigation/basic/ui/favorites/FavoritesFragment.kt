@@ -114,7 +114,7 @@ class FavoritesFragment : Fragment() {
         rv = view.findViewById(R.id.rv_fav)
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(view.context)
-        miAdapter = AdapterRvFavorites(view.context as AppCompatActivity, favorites,true)
+        miAdapter = AdapterRvFavorites(view.context as AppCompatActivity, favorites)
         rv.adapter = miAdapter
     }
 

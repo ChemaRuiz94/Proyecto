@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ptoyecto_TFG">
         <activity
+            android:name=".activities.ListResutlActivity"
+            android:exported="true" />
+        <activity
             android:name=".TabBasicUserActivity"
             android:exported="true"
             android:label="@string/title_activity_tab_basic_user"
