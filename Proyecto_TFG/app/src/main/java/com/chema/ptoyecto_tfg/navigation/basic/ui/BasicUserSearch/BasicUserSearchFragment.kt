@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.R
@@ -40,6 +41,8 @@ class BasicUserSearchFragment : Fragment() {
 
     private val db = FirebaseFirestore.getInstance()
     private lateinit var btn_search : Button
+    private lateinit var ed_txt_search_by_name : EditText
+
     private var result : ArrayList<ArtistUser> = ArrayList()
 
     override fun onCreateView(
@@ -61,6 +64,7 @@ class BasicUserSearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btn_search = view.findViewById(R.id.btn_search)
+        ed_txt_search_by_name = view.findViewById(R.id.ed_txt_search_by_name)
 
         btn_search.setOnClickListener{
             busqueda()
@@ -75,7 +79,11 @@ class BasicUserSearchFragment : Fragment() {
     private fun busqueda(){
         runBlocking {
             val job : Job = launch(context = Dispatchers.Default) {
-                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot //Obtenermos la colección
+                var datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot //Obtenermos la colección
+                if(ed_txt_search_by_name.text.isNotEmpty()){
+                    datos = getDataFromFireStoreByName() as QuerySnapshot //Obtenermos la colección
+                }
+
                 obtenerDatos(datos as QuerySnapshot?)  //'Destripamos' la colección y la metemos en nuestro ArrayList
             }
             //Con este método el hilo principal de onCreate se espera a que la función acabe y devuelva la colección con los datos.
@@ -88,6 +96,17 @@ class BasicUserSearchFragment : Fragment() {
         startActivity(resultIntent)
     }
 
+    suspend fun getDataFromFireStoreByName()  : QuerySnapshot? {
+        return try{
+            val data = db.collection("${Constantes.collectionArtistUser}")
+                .whereEqualTo("userName","${ed_txt_search_by_name.text.toString()}")
+                .get()
+                .await()
+            data
+        }catch (e : Exception){
+            null
+        }
+    }
     suspend fun getDataFromFireStore()  : QuerySnapshot? {
         return try{
             val data = db.collection("${Constantes.collectionArtistUser}")
