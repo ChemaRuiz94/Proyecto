@@ -8,15 +8,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.databinding.FragmentMuroBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
+import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MuroFragment : Fragment() {
 
@@ -65,7 +69,7 @@ class MuroFragment : Fragment() {
 
         fltBtnFav.setOnClickListener{
             //checkFav()
-            changeFav()
+            changeFavArtist()
         }
 
         cargarDatosArtist()
@@ -89,8 +93,50 @@ class MuroFragment : Fragment() {
     }
 
     //++++++++++++++++++++++++++++++++++++++++
-    private fun changeFav() {
-       fltBtnFav.setImageResource(R.drawable.ic_favorite)
+    //++++++++++++++++METODOS AÑADIR/QUITAR USUARIO EVENTO++++++++++
+    private fun changeFavArtist(){
+        val db = FirebaseFirestore.getInstance()
+
+        if(favorite){
+            //SI YA LO SIGUE, LO DA UNFOLLOW
+            var userMod : ArtistUser? = userArtistActual
+            userMod!!.idFavoritos!!.remove(userMuro!!.userId.toString())
+            db.collection("${Constantes.collectionArtistUser}")
+                .document("${userArtistActual!!.userId}")
+                .set(userMod!!).addOnSuccessListener {
+                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+                    userArtistActual = userMod
+                    fltBtnFav.setImageResource(R.drawable.ic_unfavorite)
+                }.addOnFailureListener{
+                    Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
+                }
+
+            /*
+            AlertDialog.Builder(context).setTitle(R.string.disapointEvent)
+                .setPositiveButton(R.string.aceptar) { view, _ ->
+
+
+                }.setNegativeButton(R.string.cancelar) { view, _ ->//cancela
+                    view.dismiss()
+                }.create().show()
+
+
+             */
+        }else{
+            //SI NO LO SIGUE, LO DA FOLLOW
+            var userMod : ArtistUser? = userArtistActual
+            userMod!!.idFavoritos!!.add(userMuro!!.userId.toString())
+            db.collection("${Constantes.collectionArtistUser}")
+                .document("${userArtistActual!!.userId}")
+                .set(userMod!!).addOnSuccessListener {
+                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+                    userArtistActual = userMod
+                    fltBtnFav.setImageResource(R.drawable.ic_favorite)
+                }.addOnFailureListener{
+                    Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
+                }
+
+        }
     }
     private fun checkFav() {
         if(VariablesCompartidas.usuarioBasicoActual != null){
