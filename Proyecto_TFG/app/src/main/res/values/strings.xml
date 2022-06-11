@@ -18,6 +18,8 @@
     <string name="cif">CIF</string>
     <string name="pwd">Password</string>
     <string name="pwdRepeat">Repeat Password</string>
+    <string name="web">Web site</string>
+    <string name="contact">Contact</string>
     <string name="selectLocation">Your Studio´s location</string>
 
 

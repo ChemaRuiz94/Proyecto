@@ -186,7 +186,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
         listRoles.add(rol)
         var listIdFavoritos : ArrayList<String> = ArrayList()
         val cif = edTxtArtistCif.text.toString()
-        var img : String? = null
+        var img : String? = ""
         if(photo != null){
             img = photoSt
         }
