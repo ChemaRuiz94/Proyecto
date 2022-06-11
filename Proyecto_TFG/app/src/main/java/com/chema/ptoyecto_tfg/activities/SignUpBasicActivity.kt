@@ -161,7 +161,6 @@ class SignUpBasicActivity : AppCompatActivity() {
         val rol = Rol(1,"${Constantes.rolBasicUser}")
         var listRoles : ArrayList<Rol> = ArrayList()
         var listIdFavoritos : ArrayList<String> = ArrayList()
-        listIdFavoritos.add("df031d7f-7e1b-440c-95a3-39999a99aa2d ")
         listRoles.add(rol)
         var img : String? = null
         if(photo != null){
@@ -178,8 +177,8 @@ class SignUpBasicActivity : AppCompatActivity() {
             "email" to email,
             "phone" to phone,
             "img" to img,
-            "listRoles" to listRoles,
-            "listIdFavoritos" to listIdFavoritos
+            "rol" to listRoles,
+            "idFavoritos" to listIdFavoritos
         )
 
         var u = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)

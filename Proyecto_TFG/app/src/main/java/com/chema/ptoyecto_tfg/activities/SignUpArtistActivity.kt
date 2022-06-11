@@ -194,15 +194,14 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
         var userName = edTxtArtistUserName.text.toString()
         var phone = edTxtArtistPhone.text.toString().toInt()
 
-        //var user = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
         var user = hashMapOf(
             "userId" to id,
             "userName" to userName,
             "email" to email,
             "phone" to phone,
             "img" to img,
-            "listRoles" to listRoles,
-            "listIdFavoritos" to listIdFavoritos,
+            "rol" to listRoles,
+            "idFavoritos" to listIdFavoritos,
             "cif" to cif,
             "latitudUbicacion" to latitudStudio,
             "longitudUbicacion" to longitudStudio

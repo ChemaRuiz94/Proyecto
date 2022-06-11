@@ -2,6 +2,7 @@ package com.chema.ptoyecto_tfg.navigation.basic.ui.favorites
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,16 +56,17 @@ class FavoritesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*
+
         if(VariablesCompartidas.usuarioArtistaActual != null){
             userArtistAct = VariablesCompartidas.usuarioArtistaActual as ArtistUser
             isBasicUser = false
-        }else{
+        }
+        if(VariablesCompartidas.usuarioBasicoActual != null){
             userBasicAct = VariablesCompartidas.usuarioBasicoActual as BasicUser
             isBasicUser = true
         }
 
-         */
+
 
         favoritesViewModel =
             ViewModelProvider(this).get(FavoritesViewModel::class.java)
@@ -80,16 +82,14 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv = view.findViewById(R.id.rv_fav)
-        /*
         if(VariablesCompartidas.usuarioArtistaActual != null){
             userArtistAct = VariablesCompartidas.usuarioArtistaActual as ArtistUser
             isBasicUser = false
-        }else{
+        }
+        if(VariablesCompartidas.usuarioBasicoActual != null){
             userBasicAct = VariablesCompartidas.usuarioBasicoActual as BasicUser
             isBasicUser = true
         }
-
-         */
 
 
         runBlocking {
@@ -131,16 +131,19 @@ class FavoritesFragment : Fragment() {
 
     private fun obtenerDatos(datos: QuerySnapshot?) {
         favorites.clear()
-        /*
-        var listIdFavoritesUser : ArrayList<String>? = ArrayList()
 
-        listIdFavoritesUser = if(isBasicUser){
-            (userBasicAct!!.idFavoritos as ArrayList<String>)
+        var listIdFavoritesUser : ArrayList<String> = ArrayList()
+
+        if(isBasicUser){
+            for(idFav in userBasicAct!!.idFavoritos!!){
+                listIdFavoritesUser.add(idFav)
+            }
         }else{
+            for(idFav in userArtistAct!!.idFavoritos!!){
+                listIdFavoritesUser.add(idFav)
+            }
 
-            (userArtistAct!!.idFavoritos as ArrayList<String>)
         }
-        */
 
         for(dc: DocumentChange in datos?.documentChanges!!){
             if (dc.type == DocumentChange.Type.ADDED){
@@ -157,7 +160,11 @@ class FavoritesFragment : Fragment() {
                     dc.document.get("latitudUbicacion").toString().toDouble(),
                     dc.document.get("longitudUbicacion").toString().toDouble()
                 )
-               favorites.add(fav)
+                Log.d("CHE_TAG","${fav.userId.toString()}")
+                if(listIdFavoritesUser.contains(fav.userId.toString().trimEnd())){
+                    favorites.add(fav)
+                }
+                //favorites.add(fav)
             }
         }
 
