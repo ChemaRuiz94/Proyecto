@@ -134,5 +134,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.37" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_post_artist_muro"
+        android:layout_width="409dp"
+        android:layout_height="435dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.993" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
