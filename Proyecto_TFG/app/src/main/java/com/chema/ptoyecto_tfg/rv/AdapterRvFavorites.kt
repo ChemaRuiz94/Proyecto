@@ -46,7 +46,6 @@ class AdapterRvFavorites (
         holder.imgArtistaFav.setImageBitmap(Utils.StringToBitMap(usuario.img))
 
         holder.nombreFav.setOnClickListener{
-            Toast.makeText(context, "${usuario.userName.toString()}", Toast.LENGTH_SHORT).show()
             VariablesCompartidas.userArtistVisitMode = true
             VariablesCompartidas.idUserArtistVisitMode = usuario.userId.toString()
             VariablesCompartidas.usuarioArtistaVisitaMuro = usuario
@@ -54,7 +53,6 @@ class AdapterRvFavorites (
         }
 
         holder.imgArtistaFav.setOnClickListener{
-            Toast.makeText(context, "${usuario.userName.toString()}", Toast.LENGTH_SHORT).show()
             VariablesCompartidas.userArtistVisitMode = true
             VariablesCompartidas.idUserArtistVisitMode = usuario.userId.toString()
             goToArtistMuroContainer()
