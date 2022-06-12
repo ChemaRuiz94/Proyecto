@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
 import android.content.Intent
+import android.util.Log
 import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
 import com.chema.ptoyecto_tfg.databinding.ActivityArtistMuroConatinerBinding
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
@@ -49,12 +50,14 @@ class AdapterRvFavorites (
             VariablesCompartidas.userArtistVisitMode = true
             VariablesCompartidas.idUserArtistVisitMode = usuario.userId.toString()
             VariablesCompartidas.usuarioArtistaVisitaMuro = usuario
+            Log.d("CHE_TAG3","${usuario.userId.toString()}")
             goToArtistMuroContainer()
         }
 
         holder.imgArtistaFav.setOnClickListener{
             VariablesCompartidas.userArtistVisitMode = true
             VariablesCompartidas.idUserArtistVisitMode = usuario.userId.toString()
+            VariablesCompartidas.usuarioArtistaVisitaMuro = usuario
             goToArtistMuroContainer()
         }
     }

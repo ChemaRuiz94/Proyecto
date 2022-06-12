@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -39,9 +40,6 @@ import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-
-
 class BasicUserSearchFragment : Fragment() {
 
     private lateinit var basicUserSearchViewModel: BasicUserSearchViewModel
@@ -52,9 +50,13 @@ class BasicUserSearchFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var userLocation : Location? = null
     private val db = FirebaseFirestore.getInstance()
+
     private lateinit var btn_search : Button
     private lateinit var ed_txt_search_by_name : EditText
     private lateinit var ed_txt_max_distance : EditText
+    private lateinit var rd_btn_list_mode : RadioButton
+    private lateinit var rd_btn_map_mode : RadioButton
+    private var resultModeInList : Boolean = true
 
     private var result : ArrayList<ArtistUser> = ArrayList()
     private var auxResult : ArrayList<ArtistUser> = ArrayList()
@@ -82,11 +84,20 @@ class BasicUserSearchFragment : Fragment() {
         btn_search = view.findViewById(R.id.btn_search)
         ed_txt_search_by_name = view.findViewById(R.id.ed_txt_search_by_name)
         ed_txt_max_distance = view.findViewById(R.id.ed_txt_max_distance)
+        rd_btn_list_mode = view.findViewById(R.id.rd_btn_list_mode)
+        rd_btn_map_mode = view.findViewById(R.id.rd_btn_map_mode)
 
         getMyLocation()
 
         btn_search.setOnClickListener{
             busqueda()
+        }
+
+        rd_btn_list_mode.setOnClickListener{
+
+        }
+        rd_btn_map_mode.setOnClickListener{
+
         }
     }
 
@@ -120,32 +131,7 @@ class BasicUserSearchFragment : Fragment() {
             }
     }
 
-    /*
-    private fun calculationByDistance(location: Location, EndP: Location): Double {
-        val Radius = 6371 // radius of earth in Km
-        val lat1 = location.latitude
-        val lat2: Double = EndP.latitude
-        val lon1 = location.longitude
-        val lon2: Double = EndP.longitude
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-        val a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + (Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2)))
-        val c = 2 * Math.asin(Math.sqrt(a))
-        val valueResult = Radius * c
-        val km = valueResult / 1
-        val newFormat = DecimalFormat("####")
-        val kmInDec = Integer.valueOf(newFormat.format(km))
-        val meter = valueResult % 1000
-        val meterInDec = Integer.valueOf(newFormat.format(meter))
-        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
-                + " Meter   " + meterInDec)
-        return Radius * c
-    }
 
-     */
     private fun calculationByDistance(location: Location?, lat2: Double?, lon2: Double?): Double {
         val Radius = 6371 // radius of earth in Km
         val lat1 = location!!.latitude
@@ -167,7 +153,9 @@ class BasicUserSearchFragment : Fragment() {
                 + " Meter   " + meterInDec)
         return Radius * c
     }
+
     //++++++++++++++++++++++++++++++++++++++++++++++++
+
     private fun busqueda(){
         result.clear()
         auxResult.clear()
@@ -187,7 +175,7 @@ class BasicUserSearchFragment : Fragment() {
         if(ed_txt_search_by_name.text.toString().trim().isNotEmpty()){
             val nombre = ed_txt_search_by_name.text.toString()
             for(artist in result){
-                if(artist.userName.equals(nombre)){
+                if(artist.userName!!.startsWith(nombre)){
                     finalResult.add(artist)
                 }
             }
@@ -212,7 +200,7 @@ class BasicUserSearchFragment : Fragment() {
 
     }
 
-    fun aplicarFiltroDistancia(){
+    private fun aplicarFiltroDistancia(){
         auxResult.addAll(finalResult)
         auxResult = (finalResult)
         finalResult.clear()
@@ -221,12 +209,14 @@ class BasicUserSearchFragment : Fragment() {
             //var latLonArtist : LatLng = LatLng(artist.latitudUbicacion!!,artist.longitudUbicacion!!)
             var dist = calculationByDistance(userLocation,artist.latitudUbicacion!!,artist.longitudUbicacion!!)
             if(dist < ed_txt_max_distance.text.toString().toDouble()){
-                finalResult.add(artist)
+                if(!finalResult.contains(artist)){
+                    finalResult.add(artist)
+                }
             }
         }
     }
 
-    fun checkAllEmpty() : Boolean{
+    private fun checkAllEmpty() : Boolean{
         var isAllEmpty = true
         if(ed_txt_search_by_name.text.toString().trim().isNotEmpty()){
             isAllEmpty = false
@@ -237,21 +227,13 @@ class BasicUserSearchFragment : Fragment() {
         }
         return isAllEmpty
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    /*
-    suspend fun getDataFromFireStoreByName()  : QuerySnapshot? {
-        return try{
-            val data = db.collection("${Constantes.collectionArtistUser}")
-                .whereEqualTo("userName","${ed_txt_search_by_name.text.toString()}")
-                .get()
-                .await()
-            data
-        }catch (e : Exception){
-            null
-        }
-    }
 
-     */
+    private fun changeResultMode(){
+
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
     suspend fun getDataFromFireStore()  : QuerySnapshot? {
         return try{
             val data = db.collection("${Constantes.collectionArtistUser}")

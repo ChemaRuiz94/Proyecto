@@ -96,7 +96,7 @@
     <EditText
         android:id="@+id/ed_txt_max_distance"
         android:layout_width="98dp"
-        android:layout_height="37dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"

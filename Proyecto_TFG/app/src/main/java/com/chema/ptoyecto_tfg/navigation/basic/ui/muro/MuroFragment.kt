@@ -194,7 +194,12 @@ class MuroFragment : Fragment() {
         if(VariablesCompartidas.idUserArtistVisitMode != null){
             userMuro = VariablesCompartidas.usuarioArtistaVisitaMuro
 
-            imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
+            /*
+            if(userMuro!!.img != null){
+                imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
+            }
+
+             */
             txtUserName.text = (userMuro!!.userName.toString())
             txtEmail.text = (userMuro!!.email.toString())
             btnContactEdit.setText(R.string.contact)
