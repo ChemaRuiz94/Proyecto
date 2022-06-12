@@ -224,11 +224,12 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
 
         if(edTxtArtistUserEmail.text.trim().isNotEmpty() && edTxtArtistUserPhone.text.trim().isNotEmpty() && edTxtArtistUserName.text.trim().isNotEmpty()  && edTxtArtistUserCif.text.trim().isNotEmpty() && Utils.checkMovil(edTxtArtistUserPhone.text.toString().trim())){
 
-            var email_mod = edTxtArtistUserEmail.text.toString().trim()
-            var userName_mod = edTxtArtistUserName.text.toString().trim()
-            var phone_mod = edTxtArtistUserPhone.text.toString().trim().toInt()
-            var cif = edTxtArtistUserCif.text.toString().trim()
-
+            val email_mod = edTxtArtistUserEmail.text.toString().trim()
+            val userName_mod = edTxtArtistUserName.text.toString().trim()
+            val phone_mod = edTxtArtistUserPhone.text.toString().trim().toInt()
+            val cif = edTxtArtistUserCif.text.toString().trim()
+            val lat = VariablesCompartidas.latitudStudioSeleccionado.toString().toDouble()
+            val lon = VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble()
             photo = imgUsuarioPerfil.drawToBitmap()
             val imgST = Utils.ImageToString(photo!!)
 
@@ -243,7 +244,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
                     //val us : User = user as User
 
                     //Log.i("profile", currentUser.email.toString())
-                    VariablesCompartidas.usuarioArtistaActual = artistUserActual
+                    VariablesCompartidas.usuarioArtistaActual = artistUser
 
                     currentUser!!.updateEmail(artistUser.email.toString())
 

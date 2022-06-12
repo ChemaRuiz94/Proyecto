@@ -36,6 +36,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.lang.Exception
 
 class BasicUserProfileFragment  : Fragment() {
     private lateinit var auth: FirebaseAuth
@@ -188,11 +189,8 @@ class BasicUserProfileFragment  : Fragment() {
             var userName_mod = edTxtBasicUserName.text.toString().trim()
             var phone_mod = edTxtBasicUserPhone.text.toString().trim().toInt()
 
-
             photo = imgUsuarioPerfil.drawToBitmap()
             val imgST = Utils.ImageToString(photo!!)
-
-
             var basicUser = BasicUser(basciUserActual.userId,userName_mod,email_mod,phone_mod,imgST,basciUserActual.rol,basciUserActual.idFavoritos)
 
 
@@ -200,25 +198,8 @@ class BasicUserProfileFragment  : Fragment() {
                 .document(VariablesCompartidas.usuarioBasicoActual!!.userId.toString()) //Será la clave del documento.
                 .set(basicUser).addOnSuccessListener {
 
-                    //val us : User = user as User
-
-                    Log.i("profile", currentUser.email.toString())
                     VariablesCompartidas.usuarioBasicoActual = basciUserActual
-
                     currentUser!!.updateEmail(basicUser.email.toString())
-
-                    val navigationView: NavigationView =
-                        (context as AppCompatActivity).findViewById(R.id.nav_view)
-                    val header: View = navigationView.getHeaderView(0)
-                    val imgHe = header.findViewById<ImageView>(R.id.image_basic_user_header)
-                    val nameHead = header.findViewById<TextView>(R.id.txt_userName_header)
-                    val emailHead = header.findViewById<TextView>(R.id.txt_userEmail_header)
-
-                    imgHe.setImageBitmap(photo)
-                    nameHead.text = basicUser.userName
-                    emailHead.text = basicUser.email
-
-                    Toast.makeText( requireContext(), R.string.Suscesfull, Toast.LENGTH_SHORT).show()
 
                 }.addOnFailureListener{
                     Toast.makeText(requireContext(), R.string.ERROR, Toast.LENGTH_SHORT).show()

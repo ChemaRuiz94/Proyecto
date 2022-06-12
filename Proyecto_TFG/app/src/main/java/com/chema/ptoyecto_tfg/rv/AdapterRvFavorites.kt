@@ -50,7 +50,6 @@ class AdapterRvFavorites (
             VariablesCompartidas.userArtistVisitMode = true
             VariablesCompartidas.idUserArtistVisitMode = usuario.userId.toString()
             VariablesCompartidas.usuarioArtistaVisitaMuro = usuario
-            Log.d("CHE_TAG3","${usuario.userId.toString()}")
             goToArtistMuroContainer()
         }
 

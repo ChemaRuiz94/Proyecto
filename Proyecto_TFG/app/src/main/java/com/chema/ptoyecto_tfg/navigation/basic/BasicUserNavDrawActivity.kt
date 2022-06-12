@@ -1,11 +1,13 @@
 package com.chema.ptoyecto_tfg.navigation.basic
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -16,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.activities.LoginActivity
 import com.chema.ptoyecto_tfg.databinding.ActivityBasicUserNavDrawBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
@@ -92,5 +95,26 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
             imgHe.setImageBitmap(photo)
         }
 
+    }
+
+    override fun onBackPressed(){
+
+        AlertDialog.Builder(this)
+            .setTitle("Cerrar sersion")
+            .setMessage("Desea cerrar sesion")
+            .setPositiveButton("OK") { view, _ ->
+                super.onBackPressed()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                VariablesCompartidas.usuarioArtistaActual = null
+                finish()
+                view.dismiss()
+            }
+            .setNegativeButton("NO") { view, _ ->
+                view.dismiss()
+            }
+            .setCancelable(false)
+            .create()
+            .show()
     }
 }
