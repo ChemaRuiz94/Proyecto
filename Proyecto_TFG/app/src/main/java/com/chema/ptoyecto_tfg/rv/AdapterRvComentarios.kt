@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
@@ -41,23 +42,15 @@ class AdapterRvComentarios  (
         val fechaST = "${dia}/${mon} ${hora}:${min}"
 
         holder.txt_hora_comentario.text = (fechaST)
-        holder.txt_nombreUser_comentario.text = (comentario.userNameAutor)
+        holder.txt_nombreUser_comentario.text = (autor)
 
         if(comentario.comentario != null){
 
             holder.ed_txt_multiline_comentario.setText(comentario.comentario)
-            /*
-            if(comentario.userNameAutor.equals(VariablesCompartidas.userActual!!.userName)){
-                holder.ed_txt_multiline_opinion.setOnLongClickListener(View.OnLongClickListener {
-                    checkEliminar(opinion)
-                    false
-                })
-            }
-
-             */
 
         }
 
+        Toast.makeText(context,"ID CHAT -> ${comentario.idComentario.toString()}", Toast.LENGTH_SHORT).show()
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

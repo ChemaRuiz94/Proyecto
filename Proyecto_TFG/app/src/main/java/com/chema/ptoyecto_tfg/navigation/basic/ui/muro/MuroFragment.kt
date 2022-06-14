@@ -110,7 +110,6 @@ class MuroFragment : Fragment() {
         //storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
         //myStorage = FirebaseStorage.getInstance().getReference()
 
-
         return root
     }
 
@@ -355,7 +354,7 @@ class MuroFragment : Fragment() {
     }
 
     private fun getChat(){
-
+        var existe = false
         db.collection("${Constantes.collectionChat}")
             .whereEqualTo("idUserArtist", userMuro!!.userId)
             .get()
@@ -363,15 +362,25 @@ class MuroFragment : Fragment() {
                 //Existe
                 for (chat in chats) {
 
+                    var idChat : String? = null
+                    if(chat.get("idChat") != null){
+                        idChat = chat.get("idChat").toString()
+                    }
                     var ch = Chat(
                         chat.get("idChat").toString(),
                         chat.get("idUserArtist").toString(),
                         chat.get("idUserBasic").toString()
                         )
+                    if(ch != null){
+                        existe = true
+                    }
                     var myIntent = Intent(context, ChatActivity::class.java)
+                    myIntent.putExtra("idChat",idChat)
                     startActivity(myIntent)
                 }
-                crearChat()
+                if(!existe){
+                    crearChat()
+                }
             }
             .addOnFailureListener { exception ->
                 //No existe
@@ -401,6 +410,8 @@ class MuroFragment : Fragment() {
             .set(chat)
             .addOnSuccessListener {
                 val myIntent = Intent(context, ChatActivity::class.java)
+                myIntent.putExtra("idChat",idChat)
+                myIntent.putExtra("userName",userMuro!!.userName)
                 startActivity(myIntent)
 
             }.addOnFailureListener{
