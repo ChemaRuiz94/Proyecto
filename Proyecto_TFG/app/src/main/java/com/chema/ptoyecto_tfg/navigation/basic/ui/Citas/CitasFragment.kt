@@ -38,6 +38,7 @@ class CitasFragment : Fragment() {
     private var _binding : FragmentCitasBinding? = null
 
     private val binding get() = _binding!!
+    private var view2: View? = null
 
     private val db = Firebase.firestore
     private var id : String? = null
@@ -64,7 +65,7 @@ class CitasFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        view2 = view
         rv = view.findViewById(R.id.rv_citas)
         id  = ""
         if(VariablesCompartidas.usuarioArtistaActual != null){
@@ -83,6 +84,11 @@ class CitasFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshRV(view2!!,id)
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++

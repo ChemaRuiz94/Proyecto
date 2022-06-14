@@ -69,5 +69,6 @@ class AdapterRvCitas (
 
         val txt_userName = view.findViewById<TextView>(R.id.txt_userName_date)
         val txt_date = view.findViewById<TextView>(R.id.txt_date)
+
     }
 }
