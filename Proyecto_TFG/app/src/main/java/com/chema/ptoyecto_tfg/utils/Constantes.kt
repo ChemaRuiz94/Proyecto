@@ -5,6 +5,8 @@ object Constantes {
     const val collectionUser = "user"
     const val collectionArtistUser = "artist"
     const val collectionPost = "post"
+    const val collectionComentario = "comentario"
+    const val collectionChat = "chat"
 
     const val rolBasicUser = "basic"
     const val rolArtistUser = "artist"

@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ptoyecto_TFG">
         <activity
+            android:name=".activities.ChatActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.ArtistMuroConatinerActivity"
             android:exported="true" />
         <activity

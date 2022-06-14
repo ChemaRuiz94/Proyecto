@@ -27,10 +27,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.TabBasicUserActivity
+import com.chema.ptoyecto_tfg.activities.ChatActivity
+import com.chema.ptoyecto_tfg.activities.SignUpBasicActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentMuroBinding
-import com.chema.ptoyecto_tfg.models.ArtistUser
-import com.chema.ptoyecto_tfg.models.BasicUser
-import com.chema.ptoyecto_tfg.models.Post
+import com.chema.ptoyecto_tfg.models.*
 import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
 import com.chema.ptoyecto_tfg.rv.AdapterRvPostAritstMuro
 import com.chema.ptoyecto_tfg.utils.Constantes
@@ -125,6 +126,10 @@ class MuroFragment : Fragment() {
 
         fltBtnFavCamera.setOnClickListener{
             changeFavCamera()
+        }
+
+        btnContactEdit.setOnClickListener{
+            changeContactEdit()
         }
 
         cargarDatosArtist(view)
@@ -305,9 +310,10 @@ class MuroFragment : Fragment() {
 
     private fun changeFavCamera() {
         if (editMode){
-            //newPhoto()
+            //subir foto en modo propietario del muro
             fileUpload()
         }else{
+            //cambiar fav en modo visitante del muro
             if(VariablesCompartidas.usuarioBasicoActual != null){
                 changeFavBasic()
             }else{
@@ -316,7 +322,18 @@ class MuroFragment : Fragment() {
         }
     }
 
-    private fun saveComentarioFirebase(img: ByteArray?){
+    private fun changeContactEdit(){
+        if(editMode){
+            //editar muro en modo propietario
+
+        }else{
+            //contactar con el artista en modo visitante
+            getChat()
+            //crearChat()
+        }
+    }
+
+    private fun savePostFirebase(img: ByteArray?){
         val postId = UUID.randomUUID().toString()
         var etiquetas: ArrayList<String>? = ArrayList()
         val post : Post = Post(postId, VariablesCompartidas.usuarioArtistaActual!!.userId, stId, etiquetas )
@@ -335,6 +352,60 @@ class MuroFragment : Fragment() {
         VariablesCompartidas.eventoActual = ev
 
          */
+    }
+
+    private fun getChat(){
+
+        db.collection("${Constantes.collectionChat}")
+            .whereEqualTo("idUserArtist", userMuro!!.userId)
+            .get()
+            .addOnSuccessListener { chats ->
+                //Existe
+                for (chat in chats) {
+
+                    var ch = Chat(
+                        chat.get("idChat").toString(),
+                        chat.get("idUserArtist").toString(),
+                        chat.get("idUserBasic").toString()
+                        )
+                    var myIntent = Intent(context, ChatActivity::class.java)
+                    startActivity(myIntent)
+                }
+                crearChat()
+            }
+            .addOnFailureListener { exception ->
+                //No existe
+                Toast.makeText(context, "NO EXISTE CHAT", Toast.LENGTH_SHORT).show()
+                crearChat()
+            }
+    }
+
+    private fun crearChat(){
+
+        var idChat : String? = UUID.randomUUID().toString()
+        var idUserArtist : String? = userMuro!!.userId
+        var idUserBasic : String? = null
+        if(VariablesCompartidas.usuarioBasicoActual != null){
+            idUserBasic = VariablesCompartidas.usuarioBasicoActual!!.userId.toString()
+        }else{
+            idUserBasic = VariablesCompartidas.usuarioArtistaActual!!.userId.toString()
+        }
+        var chat = hashMapOf(
+            "idChat" to idChat,
+            "idUserArtist" to idUserArtist,
+            "idUserBasic" to idUserBasic,
+        )
+
+        db.collection("${Constantes.collectionChat}")
+            .document(idChat!!)
+            .set(chat)
+            .addOnSuccessListener {
+                val myIntent = Intent(context, ChatActivity::class.java)
+                startActivity(myIntent)
+
+            }.addOnFailureListener{
+                Toast.makeText(context,R.string.ERROR , Toast.LENGTH_SHORT).show()
+            }
     }
 
     //++++++++++++++++++++++++++++++++++++++++
@@ -445,7 +516,7 @@ class MuroFragment : Fragment() {
                         Toast.makeText(context, "Imagen cargada", Toast.LENGTH_SHORT).show()
                         //saveComentarioFirebase( Utils.getBytes(photo!!)  )
                         val byteArray : ByteArray? = Utils.getBytes(photo!!)
-                        saveComentarioFirebase( byteArray  )
+                        savePostFirebase( byteArray  )
 
                     }.addOnFailureListener {
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
