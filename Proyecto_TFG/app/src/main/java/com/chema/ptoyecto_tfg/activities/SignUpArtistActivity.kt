@@ -188,8 +188,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
         val cif = edTxtArtistCif.text.toString()
         var img : String? = ""
         if(photo != null){
-            img = photoSt
-        }
+            img = photoSt        }
 
         var userName = edTxtArtistUserName.text.toString()
         var phone = edTxtArtistPhone.text.toString().toInt()
@@ -205,12 +204,10 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
             "cif" to cif,
             "latitudUbicacion" to latitudStudio,
             "longitudUbicacion" to longitudStudio
-
         )
 
         var u = ArtistUser(id,userName,email,phone,img,listRoles,listIdFavoritos,cif,latitudStudio,longitudStudio)
         VariablesCompartidas.usuarioArtistaActual = u
-
         db.collection("${Constantes.collectionArtistUser}")
             .document(id)
             .set(user)

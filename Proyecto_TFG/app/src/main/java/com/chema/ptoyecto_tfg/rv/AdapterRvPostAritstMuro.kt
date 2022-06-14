@@ -2,6 +2,8 @@ package com.chema.ptoyecto_tfg.rv
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +16,7 @@ import com.chema.ptoyecto_tfg.models.Post
 
 class AdapterRvPostAritstMuro(
     private val context: Context,
-    private val posts: List<Post>,
+    private val imgPosts: List<Bitmap>,
 ) : RecyclerView.Adapter<AdapterRvPostAritstMuro.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,16 +26,18 @@ class AdapterRvPostAritstMuro(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val post = posts[position]
+        val post = imgPosts[position]
         holder.postContentIv.isVisible = false
+        holder.postContentIv.setImageBitmap(post)
 
         holder.postItemFl.setOnClickListener(View.OnClickListener {
-            goToDetail(post)
+            //goToDetail(post)
+            this.notifyDataSetChanged()
         })
     }
 
     override fun getItemCount(): Int {
-        return posts.size
+        return imgPosts.size
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {

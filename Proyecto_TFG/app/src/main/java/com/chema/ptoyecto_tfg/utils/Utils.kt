@@ -35,6 +35,16 @@ object Utils {
         return imageString
     }
 
+    fun getBytes(bitmap: Bitmap): ByteArray? {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream)
+        return stream.toByteArray()
+    }
+
+    fun getBitmap(image: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(image, 0, image.size)
+    }
+
     fun getBitmapFromURL(src: String?): Bitmap? {
         return try {
             val url = URL(src)

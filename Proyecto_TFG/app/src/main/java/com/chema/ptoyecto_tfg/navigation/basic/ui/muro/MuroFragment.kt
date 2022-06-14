@@ -1,7 +1,16 @@
 package com.chema.ptoyecto_tfg.navigation.basic.ui.muro
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,25 +19,53 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.databinding.FragmentMuroBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
+import com.chema.ptoyecto_tfg.models.Post
+import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
+import com.chema.ptoyecto_tfg.rv.AdapterRvPostAritstMuro
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
+import java.io.FileNotFoundException
+import java.io.InputStream
+import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.random.Random
 
 class MuroFragment : Fragment() {
 
     private lateinit var muroViewModel: MuroViewModel
     private var _binding: FragmentMuroBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private var favorite : Boolean = false
@@ -36,13 +73,27 @@ class MuroFragment : Fragment() {
     private  var userArtistActual : ArtistUser? = null
     private  var userBasicActual : BasicUser? = null
 
-    private lateinit var fltBtnFav : FloatingActionButton
+    private val db = Firebase.firestore
+    private lateinit var myStorage : StorageReference
+    var stId = ""
+    var storage = Firebase.storage
+    var storageRef = storage.reference
+    private var photo: Bitmap? = null
+    var postList : ArrayList<Post> = ArrayList<Post>()
+    var postIdList : ArrayList<String> = ArrayList<String>()
+    var imgPostList : ArrayList<Bitmap> = ArrayList<Bitmap>()
+    private lateinit var rv : RecyclerView
+    private lateinit var miAdapter: AdapterRvPostAritstMuro
+
+    private lateinit var fltBtnFavCamera : FloatingActionButton
     private lateinit var txtUserName : TextView
     private lateinit var txtEmail : TextView
     private lateinit var txtUbi : TextView
     private lateinit var txtWeb : TextView
     private lateinit var btnContactEdit : Button
     private lateinit var imgArtist : ImageView
+
+    private var editMode : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +106,9 @@ class MuroFragment : Fragment() {
         _binding = FragmentMuroBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        //storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
+        //myStorage = FirebaseStorage.getInstance().getReference()
+
 
         return root
     }
@@ -63,26 +117,17 @@ class MuroFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fltBtnFav = view.findViewById(R.id.fl_btn_fav_artist_muro)
+        fltBtnFavCamera = view.findViewById(R.id.fl_btn_fav_artist_muro)
         btnContactEdit = view.findViewById(R.id.btn_contact_edit)
         txtUserName = view.findViewById(R.id.txt_artist_user_name_muro)
         txtEmail = view.findViewById(R.id.txt_email_artist_muro)
         imgArtist = view.findViewById(R.id.img_user_artist_muro)
 
-        fltBtnFav.setOnClickListener{
-            changeFav()
+        fltBtnFavCamera.setOnClickListener{
+            changeFavCamera()
         }
 
-        cargarDatosArtist()
-        checkFav()
-    }
-
-    private fun changeFav() {
-        if(VariablesCompartidas.usuarioBasicoActual != null){
-            changeFavBasic()
-        }else{
-            changeFavArtist()
-        }
+        cargarDatosArtist(view)
     }
 
 
@@ -99,8 +144,200 @@ class MuroFragment : Fragment() {
         VariablesCompartidas.idUserArtistVisitMode = null
     }
 
+    //++++++++++++++++++++++++++++++++++++++++++++++
+
+    private fun cargarDatosArtist(view: View) {
+        if(VariablesCompartidas.idUserArtistVisitMode != null){
+
+            userMuro = VariablesCompartidas.usuarioArtistaVisitaMuro
+
+            if(userMuro!!.img != null){
+                imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
+            }
+
+            txtUserName.text = (userMuro!!.userName.toString())
+            txtEmail.text = (userMuro!!.email.toString())
+            btnContactEdit.setText(R.string.contact)
+            fltBtnFavCamera.visibility = View.VISIBLE
+            checkFav()
+
+            if(VariablesCompartidas.usuarioArtistaActual != null && userMuro!!.userId!!.equals(VariablesCompartidas!!.usuarioArtistaActual!!.userId) ){
+                checkFav()
+                btnContactEdit.visibility = View.INVISIBLE
+                fltBtnFavCamera.visibility = View.INVISIBLE
+
+            }
+
+        }
+        if(VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null){
+            userMuro = VariablesCompartidas.usuarioArtistaActual
+            txtUserName.setText(userMuro!!.userName.toString())
+            btnContactEdit.setText(R.string.edit_muro)
+            txtEmail.text = (userMuro!!.email.toString())
+            fltBtnFavCamera.setImageResource(R.drawable.ic_menu_camera)
+            imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
+            editMode = true
+
+        }
+        refreshRV(view)
+    }
+
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    private fun cargarRV(view: View){
+
+        rv = view.findViewById(R.id.rv_post_artist_muro)
+        rv.setHasFixedSize(true)
+        rv.layoutManager = LinearLayoutManager(view.context)
+        miAdapter = AdapterRvPostAritstMuro(view.context as AppCompatActivity, imgPostList)
+        rv.adapter = miAdapter
+
+    }
+
+    private fun refreshRV(view: View){
+        postList.clear()
+        postIdList.clear()
+        imgPostList.clear()
+        runBlocking {
+            val job : Job = launch(context = Dispatchers.Default) {
+                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot //Obtenermos la colección
+                obtenerDatos(datos as QuerySnapshot?)  //'Destripamos' la colección y la metemos en nuestro ArrayList
+            }
+            //Con este método el hilo principal de onCreate se espera a que la función acabe y devuelva la colección con los datos.
+            job.join() //Esperamos a que el método acabe: https://dzone.com/articles/waiting-for-coroutines
+        }
+        getUserImagesStorage()
+        cargarRV(view)
+    }
+
+    /*
+    Buscamos los post que tenga el mismo id que el propietario del muro
+     */
+    suspend fun getDataFromFireStore()  : QuerySnapshot? {
+        return try{
+            val data = db.collection("${Constantes.collectionPost}").whereEqualTo("userId",userMuro!!.userId)
+                .get()
+                .await()
+            data
+        }catch (e : Exception){
+            null
+        }
+    }
+
+    private fun obtenerDatos(datos: QuerySnapshot?) {
+        for(dc: DocumentChange in datos?.documentChanges!!){
+            if (dc.type == DocumentChange.Type.ADDED){
+
+                var postId : String? = null
+                if(dc.document.get("postId") != null){
+                    postId = dc.document.get("postId").toString()
+                }
+                var userId : String? = null
+                if(dc.document.get("userId") != null){
+                    userId = dc.document.get("userId").toString()
+                }
+
+                var imgId : String? = null
+                if(dc.document.get("imgId") != null){
+                    imgId = dc.document.get("imgId").toString()
+                }
+                var etiquetas : ArrayList<String>? = ArrayList<String>()
+                if(dc.document.get("etiquetas") != null){
+                    etiquetas = dc.document.get("etiquetas") as ArrayList<String>
+                }
+                //se añaden los post a la lista
+                var post = Post(postId,userId,imgId,etiquetas)
+                postList.add(post)
+                if(imgId != null){
+                    postIdList.add(imgId!!)
+                }
+            }
+        }
+    }
+
+    private fun getUserImagesStorage(){
+        storageRef.listAll()
+            .addOnSuccessListener { lista ->
+                runBlocking {
+                val job : Job = launch(context = Dispatchers.Default) {
+
+                for (i in lista.items) {
+                    i.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener {
+                        val img = Utils.getBitmap(it)!!
+                        imgPostList.add(img)
+                        Log.d("Image_img","${img.toString()}")
+                        Log.d("Image_i","${i.toString()}")
+                        Log.d("ImageSize","${imgPostList.size.toString()}")
+                        //adaptador.notifyDataSetChanged()//se debería comentar esta línea en caso de usar el runBlocking
+                        }.await()
+                    }
+                }
+                job.join()
+                }
+            }
+    }
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    private fun checkFav() {
+        if(VariablesCompartidas.usuarioBasicoActual != null){
+            userBasicActual = VariablesCompartidas.usuarioBasicoActual
+            if(userBasicActual!!.idFavoritos!!.contains(userMuro!!.userId)){
+                favorite = true
+                fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
+            }else{
+                favorite = false
+                fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
+            }
+        }else {
+
+            userArtistActual = VariablesCompartidas.usuarioArtistaActual
+            if(userArtistActual!!.idFavoritos!!.contains(userMuro!!.userId)){
+                favorite = true
+                fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
+            }else{
+                favorite = false
+                fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
+            }
+        }
+    }
+
+    private fun changeFavCamera() {
+        if (editMode){
+            //newPhoto()
+            fileUpload()
+        }else{
+            if(VariablesCompartidas.usuarioBasicoActual != null){
+                changeFavBasic()
+            }else{
+                changeFavArtist()
+            }
+        }
+    }
+
+    private fun saveComentarioFirebase(img: ByteArray?){
+        val postId = UUID.randomUUID().toString()
+        var etiquetas: ArrayList<String>? = ArrayList()
+        val post : Post = Post(postId, VariablesCompartidas.usuarioArtistaActual!!.userId, stId, etiquetas )
+        //guardamos la opinion en firebase
+        db.collection("${Constantes.collectionPost}")
+            .document(post.postId.toString()) //Será la clave del documento.
+            .set(post).addOnSuccessListener {
+                //Toast.makeText(this, getString(R.string.Suscesfull), Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener{
+                Toast.makeText(context, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
+            }
+
+        /*
+        var ev = VariablesCompartidas.eventoActual as Evento
+        ev.listaOpiniones?.add(opinion)
+        VariablesCompartidas.eventoActual = ev
+
+         */
+    }
+
     //++++++++++++++++++++++++++++++++++++++++
-    //++++++++++++++++METODOS AÑADIR/QUITAR USUARIO EVENTO++++++++++
     private fun changeFavArtist(){
         val db = FirebaseFirestore.getInstance()
 
@@ -113,7 +350,7 @@ class MuroFragment : Fragment() {
                 .set(userMod!!).addOnSuccessListener {
                     Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userArtistActual = userMod
-                    fltBtnFav.setImageResource(R.drawable.ic_unfavorite)
+                    fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
                 }.addOnFailureListener{
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
@@ -126,7 +363,7 @@ class MuroFragment : Fragment() {
                 .set(userMod!!).addOnSuccessListener {
                     Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userArtistActual = userMod
-                    fltBtnFav.setImageResource(R.drawable.ic_favorite)
+                    fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
                 }.addOnFailureListener{
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
@@ -146,7 +383,7 @@ class MuroFragment : Fragment() {
                 .set(userMod!!).addOnSuccessListener {
                     Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userBasicActual = userMod
-                    fltBtnFav.setImageResource(R.drawable.ic_unfavorite)
+                    fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
                 }.addOnFailureListener{
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
@@ -159,7 +396,7 @@ class MuroFragment : Fragment() {
                 .set(userMod!!).addOnSuccessListener {
                     Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userBasicActual = userMod
-                    fltBtnFav.setImageResource(R.drawable.ic_favorite)
+                    fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
                 }.addOnFailureListener{
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
@@ -167,56 +404,54 @@ class MuroFragment : Fragment() {
         }
     }
 
-    private fun checkFav() {
-        if(VariablesCompartidas.usuarioBasicoActual != null){
-            userBasicActual = VariablesCompartidas.usuarioBasicoActual
-            if(userBasicActual!!.idFavoritos!!.contains(userMuro!!.userId)){
-                favorite = true
-                fltBtnFav.setImageResource(R.drawable.ic_favorite)
-            }else{
-                favorite = false
-                fltBtnFav.setImageResource(R.drawable.ic_unfavorite)
-            }
-        }else {
-            userArtistActual = VariablesCompartidas.usuarioArtistaActual
-            if(userArtistActual!!.idFavoritos!!.contains(userMuro!!.userId)){
-                favorite = true
-                fltBtnFav.setImageResource(R.drawable.ic_favorite)
-            }else{
-                favorite = false
-                fltBtnFav.setImageResource(R.drawable.ic_unfavorite)
+
+    fun fileUpload() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        stId = UUID.randomUUID().toString()
+        startActivityForResult(
+            Intent.createChooser(intent, "Seleccione una imagen"),
+            Constantes.CODE_GALLERY
+        )
+    }
+
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constantes.CODE_GALLERY) {
+            if (resultCode === Activity.RESULT_OK) {
+                val selectedImage = data?.data
+                val selectedPath: String? = selectedImage?.path
+                if (selectedPath != null) {
+                    var imageStream: InputStream? = null
+                    try {
+                        imageStream = selectedImage.let {
+                            requireActivity().contentResolver.openInputStream(
+                                it
+                            )
+                        }
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+                    }
+                    val bmp = BitmapFactory.decodeStream(imageStream)
+                    photo = Bitmap.createScaledBitmap(bmp, 200, 300, true)
+                    //img.setImageBitmap(photo)
+                    val imageRef = storageRef.child("imagen${stId}.jpg")
+                    val uploadTask = imageRef.putBytes(Utils.getBytes(photo!!)!!)
+                    uploadTask.addOnSuccessListener {
+                        Toast.makeText(context, "Imagen cargada", Toast.LENGTH_SHORT).show()
+                        //saveComentarioFirebase( Utils.getBytes(photo!!)  )
+                        val byteArray : ByteArray? = Utils.getBytes(photo!!)
+                        saveComentarioFirebase( byteArray  )
+
+                    }.addOnFailureListener {
+                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
-
-    //++++++++++++++++++++++++++++++++++++++++
-    private fun cargarDatosArtist() {
-        if(VariablesCompartidas.idUserArtistVisitMode != null){
-            userMuro = VariablesCompartidas.usuarioArtistaVisitaMuro
-
-            if(userMuro!!.img != null){
-                imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
-            }
-
-
-            txtUserName.text = (userMuro!!.userName.toString())
-            txtEmail.text = (userMuro!!.email.toString())
-            btnContactEdit.setText(R.string.contact)
-            fltBtnFav.visibility = View.VISIBLE
-            if(VariablesCompartidas.usuarioArtistaActual != null && userMuro!!.userId!!.equals(VariablesCompartidas!!.usuarioArtistaActual!!.userId) ){
-                btnContactEdit.visibility = View.INVISIBLE
-                fltBtnFav.visibility = View.INVISIBLE
-            }
-
-        }
-        if(VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null){
-            userMuro = VariablesCompartidas.usuarioArtistaActual
-            txtUserName.setText(userMuro!!.userName.toString())
-            btnContactEdit.setText(R.string.edit_muro)
-            txtEmail.text = (userMuro!!.email.toString())
-            fltBtnFav.visibility = View.INVISIBLE
-            imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
-        }
-    }
-
 }

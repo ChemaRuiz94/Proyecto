@@ -232,10 +232,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
             val lon = VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble()
             photo = imgUsuarioPerfil.drawToBitmap()
             val imgST = Utils.ImageToString(photo!!)
-
-
             val artistUser = ArtistUser(artistUserActual.userId,userName_mod,email_mod,phone_mod,imgST,artistUserActual.rol,artistUserActual.idFavoritos,cif,latitudStudio,longitudStudio)
-
 
             db.collection("${Constantes.collectionArtistUser}")
                 .document(VariablesCompartidas.usuarioArtistaActual!!.userId.toString()) //Será la clave del documento.
