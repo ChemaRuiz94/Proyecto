@@ -3,6 +3,7 @@ package com.chema.ptoyecto_tfg.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.Comentario
 import com.chema.ptoyecto_tfg.rv.AdapterRvComentarios
 import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.DatePickerFragment
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentChange
@@ -35,6 +37,7 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var ed_txt_comentario : EditText
     private lateinit var flt_btn_sendComentario : FloatingActionButton
+    private lateinit var flt_btn_send_date : FloatingActionButton
     private lateinit var txt_userName : TextView
 
     private var comentariosList : ArrayList<Comentario> = ArrayList()
@@ -49,6 +52,11 @@ class ChatActivity : AppCompatActivity() {
         txt_userName = findViewById(R.id.txt_userName)
         ed_txt_comentario = findViewById(R.id.ed_txt_comentario)
         flt_btn_sendComentario = findViewById(R.id.flt_btn_sendComentario)
+        flt_btn_send_date = findViewById(R.id.flt_btn_send_date)
+
+        if(VariablesCompartidas.usuarioArtistaActual != null){
+            flt_btn_send_date.visibility = View.VISIBLE
+        }
 
         val extras = intent.extras
         if (extras == null) {
@@ -71,9 +79,13 @@ class ChatActivity : AppCompatActivity() {
             val text  = ed_txt_comentario.text.toString()
             if(text.trim().isNotEmpty()){
                 //guarda el comentario a firebase
-                saveComentarioFirebase(crearComentario())
+                saveComentarioFirebase(crearComentario(text))
                 refreshRV()
             }
+        }
+
+        flt_btn_send_date.setOnClickListener{
+            sendDate()
         }
         refreshRV()
     }
@@ -132,7 +144,6 @@ class ChatActivity : AppCompatActivity() {
                     dc.document.get("yearComentario").toString().toInt()
                 )
                 comentariosList.add(com)
-                //Toast.makeText(this,"${comentariosList.size.toString()}",Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -149,7 +160,29 @@ class ChatActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
             }
     }
-    private fun crearComentario():Comentario{
+
+    private fun sendDate(){
+        val newFragment = DatePickerFragment(ed_txt_comentario)
+        newFragment.show(supportFragmentManager, "datePicker")
+        var dateSt : String? = ed_txt_comentario.text.toString()
+        saveComentarioFirebase(crearComentario(dateSt.toString()))
+        addDateToChat(dateSt)
+        refreshRV()
+
+    }
+
+    private fun addDateToChat(date : String?){
+
+        db.collection("${Constantes.collectionChat}")
+            .document("${idChat.toString()}")
+            .update("date",date).addOnSuccessListener {
+                Toast.makeText(this, "CORRECTOOOO", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener{
+                Toast.makeText(this, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
+            }
+
+    }
+    private fun crearComentario(txt : String):Comentario{
         val idComentario : String = UUID.randomUUID().toString()
         val idChat  = idChat
         var idUser : String? = null
@@ -162,7 +195,7 @@ class ChatActivity : AppCompatActivity() {
             idUser = VariablesCompartidas.usuarioArtistaActual!!.userId.toString()
             userNameAutor = VariablesCompartidas.usuarioArtistaActual!!.userName.toString()
         }
-        val coment = ed_txt_comentario.text.toString()
+        val coment = txt
         val fecha = Calendar.getInstance()
         val hora = fecha.get(Calendar.HOUR)
         val min = fecha.get(Calendar.MINUTE)
