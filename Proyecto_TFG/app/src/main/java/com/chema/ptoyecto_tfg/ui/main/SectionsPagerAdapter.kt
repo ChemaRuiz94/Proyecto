@@ -7,12 +7,14 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment
 import com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserSearch.BasicUserSearchFragment
+import com.chema.ptoyecto_tfg.navigation.basic.ui.Citas.CitasFragment
 import com.chema.ptoyecto_tfg.navigation.basic.ui.favorites.FavoritesFragment
 
 private val TAB_TITLES = arrayOf(
 
-    R.string.menu_favorites,
     R.string.menu_search,
+    R.string.menu_citas,
+    R.string.menu_favorites,
     R.string.menu_my_profile,
 )
 
@@ -28,12 +30,15 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
         // Return a PlaceholderFragment (defined as a static inner class below).
         when(position){
             0 -> {
-                return FavoritesFragment()
-            }
-            1 -> {
                 return BasicUserSearchFragment()
             }
+            1 -> {
+                return CitasFragment()
+            }
             2 -> {
+                return FavoritesFragment()
+            }
+            3 -> {
                 return BasicUserProfileFragment()
             }
 
@@ -47,6 +52,6 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     override fun getCount(): Int {
         // Show 2 total pages.
-        return 3
+        return 4
     }
 }

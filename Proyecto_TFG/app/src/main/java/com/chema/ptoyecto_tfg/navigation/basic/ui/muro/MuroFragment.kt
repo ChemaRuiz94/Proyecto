@@ -328,7 +328,6 @@ class MuroFragment : Fragment() {
         }else{
             //contactar con el artista en modo visitante
             getChat()
-            //crearChat()
         }
     }
 
@@ -369,7 +368,10 @@ class MuroFragment : Fragment() {
                     var ch = Chat(
                         chat.get("idChat").toString(),
                         chat.get("idUserArtist").toString(),
-                        chat.get("idUserBasic").toString()
+                        chat.get("userNameArtist").toString(),
+                        chat.get("idUserOther").toString(),
+                        chat.get("userNameOther").toString(),
+                        chat.get("date").toString()
                         )
                     if(ch != null){
                         existe = true
@@ -393,16 +395,23 @@ class MuroFragment : Fragment() {
 
         var idChat : String? = UUID.randomUUID().toString()
         var idUserArtist : String? = userMuro!!.userId
-        var idUserBasic : String? = null
+        var idUserOther : String? = null
+        var userNameOther : String? = null
+        val date : String? = ""
         if(VariablesCompartidas.usuarioBasicoActual != null){
-            idUserBasic = VariablesCompartidas.usuarioBasicoActual!!.userId.toString()
+            idUserOther = VariablesCompartidas.usuarioBasicoActual!!.userId.toString()
+            userNameOther = VariablesCompartidas.usuarioBasicoActual!!.userName.toString()
         }else{
-            idUserBasic = VariablesCompartidas.usuarioArtistaActual!!.userId.toString()
+            idUserOther = VariablesCompartidas.usuarioArtistaActual!!.userId.toString()
+            userNameOther = VariablesCompartidas.usuarioArtistaActual!!.userName.toString()
         }
         var chat = hashMapOf(
             "idChat" to idChat,
             "idUserArtist" to idUserArtist,
-            "idUserBasic" to idUserBasic,
+            "userNameArtist" to userMuro!!.userName,
+            "idUserOther" to idUserOther,
+            "userNameOther" to userNameOther,
+            "date" to date,
         )
 
         db.collection("${Constantes.collectionChat}")
@@ -524,7 +533,6 @@ class MuroFragment : Fragment() {
                     val imageRef = storageRef.child("imagen${stId}.jpg")
                     val uploadTask = imageRef.putBytes(Utils.getBytes(photo!!)!!)
                     uploadTask.addOnSuccessListener {
-                        Toast.makeText(context, "Imagen cargada", Toast.LENGTH_SHORT).show()
                         //saveComentarioFirebase( Utils.getBytes(photo!!)  )
                         val byteArray : ByteArray? = Utils.getBytes(photo!!)
                         savePostFirebase( byteArray  )

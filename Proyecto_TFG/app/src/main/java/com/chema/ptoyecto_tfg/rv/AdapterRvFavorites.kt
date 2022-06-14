@@ -61,26 +61,6 @@ class AdapterRvFavorites (
         }
     }
 
-   /*
-
-    private fun goArtistMuro(){
-        val myFragment: Fragment = MuroFragment()
-        context.supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_favorites, myFragment).addToBackStack(null).commit()
-
-    }
-
-
-
-
-    private fun goToArtistMuro(){
-        val nextFrag = MuroFragment()
-        context.getSupportFragmentManager().beginTransaction()
-            .replace(R.id.fragment_favorites, nextFrag, "findThisFragment")
-            .addToBackStack(null)
-            .commit()
-    }
-    */
 
     private fun goToArtistMuroContainer(){
         val intent = Intent(context, ArtistMuroConatinerActivity::class.java)

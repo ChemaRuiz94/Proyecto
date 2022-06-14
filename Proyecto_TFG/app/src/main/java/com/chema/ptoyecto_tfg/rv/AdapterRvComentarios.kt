@@ -49,8 +49,6 @@ class AdapterRvComentarios  (
             holder.ed_txt_multiline_comentario.setText(comentario.comentario)
 
         }
-
-        Toast.makeText(context,"ID CHAT -> ${comentario.idComentario.toString()}", Toast.LENGTH_SHORT).show()
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

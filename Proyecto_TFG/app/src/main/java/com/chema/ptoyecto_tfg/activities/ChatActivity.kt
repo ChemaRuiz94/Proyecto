@@ -192,7 +192,6 @@ class ChatActivity : AppCompatActivity() {
 
             job.join()
         }
-        Toast.makeText(this,"REFRES RV",Toast.LENGTH_SHORT).show()
         comentariosOrdenados.clear()
         comentariosOrdenados =  ordenarComentarios()
         cargarRV()
