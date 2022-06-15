@@ -14,10 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -41,6 +38,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -60,6 +58,7 @@ import java.io.InputStream
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.sign
 import kotlin.random.Random
 
 class MuroFragment : Fragment() {
@@ -90,6 +89,7 @@ class MuroFragment : Fragment() {
     private lateinit var fltBtnFavCamera : FloatingActionButton
     private lateinit var txtUserName : TextView
     private lateinit var txtEmail : TextView
+    private lateinit var ed_txt_prizes_sizes : EditText
     private lateinit var txtUbi : TextView
     private lateinit var txtWeb : TextView
     private lateinit var btnContactEdit : Button
@@ -124,6 +124,7 @@ class MuroFragment : Fragment() {
         txtUserName = view.findViewById(R.id.txt_artist_user_name_muro)
         txtEmail = view.findViewById(R.id.txt_email_artist_muro)
         imgArtist = view.findViewById(R.id.img_user_artist_muro)
+        ed_txt_prizes_sizes = view.findViewById(R.id.ed_txt_prizes_sizes)
 
         storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
         myStorage = storage.getReference()
@@ -165,6 +166,13 @@ class MuroFragment : Fragment() {
                 imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             }
 
+            for(price in userMuro!!.prices!!){
+                val n = userMuro!!.prices!!.indexOf(price)
+                val size = userMuro!!.sizes!![n]
+                val st = " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
+                ed_txt_prizes_sizes.text.append(st)
+            }
+
             txtUserName.text = (userMuro!!.userName.toString())
             txtEmail.text = (userMuro!!.email.toString())
             btnContactEdit.setText(R.string.contact)
@@ -187,6 +195,13 @@ class MuroFragment : Fragment() {
             fltBtnFavCamera.setImageResource(R.drawable.ic_menu_camera)
             imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             editMode = true
+
+            for(price in userMuro!!.prices!!){
+                val n = userMuro!!.prices!!.indexOf(price)
+                val size = userMuro!!.sizes!![n]
+                val st = " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
+                ed_txt_prizes_sizes.text.append(st)
+            }
 
         }
         refreshRV(view)
@@ -331,11 +346,50 @@ class MuroFragment : Fragment() {
     private fun changeContactEdit(){
         if(editMode){
             //editar muro en modo propietario
-
+            addNewStyles()
         }else{
             //contactar con el artista en modo visitante
             getChat()
         }
+    }
+
+    private fun addNewStyles() {
+        val dialog = layoutInflater.inflate(R.layout.add_price_size, null)
+        val price = dialog.findViewById<EditText>(R.id.edPrice)
+        val size = dialog.findViewById<EditText>(R.id.edSize)
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.changePassword))
+            .setView(dialog)
+            .setPositiveButton("OK") { view, _ ->
+                if(price.text.toString().trim().isNotEmpty() && size.text.toString().trim().isNotEmpty()){
+                    updateArtistAddPriceSize(price.text.toString(), size.text.toString())
+                    val st = " [ ${price.text.toString().toString()}€ <> ${size.text.toString().toString()}x${size.text.toString().toString()}cm ] \n"
+                    ed_txt_prizes_sizes.text.append(st)
+                }
+                view.dismiss()
+            }
+            .setNegativeButton(getString(R.string.Cancel)) { view, _ ->
+                view.dismiss()
+            }
+            .setCancelable(false)
+            .create()
+            .show()
+    }
+
+    private fun updateArtistAddPriceSize(price : String, size: String) {
+        var artistUser : ArtistUser = VariablesCompartidas.usuarioArtistaActual!!
+        artistUser.prices!!.add(price)
+        artistUser.sizes!!.add(size)
+        db.collection("${Constantes.collectionArtistUser}")
+            .document(VariablesCompartidas.usuarioArtistaActual!!.userId.toString()) //Será la clave del documento.
+            .set(artistUser).addOnSuccessListener {
+
+                VariablesCompartidas.usuarioArtistaActual = artistUser
+                Toast.makeText( requireContext(), R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+
+            }.addOnFailureListener{
+                Toast.makeText(requireContext(), R.string.ERROR, Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun savePostFirebase(img: ByteArray?){

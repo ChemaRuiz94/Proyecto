@@ -30,7 +30,7 @@ class AdapterRvPostAritstMuro(
 
         holder.postItemFl.setOnClickListener(View.OnClickListener {
             //goToDetail(post)
-            this.notifyDataSetChanged()
+            //this.notifyDataSetChanged()
         })
     }
 

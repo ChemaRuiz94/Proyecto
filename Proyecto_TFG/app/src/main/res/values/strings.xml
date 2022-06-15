@@ -84,8 +84,10 @@
     <string name="max_price">Max. prcie</string>
     <string name="max_distance">Max. distance</string>
     <string name="cm">cm</string>
-    <string name="km">Km</string>d
-    <string name="price">€</string>d
+    <string name="km">Km</string>
+    <string name="price">€</string>
+    <string name="add_price">Add price</string>
+    <string name="add_size">Add size</string>
     <string name="search_by_name">Search by name...</string>
     <string name="title_activity_select_studio_maps">SelectStudioMapsActivity</string>
 

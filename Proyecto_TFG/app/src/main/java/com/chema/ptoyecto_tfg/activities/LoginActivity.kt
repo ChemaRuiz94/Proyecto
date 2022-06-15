@@ -202,6 +202,8 @@ class LoginActivity : AppCompatActivity() {
                         user.get("img").toString(),
                         user.get("rol") as ArrayList<Rol>?,
                         user.get("idFavoritos") as ArrayList<String>?,
+                        user.get("prices") as ArrayList<String>?,
+                        user.get("sizes") as ArrayList<String>?,
                         user.get("cif").toString(),
                         user.get("latitudUbicacion").toString().toDouble(),
                         user.get("longitudUbicacion").toString().toDouble(),
