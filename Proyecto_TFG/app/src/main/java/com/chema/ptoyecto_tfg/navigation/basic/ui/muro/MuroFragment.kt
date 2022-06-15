@@ -360,7 +360,7 @@ class MuroFragment : Fragment() {
         val price = dialog.findViewById<EditText>(R.id.edPrice)
         val size = dialog.findViewById<EditText>(R.id.edSize)
         AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.changePassword))
+            .setTitle(getString(R.string.add_price_size))
             .setView(dialog)
             .setPositiveButton("OK") { view, _ ->
                 if(price.text.toString().trim().isNotEmpty() && size.text.toString().trim().isNotEmpty()){

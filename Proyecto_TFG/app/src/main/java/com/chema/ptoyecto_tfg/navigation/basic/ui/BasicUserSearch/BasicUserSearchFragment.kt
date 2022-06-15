@@ -54,6 +54,8 @@ class BasicUserSearchFragment : Fragment() {
     private lateinit var btn_search : Button
     private lateinit var ed_txt_search_by_name : EditText
     private lateinit var ed_txt_max_distance : EditText
+    private lateinit var ed_txt_max_price : EditText
+    private lateinit var ed_txt_max_size : EditText
     private lateinit var rd_btn_list_mode : RadioButton
     private lateinit var rd_btn_map_mode : RadioButton
     private var resultModeInList : Boolean = true
@@ -84,6 +86,8 @@ class BasicUserSearchFragment : Fragment() {
         btn_search = view.findViewById(R.id.btn_search)
         ed_txt_search_by_name = view.findViewById(R.id.ed_txt_search_by_name)
         ed_txt_max_distance = view.findViewById(R.id.ed_txt_max_distance)
+        ed_txt_max_price = view.findViewById(R.id.ed_txt_max_price)
+        ed_txt_max_size = view.findViewById(R.id.ed_txt_max_size)
         rd_btn_list_mode = view.findViewById(R.id.rd_btn_list_mode)
         rd_btn_map_mode = view.findViewById(R.id.rd_btn_map_mode)
 
@@ -176,6 +180,13 @@ class BasicUserSearchFragment : Fragment() {
         if(ed_txt_max_distance.text.toString().trim().isNotEmpty()){
             aplicarFiltroDistancia()
         }
+        if(ed_txt_max_price.text.toString().trim().isNotEmpty()){
+            aplicarFiltroPrecio()
+        }
+
+        if(ed_txt_max_size.text.toString().trim().isNotEmpty()){
+            aplicarFiltroSize()
+        }
 
         if(checkAllEmpty()){
             val resultIntent = Intent(requireContext(), ListResutlActivity::class.java)
@@ -195,7 +206,7 @@ class BasicUserSearchFragment : Fragment() {
 
     private fun aplicarFiltroDistancia(){
         auxResult.addAll(finalResult)
-        auxResult = (finalResult)
+        //auxResult = (finalResult)
         finalResult.clear()
 
         for(artist in result){
@@ -203,10 +214,50 @@ class BasicUserSearchFragment : Fragment() {
             var dist = calculationByDistance(userLocation,artist.latitudUbicacion!!,artist.longitudUbicacion!!)
             if(dist < ed_txt_max_distance.text.toString().toDouble()){
                 if(!finalResult.contains(artist)){
-                    finalResult.add(artist)
+                    auxResult.add(artist)
+                    //finalResult.add(artist)
                 }
             }
         }
+        finalResult.addAll(auxResult)
+    }
+
+    private fun aplicarFiltroPrecio(){
+        auxResult.clear()
+
+        for(artist in result){
+            val maxPrice = ed_txt_max_price.text.toString().trim()
+                for(artistPrice in artist.prices!!){
+                    if(artistPrice != null ){
+                        if(artistPrice.toString().toDouble() <= maxPrice.toString().toDouble()){
+                            if(!finalResult.contains(artist)){
+                                auxResult.add(artist)
+                                break
+                            }
+                        }
+                    }
+                }
+        }
+        finalResult.addAll(auxResult)
+    }
+
+    private fun aplicarFiltroSize(){
+        auxResult.clear()
+
+        for(artist in result){
+            val maxSize = ed_txt_max_size.text.toString().trim()
+            for(artistSize in artist.sizes!!){
+                if(artistSize != null ){
+                    if(artistSize.toString().toDouble() <= maxSize.toString().toDouble()){
+                        if(!finalResult.contains(artist)){
+                            auxResult.add(artist)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        finalResult.addAll(auxResult)
     }
 
     private fun checkAllEmpty() : Boolean{
@@ -216,6 +267,14 @@ class BasicUserSearchFragment : Fragment() {
         }
 
         if(ed_txt_max_distance.text.toString().trim().isNotEmpty()){
+            isAllEmpty = false
+        }
+
+        if(ed_txt_max_price.text.toString().trim().isNotEmpty()){
+            isAllEmpty = false
+        }
+
+        if(ed_txt_max_size.text.toString().trim().isNotEmpty()){
             isAllEmpty = false
         }
         return isAllEmpty

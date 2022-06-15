@@ -39,6 +39,7 @@
     <string name="select_studio_location">Select studio location</string>
     <string name="select_this_location">Select this location?</string>
     <string name="changePassword">Change Password</string>s
+    <string name="add_price_size">Add price and size</string>s
 
 
     <string name="YES">YES</string>
