@@ -157,7 +157,7 @@ class FavoritesFragment : Fragment() {
                     dc.document.get("rol") as ArrayList<Rol>?,
                     dc.document.get("idFavoritos") as ArrayList<String>?,
                     dc.document.get("prices") as ArrayList<String>?,
-                    dc.document.get("sices") as ArrayList<String>?,
+                    dc.document.get("sizes") as ArrayList<String>?,
                     dc.document.get("cif").toString(),
                     dc.document.get("latitudUbicacion").toString().toDouble(),
                     dc.document.get("longitudUbicacion").toString().toDouble()

@@ -166,12 +166,15 @@ class MuroFragment : Fragment() {
                 imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             }
 
-            for(price in userMuro!!.prices!!){
-                val n = userMuro!!.prices!!.indexOf(price)
-                val size = userMuro!!.sizes!![n]
-                val st = " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
-                ed_txt_prizes_sizes.text.append(st)
+            if(userMuro!!.prices != null && userMuro!!.sizes != null){
+                for(price in userMuro!!.prices!!){
+                    val n = userMuro!!.prices!!.indexOf(price)
+                    val size = userMuro!!.sizes!![n]
+                    val st = " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
+                    ed_txt_prizes_sizes.text.append(st)
+                }
             }
+
 
             txtUserName.text = (userMuro!!.userName.toString())
             txtEmail.text = (userMuro!!.email.toString())
@@ -301,7 +304,6 @@ class MuroFragment : Fragment() {
                 job.join()
                 }
             }
-
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++

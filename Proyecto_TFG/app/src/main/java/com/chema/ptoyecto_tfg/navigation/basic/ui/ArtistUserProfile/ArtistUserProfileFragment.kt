@@ -228,11 +228,19 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
             val userName_mod = edTxtArtistUserName.text.toString().trim()
             val phone_mod = edTxtArtistUserPhone.text.toString().trim().toInt()
             val cif = edTxtArtistUserCif.text.toString().trim()
-            val lat = VariablesCompartidas.latitudStudioSeleccionado.toString().toDouble()
-            val lon = VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble()
+            var lat = 0.0
+            var lon = 0.0
+            if(VariablesCompartidas.latitudStudioSeleccionado != null){
+                lat = VariablesCompartidas.latitudStudioSeleccionado.toString().toDouble()
+                lon = VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble()
+            }else{
+                lat = VariablesCompartidas.usuarioArtistaActual!!.latitudUbicacion!!
+                lon = VariablesCompartidas.usuarioArtistaActual!!.longitudUbicacion!!
+            }
+
             photo = imgUsuarioPerfil.drawToBitmap()
             val imgST = Utils.ImageToString(photo!!)
-            val artistUser = ArtistUser(artistUserActual.userId,userName_mod,email_mod,phone_mod,imgST,artistUserActual.rol,artistUserActual.idFavoritos,VariablesCompartidas.usuarioArtistaActual!!.prices,VariablesCompartidas.usuarioArtistaActual!!.sizes,cif,latitudStudio,longitudStudio)
+            val artistUser = ArtistUser(artistUserActual.userId,userName_mod,email_mod,phone_mod,imgST,artistUserActual.rol,artistUserActual.idFavoritos,VariablesCompartidas.usuarioArtistaActual!!.prices,VariablesCompartidas.usuarioArtistaActual!!.sizes,cif,lat,lon)
 
             db.collection("${Constantes.collectionArtistUser}")
                 .document(VariablesCompartidas.usuarioArtistaActual!!.userId.toString()) //Será la clave del documento.
