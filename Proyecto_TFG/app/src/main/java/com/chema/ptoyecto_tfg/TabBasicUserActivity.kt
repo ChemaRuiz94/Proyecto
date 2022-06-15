@@ -13,7 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import com.chema.ptoyecto_tfg.activities.LoginActivity
 import com.chema.ptoyecto_tfg.ui.main.SectionsPagerAdapter
 import com.chema.ptoyecto_tfg.databinding.ActivityTabBasicUserBinding
+import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
+import android.R.menu
+
+import android.view.MenuInflater
+
+
+
 
 class TabBasicUserActivity : AppCompatActivity() {
 
@@ -33,8 +40,11 @@ class TabBasicUserActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed(){
 
+
+
+
+    override fun onBackPressed() {
         AlertDialog.Builder(this)
             .setTitle("Cerrar sersion")
             .setMessage("Desea cerrar sesion")

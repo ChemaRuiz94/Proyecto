@@ -67,11 +67,12 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_favorites">Favorites</string>
 
-
     <string name="menu_my_profile">My profile</string>
     <string name="menu_citas">Dates</string>
     <string name="menu_search">Search</string>
     <string name="menu_muro">Muro</string>
+    <string name="menu_log_out">Log Out</string>
+    <string name="menu_delete_user">Delete my profile</string>
 
     <string name="change_password">Change password</string>
 

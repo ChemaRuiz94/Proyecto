@@ -184,8 +184,6 @@ class LoginActivity : AppCompatActivity() {
     find artist user
      */
     private fun findArtistUserByEmail(email: String){
-
-        Toast.makeText(this, email, Toast.LENGTH_SHORT).show()
         db.collection("${Constantes.collectionArtistUser}")
             .whereEqualTo("email", email)
             .get()
@@ -229,8 +227,7 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
 
-        val googleClient = GoogleSignIn.getClient(this,googleConf) //Este será el cliente de autenticación de Google.
-//        googleClient.signOut() //Con esto salimos de la posible cuenta  de Google que se encuentre logueada.
+        val googleClient = GoogleSignIn.getClient(this,googleConf)
         val signInIntent = googleClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -302,8 +299,8 @@ class LoginActivity : AppCompatActivity() {
             .document(id)
             .set(user)
             .addOnSuccessListener {
-                //val myIntent = Intent(this,BasicUserNavDrawActivity::class.java)
-                //startActivity(myIntent)
+                val myIntent = Intent(this,TabBasicUserActivity::class.java)
+                startActivity(myIntent)
 
             }.addOnFailureListener{
                 Toast.makeText(this,R.string.ERROR , Toast.LENGTH_SHORT).show()

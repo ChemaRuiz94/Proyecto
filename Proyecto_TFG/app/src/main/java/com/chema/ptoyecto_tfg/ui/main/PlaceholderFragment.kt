@@ -1,15 +1,17 @@
 package com.chema.ptoyecto_tfg.ui.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.activities.LoginActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentTabBasicUserBinding
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 
 /**
  * A placeholder fragment containing a simple view.
@@ -42,6 +44,7 @@ class PlaceholderFragment : Fragment() {
         pageViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
         return root
     }
 
@@ -70,4 +73,5 @@ class PlaceholderFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

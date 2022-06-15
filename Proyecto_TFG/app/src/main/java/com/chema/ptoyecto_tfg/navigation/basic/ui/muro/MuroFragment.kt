@@ -77,6 +77,7 @@ class MuroFragment : Fragment() {
     private val db = Firebase.firestore
     private lateinit var myStorage : StorageReference
     var stId = ""
+    lateinit var viewAux : View
     var storage = Firebase.storage
     var storageRef = storage.reference
     private var photo: Bitmap? = null
@@ -107,7 +108,8 @@ class MuroFragment : Fragment() {
         _binding = FragmentMuroBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
+        storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
+        myStorage = storage.getReference()
         //myStorage = FirebaseStorage.getInstance().getReference()
 
         return root
@@ -116,12 +118,16 @@ class MuroFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewAux = view
         fltBtnFavCamera = view.findViewById(R.id.fl_btn_fav_artist_muro)
         btnContactEdit = view.findViewById(R.id.btn_contact_edit)
         txtUserName = view.findViewById(R.id.txt_artist_user_name_muro)
         txtEmail = view.findViewById(R.id.txt_email_artist_muro)
         imgArtist = view.findViewById(R.id.img_user_artist_muro)
+
+        storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
+        myStorage = storage.getReference()
+        //myStorage = FirebaseStorage.getInstance().getReference()
 
         fltBtnFavCamera.setOnClickListener{
             changeFavCamera()
@@ -189,6 +195,21 @@ class MuroFragment : Fragment() {
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    private fun refreshRV(view: View){
+        postList.clear()
+        postIdList.clear()
+        imgPostList.clear()
+        runBlocking {
+            val job : Job = launch(context = Dispatchers.Default) {
+                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot
+                obtenerDatos(datos as QuerySnapshot?)
+            }
+            job.join()
+        }
+        getUserImagesStorage()
+        cargarRV(view)
+    }
+
     private fun cargarRV(view: View){
 
         rv = view.findViewById(R.id.rv_post_artist_muro)
@@ -199,21 +220,6 @@ class MuroFragment : Fragment() {
 
     }
 
-    private fun refreshRV(view: View){
-        postList.clear()
-        postIdList.clear()
-        imgPostList.clear()
-        runBlocking {
-            val job : Job = launch(context = Dispatchers.Default) {
-                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot //Obtenermos la colección
-                obtenerDatos(datos as QuerySnapshot?)  //'Destripamos' la colección y la metemos en nuestro ArrayList
-            }
-            //Con este método el hilo principal de onCreate se espera a que la función acabe y devuelva la colección con los datos.
-            job.join() //Esperamos a que el método acabe: https://dzone.com/articles/waiting-for-coroutines
-        }
-        getUserImagesStorage()
-        cargarRV(view)
-    }
 
     /*
     Buscamos los post que tenga el mismo id que el propietario del muro
@@ -252,8 +258,8 @@ class MuroFragment : Fragment() {
                 }
                 //se añaden los post a la lista
                 var post = Post(postId,userId,imgId,etiquetas)
-                postList.add(post)
                 if(imgId != null){
+                    postList.add(post)
                     postIdList.add(imgId!!)
                 }
             }
@@ -261,7 +267,8 @@ class MuroFragment : Fragment() {
     }
 
     private fun getUserImagesStorage(){
-        storageRef.listAll()
+
+        myStorage.listAll()
             .addOnSuccessListener { lista ->
                 runBlocking {
                 val job : Job = launch(context = Dispatchers.Default) {
@@ -270,16 +277,16 @@ class MuroFragment : Fragment() {
                     i.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener {
                         val img = Utils.getBitmap(it)!!
                         imgPostList.add(img)
-                        Log.d("Image_img","${img.toString()}")
-                        Log.d("Image_i","${i.toString()}")
-                        Log.d("ImageSize","${imgPostList.size.toString()}")
-                        //adaptador.notifyDataSetChanged()//se debería comentar esta línea en caso de usar el runBlocking
+                        val ur = i.downloadUrl
+                        postIdList.add(ur.toString())
+                        Log.d("Image_i","${ur.toString()}")
                         }.await()
                     }
                 }
                 job.join()
                 }
             }
+
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -343,13 +350,6 @@ class MuroFragment : Fragment() {
             }.addOnFailureListener{
                 Toast.makeText(context, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
             }
-
-        /*
-        var ev = VariablesCompartidas.eventoActual as Evento
-        ev.listaOpiniones?.add(opinion)
-        VariablesCompartidas.eventoActual = ev
-
-         */
     }
 
     private fun getChat(){
@@ -496,7 +496,7 @@ class MuroFragment : Fragment() {
     }
 
 
-    fun fileUpload() {
+    private fun fileUpload() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
@@ -530,13 +530,13 @@ class MuroFragment : Fragment() {
                     val bmp = BitmapFactory.decodeStream(imageStream)
                     photo = Bitmap.createScaledBitmap(bmp, 200, 300, true)
                     //img.setImageBitmap(photo)
-                    val imageRef = storageRef.child("imagen${stId}.jpg")
+                    val imageRef = storageRef.child("${stId}.jpg")
                     val uploadTask = imageRef.putBytes(Utils.getBytes(photo!!)!!)
                     uploadTask.addOnSuccessListener {
                         //saveComentarioFirebase( Utils.getBytes(photo!!)  )
                         val byteArray : ByteArray? = Utils.getBytes(photo!!)
                         savePostFirebase( byteArray  )
-
+                        refreshRV(viewAux)
                     }.addOnFailureListener {
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                     }
