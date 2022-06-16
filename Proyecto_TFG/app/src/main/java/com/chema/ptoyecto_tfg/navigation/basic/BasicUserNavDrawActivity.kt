@@ -46,7 +46,7 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_basic_user_nav_draw)
         if(VariablesCompartidas.usuarioArtistaActual != null){
             VariablesCompartidas.usuarioArtistaVisitaMuro = VariablesCompartidas.usuarioArtistaActual
-            VariablesCompartidas.userArtistOwner = true
+
             appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.nav_search, R.id.nav_citas,R.id.nav_favorites, R.id.nav_artist_profile, R.id.nav_muro

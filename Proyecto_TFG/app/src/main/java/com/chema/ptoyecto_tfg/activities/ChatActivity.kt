@@ -34,11 +34,15 @@ class ChatActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var idChat : String? = null
     private var userName : String? = null
+    private var date : String? = null
+
+    private var dateStPropuesta : String? = ""
 
     private lateinit var ed_txt_comentario : EditText
     private lateinit var flt_btn_sendComentario : FloatingActionButton
     private lateinit var flt_btn_send_date : FloatingActionButton
     private lateinit var txt_userName : TextView
+    private lateinit var txt_fecha_chat : TextView
 
     private var comentariosList : ArrayList<Comentario> = ArrayList()
     private var comentariosOrdenados : ArrayList<Comentario> = ArrayList()
@@ -50,6 +54,7 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         txt_userName = findViewById(R.id.txt_userName)
+        txt_fecha_chat = findViewById(R.id.txt_fecha_chat)
         ed_txt_comentario = findViewById(R.id.ed_txt_comentario)
         flt_btn_sendComentario = findViewById(R.id.flt_btn_sendComentario)
         flt_btn_send_date = findViewById(R.id.flt_btn_send_date)
@@ -64,7 +69,11 @@ class ChatActivity : AppCompatActivity() {
         } else {
             idChat = extras.getString("idChat")
             userName = extras.getString("userName")
+            date = extras.getString("date")
             txt_userName.text = userName
+            if(date!!.isNotEmpty()) {
+                txt_fecha_chat.text = date
+            }
         }
 
         runBlocking {
@@ -85,7 +94,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         flt_btn_send_date.setOnClickListener{
-            sendDate()
+            addDateToChat()
         }
         refreshRV()
     }
@@ -149,35 +158,35 @@ class ChatActivity : AppCompatActivity() {
     }
 
     fun saveComentarioFirebase(coment: Comentario){
-
         //guardamos la opinion en firebase
         db.collection("${Constantes.collectionComentario}")
             .document(coment.idComentario.toString()) //Será la clave del documento.
             .set(coment).addOnSuccessListener {
-                //Toast.makeText(this, getString(R.string.Suscesfull), Toast.LENGTH_SHORT).show()
+                if(VariablesCompartidas.stDatePropuesta != null){
+                    dateStPropuesta = VariablesCompartidas.stDatePropuesta
+                    if(coment.comentario.equals(VariablesCompartidas.stDatePropuesta.toString())){
+                        sendDate()
+                    }
+                }
+
                 ed_txt_comentario.setText("")
             }.addOnFailureListener{
                 Toast.makeText(this, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun sendDate(){
+    private fun addDateToChat(){
+        VariablesCompartidas.stDatePropuesta = null
+        dateStPropuesta = ""
         val newFragment = DatePickerFragment(ed_txt_comentario)
         newFragment.show(supportFragmentManager, "datePicker")
-        var dateSt : String? = ed_txt_comentario.text.toString()
-        addDateToChat(dateSt)
-        saveComentarioFirebase(crearComentario(dateSt.toString()))
-        refreshRV()
 
     }
 
-    private fun addDateToChat(date : String?){
-
+    private fun sendDate(){
         db.collection("${Constantes.collectionChat}")
             .document("${idChat.toString()}")
-            .update("date",date).addOnSuccessListener {
-                //Toast.makeText(this, "CORRECTOOOO", Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener{
+            .update("date","${dateStPropuesta.toString()}").addOnFailureListener{
                 Toast.makeText(this, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
             }
 

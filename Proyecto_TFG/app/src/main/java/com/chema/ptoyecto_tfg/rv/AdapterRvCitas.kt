@@ -37,6 +37,7 @@ class AdapterRvCitas (
         val chat : Chat = allChats!![position]
         var name : String? = null
         val idChat = chat.idChat
+        val date = chat.date
 
         if(VariablesCompartidas.usuarioArtistaActual != null){
             /*
@@ -56,21 +57,22 @@ class AdapterRvCitas (
         holder.txt_userName.text = name
 
         if(chat.date != null){
-            holder.txt_date.text = chat.date
+            holder.txt_date.text = date
         }else{
             holder.txt_date.text = ""
         }
 
         holder.txt_userName.setOnClickListener{
-           goToChat(idChat,name)
+           goToChat(idChat,name,date)
         }
 
     }
 
-    private fun goToChat(idChat: String?, userName : String?){
+    private fun goToChat(idChat: String?, userName : String?, date : String?){
         val myIntent = Intent(context, ChatActivity::class.java)
         myIntent.putExtra("idChat",idChat)
         myIntent.putExtra("userName",userName)
+        myIntent.putExtra("date",date)
         context.startActivity(myIntent)
     }
 

@@ -176,7 +176,6 @@ class MuroFragment : Fragment() {
     private fun cargarDatosArtist() {
         if (VariablesCompartidas.usuarioArtistaVisitaMuro != null) {
             userMuro = VariablesCompartidas.usuarioArtistaVisitaMuro
-            Toast.makeText(context,"CARGAR DATOS 1 : ${userMuro!!.userName.toString()}",Toast.LENGTH_SHORT).show()
 
             if (userMuro!!.img != null) {
                 imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
@@ -219,7 +218,6 @@ class MuroFragment : Fragment() {
             imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             editMode = true
 
-            Toast.makeText(context,"CARGAR DATOS 2 : ${userMuro!!.userName.toString()}",Toast.LENGTH_SHORT).show()
             for (price in userMuro!!.prices!!) {
                 val n = userMuro!!.prices!!.indexOf(price)
                 val size = userMuro!!.sizes!![n]
@@ -249,21 +247,6 @@ class MuroFragment : Fragment() {
         //getImgStorage()
         //cargarRV(view)
     }
-/*
-    private fun cargarRV(view: View) {
-
-        rv = view.findViewById(R.id.rv_post_artist_muro)
-        rv.setHasFixedSize(true)
-        rv.layoutManager = LinearLayoutManager(view.context)
-        miAdapter = AdapterRvPostAritstMuro(view.context as AppCompatActivity, imgPostList)
-        rv.adapter = miAdapter
-    }
-
- */
-
-
-
-
     /*
     Buscamos los post que tenga el mismo id que el propietario del muro
      */
@@ -306,13 +289,6 @@ class MuroFragment : Fragment() {
                 //se añaden los post a la lista
                 var post = Post(postId, userId, imgId, etiquetas)
 
-                /*
-                if (imgId != null) {
-                    postList.add(post)
-                    postIdList.add(imgId!!)
-
-                }
-                 */
             }
         }
     }
@@ -486,6 +462,8 @@ class MuroFragment : Fragment() {
                             existe = true
                             var myIntent = Intent(context, ChatActivity::class.java)
                             myIntent.putExtra("idChat", idChat)
+                            //myIntent.putExtra("userName", ch.userName)
+                            myIntent.putExtra("date", ch.date)
                             startActivity(myIntent)
                         }
                     }
@@ -550,6 +528,7 @@ class MuroFragment : Fragment() {
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
                     userArtistActual = userMod
+                    VariablesCompartidas.usuarioArtistaActual = userArtistActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
@@ -562,6 +541,7 @@ class MuroFragment : Fragment() {
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
                     userArtistActual = userMod
+                    VariablesCompartidas.usuarioArtistaActual = userArtistActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
@@ -581,6 +561,7 @@ class MuroFragment : Fragment() {
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
                     userBasicActual = userMod
+                    VariablesCompartidas.usuarioBasicoActual = userBasicActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
@@ -593,6 +574,7 @@ class MuroFragment : Fragment() {
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
                     userBasicActual = userMod
+                    VariablesCompartidas.usuarioBasicoActual = userBasicActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
