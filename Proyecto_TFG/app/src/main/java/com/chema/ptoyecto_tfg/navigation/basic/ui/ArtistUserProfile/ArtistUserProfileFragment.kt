@@ -22,6 +22,7 @@ import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.activities.LoginActivity
 import com.chema.ptoyecto_tfg.activities.SelectStudioMapsActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentArtistUserProfileBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
@@ -71,6 +72,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
     lateinit var edTxtArtistUserEmail : EditText
     lateinit var edTxtArtistUserPhone : EditText
     lateinit var edTxtArtistUserCif : EditText
+    lateinit var txt_del_artist_user : TextView
     lateinit var btn_enable_edit : FloatingActionButton
     lateinit var btn_change_location: Button
     lateinit var btn_change_pwd : Button
@@ -104,6 +106,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
         btn_enable_edit = view.findViewById(R.id.flt_btn_edit_artist_user_profile)
         btn_change_pwd = view.findViewById(R.id.btn_change_password_artist_profile)
         btn_change_location = view.findViewById(R.id.btn_select_location_profile)
+        txt_del_artist_user = view.findViewById(R.id.txt_del_artist_user)
         imgUsuarioPerfil.isClickable = false
         imgUsuarioPerfil.isEnabled = false
         imgUsuarioPerfil.setOnClickListener{
@@ -116,7 +119,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
 
         btn_change_location.setOnClickListener{
             val mapIntent = Intent(requireContext(), SelectStudioMapsActivity::class.java).apply {
-                //putExtra("email",email)
+
             }
                 startActivityForResult(mapIntent as Intent?,Constantes.CODE_MAP)
         }
@@ -125,6 +128,9 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
             changePwd()
         }
 
+        txt_del_artist_user.setOnClickListener{
+            checkEliminar(VariablesCompartidas.usuarioArtistaActual!!)
+        }
         cargarDatosUser()
     }
 
@@ -186,6 +192,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
             edTxtArtistUserCif.isEnabled = false
             btn_change_pwd.visibility = View.INVISIBLE
             btn_change_location.visibility = View.INVISIBLE
+            txt_del_artist_user.visibility = View.INVISIBLE
             editMode = false
         }else{
             btn_enable_edit.setImageResource(R.drawable.ic_save)
@@ -197,6 +204,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
             edTxtArtistUserCif.isEnabled = true
             btn_change_pwd.visibility = View.VISIBLE
             btn_change_location.visibility = View.VISIBLE
+            txt_del_artist_user.visibility = View.VISIBLE
             editMode = true
         }
     }
@@ -220,7 +228,22 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
             .show()
     }
 
-    fun editar(){
+    private fun checkEliminar(usuario: ArtistUser) {
+        AlertDialog.Builder(requireContext()).setTitle(R.string.del_acount)
+            .setPositiveButton(R.string.delete) { view, _ ->
+                val db = FirebaseFirestore.getInstance()
+                db.collection("${Constantes.collectionArtistUser}").document("${usuario.userId}").delete()
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                startActivity(intent)
+                VariablesCompartidas.usuarioArtistaActual = null
+                Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+                view.dismiss()
+            }.setNegativeButton(R.string.Cancel) { view, _ ->//cancela
+                view.dismiss()
+            }.create().show()
+    }
+
+    private fun editar(){
 
         if(edTxtArtistUserEmail.text.trim().isNotEmpty() && edTxtArtistUserPhone.text.trim().isNotEmpty() && edTxtArtistUserName.text.trim().isNotEmpty()  && edTxtArtistUserCif.text.trim().isNotEmpty() && Utils.checkMovil(edTxtArtistUserPhone.text.toString().trim())){
 

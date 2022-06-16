@@ -38,8 +38,11 @@
     <string name="phoneNotCorrect">Phone not correct</string>
     <string name="select_studio_location">Select studio location</string>
     <string name="select_this_location">Select this location?</string>
-    <string name="changePassword">Change Password</string>s
-    <string name="add_price_size">Add price and size</string>s
+    <string name="changePassword">Change Password</string>
+    <string name="del_acount">Delete your Acount?</string>
+    <string name="delete">DELETE</string>
+    <string name="del_user">Delete User</string>
+    <string name="add_price_size">Add price and size</string>
 
 
     <string name="YES">YES</string>
@@ -77,6 +80,7 @@
 
     <string name="change_password">Change password</string>
 
+    <string name="date">Date </string>
     <string name="search">Search</string>
     <string name="map_mode">Map mode</string>
     <string name="list_mode">List mode</string>
