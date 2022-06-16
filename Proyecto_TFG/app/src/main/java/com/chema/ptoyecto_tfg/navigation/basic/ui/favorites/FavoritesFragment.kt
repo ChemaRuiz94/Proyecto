@@ -33,6 +33,17 @@ import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
+import android.R.attr.tag
+
+import android.R.attr
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
+import android.R.attr.tag
+
+
+
+
 
 class FavoritesFragment : Fragment() {
 
@@ -127,6 +138,16 @@ class FavoritesFragment : Fragment() {
         }catch (e : Exception){
             null
         }
+    }
+
+    fun replaceFragment() {
+        val nextFrag = MuroFragment()
+        val fragmentManager = activity!!.supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        fragmentTransaction.replace(R.id.fragment_favorites, nextFrag, null)
+        fragmentTransaction.addToBackStack(attr.tag.toString())
+        fragmentTransaction.commitAllowingStateLoss()
     }
 
     private fun obtenerDatos(datos: QuerySnapshot?) {

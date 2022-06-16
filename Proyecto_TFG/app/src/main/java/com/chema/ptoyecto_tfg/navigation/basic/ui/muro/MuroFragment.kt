@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.TabBasicUserActivity
+import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
 import com.chema.ptoyecto_tfg.activities.ChatActivity
 import com.chema.ptoyecto_tfg.activities.DetailActivity
 import com.chema.ptoyecto_tfg.activities.SignUpBasicActivity
@@ -152,6 +153,12 @@ class MuroFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        cargarDatosArtist()
+        getPost(viewAux)
+        getImgStorage()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -160,6 +167,7 @@ class MuroFragment : Fragment() {
         VariablesCompartidas.idUserArtistVisitMode = null
         userMuro = null
         VariablesCompartidas.usuarioArtistaVisitaMuro = null
+        ArtistMuroConatinerActivity.fa!!.finish()
     }
 
     override fun onDestroy() {
@@ -168,6 +176,7 @@ class MuroFragment : Fragment() {
         VariablesCompartidas.idUserArtistVisitMode = null
         userMuro = null
         VariablesCompartidas.usuarioArtistaVisitaMuro = null
+        ArtistMuroConatinerActivity.fa!!.finish()
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++
@@ -205,11 +214,8 @@ class MuroFragment : Fragment() {
                 checkFav()
                 btnContactEdit.visibility = View.INVISIBLE
                 fltBtnFavCamera.visibility = View.INVISIBLE
-
             }
-
              */
-
         }
         if (VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null) {
             userMuro = VariablesCompartidas.usuarioArtistaActual
@@ -240,8 +246,8 @@ class MuroFragment : Fragment() {
         images.clear()
         runBlocking {
             val job: Job = launch(context = Dispatchers.Default) {
-                val datos: QuerySnapshot = getDataFromFireStore() as QuerySnapshot
-                obtenerDatos(datos as QuerySnapshot?)
+                val datos = getDataFromFireStore()
+                obtenerDatos(datos)
             }
             job.join()
         }
@@ -253,14 +259,13 @@ class MuroFragment : Fragment() {
     Buscamos los post que tenga el mismo id que el propietario del muro
      */
     suspend fun getDataFromFireStore(): QuerySnapshot? {
-        return try {
-            val data = db.collection("${Constantes.collectionPost}")
+        try {
+            return db.collection("${Constantes.collectionPost}")
                 .whereEqualTo("userId", userMuro!!.userId)
                 .get()
                 .await()
-            data
         } catch (e: Exception) {
-            null
+            throw e
         }
     }
 
@@ -269,48 +274,37 @@ class MuroFragment : Fragment() {
         for (dc: DocumentChange in datos?.documentChanges!!) {
             if (dc.type == DocumentChange.Type.ADDED) {
 
-                var postId: String? = null
-                if (dc.document.get("postId") != null) {
-                    postId = dc.document.get("postId").toString()
-                }
-                var userId: String? = null
-                if (dc.document.get("userId") != null) {
-                    userId = dc.document.get("userId").toString()
+                val postId: String? = dc.document.get("postId").toString()
+                val userId: String? = dc.document.get("userId").toString()
+                val imgId: String? = dc.document.get("imgId").toString()
+                val etiquetas: ArrayList<String>? = dc.document.get("etiquetas") as ArrayList<String>
+
+                if (imgId != null) {
+                    postIdList.add(imgId)
                 }
 
-                var imgId: String? = null
-                if (dc.document.get("imgId") != null) {
-                    imgId = dc.document.get("imgId").toString()
-                    postIdList.add(imgId.toString())
-                }
-                var etiquetas: ArrayList<String>? = ArrayList<String>()
-                if (dc.document.get("etiquetas") != null) {
-                    etiquetas = dc.document.get("etiquetas") as ArrayList<String>
+                if (postId != null && userId != null) {
+                    //se añaden los post a la lista
+                    val post = Post(postId, userId, imgId, etiquetas)
+                    postList.add(post)
                 }
                 Log.d("CHE_DE","IMG ID : ${imgId}")
-                //se añaden los post a la lista
-                var post = Post(postId, userId, imgId, etiquetas)
-
             }
         }
     }
 
     private fun getImgStorage(){
         adaptador.deseleccionar()
-        var img : Bitmap? = null
         storageRef.listAll()
-            .addOnSuccessListener { lista ->
+            .addOnSuccessListener { list ->
                 runBlocking {
                 val job : Job = launch(context = Dispatchers.Default) {
-                for (i in lista.items) {
+                for (i in list.items) {
                     i.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener {
-                        img = Utils.getBitmap(it)!!
-                        if(img != null){
-                            if(postIdList.contains(i.name)){
-                                val name = i.name.toString()
-                                images.add(Imagen(name, img!!))
-
-                            }
+                        val img = Utils.getBitmap(it)!!
+                        val name = i.name
+                        if(img != null && postIdList.contains(name)){
+                            images.add(Imagen(name, img))
                         }
                     }.await()
                     }
@@ -321,6 +315,7 @@ class MuroFragment : Fragment() {
                 mostrarLista()
             }
     }
+
     private fun mostrarLista() {
         val rvImagenes = viewAux.findViewById<RecyclerView>(R.id.rv_post_artist_muro)
         rvImagenes.setHasFixedSize(true)
@@ -424,24 +419,6 @@ class MuroFragment : Fragment() {
             }
     }
 
-    private fun savePostFirebase(img: ByteArray?) {
-        var postId = UUID.randomUUID().toString()
-        val imgStId = "$stId.jpg"
-        var etiquetas: ArrayList<String>? = ArrayList()
-        val post: Post =
-            Post(postId, VariablesCompartidas.usuarioArtistaActual!!.userId, imgStId, etiquetas)
-        //guardamos la opinion en firebase
-        db.collection("${Constantes.collectionPost}")
-            .document(post.postId.toString()) //Será la clave del documento.
-            .set(post).addOnSuccessListener {
-                cargarDatosArtist()
-                getPost(viewAux)
-                getImgStorage()
-                //Toast.makeText(this, getString(R.string.Suscesfull), Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
-                Toast.makeText(context, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
-            }
-    }
 
     private fun getChat() {
         var existe = false

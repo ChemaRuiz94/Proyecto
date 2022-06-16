@@ -40,30 +40,32 @@ import java.lang.Exception
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class BasicUserSearchFragment : Fragment() {
 
     private lateinit var basicUserSearchViewModel: BasicUserSearchViewModel
-    private var _binding : FragmentBasicUserSearchBinding? = null
+    private var _binding: FragmentBasicUserSearchBinding? = null
 
     private val binding get() = _binding!!
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var userLocation : Location? = null
+    private var userLocation: Location? = null
     private val db = FirebaseFirestore.getInstance()
 
-    private lateinit var btn_search : Button
-    private lateinit var ed_txt_search_by_name : EditText
-    private lateinit var ed_txt_max_distance : EditText
-    private lateinit var ed_txt_max_price : EditText
-    private lateinit var ed_txt_max_size : EditText
-    private lateinit var rd_btn_list_mode : RadioButton
-    private lateinit var rd_btn_map_mode : RadioButton
-    private var resultModeInList : Boolean = true
+    private lateinit var btn_search: Button
+    private lateinit var ed_txt_search_by_name: EditText
+    private lateinit var ed_txt_max_distance: EditText
+    private lateinit var ed_txt_max_price: EditText
+    private lateinit var ed_txt_max_size: EditText
+    private lateinit var rd_btn_list_mode: RadioButton
+    private lateinit var rd_btn_map_mode: RadioButton
+    private var resultModeInList: Boolean = true
 
-    private var result : ArrayList<ArtistUser> = ArrayList()
-    private var auxResult : ArrayList<ArtistUser> = ArrayList()
-    private var finalResult : ArrayList<ArtistUser> = ArrayList()
+    private var result: ArrayList<ArtistUser> = ArrayList()
+    private var removeList: ArrayList<ArtistUser> = ArrayList()
+    private var finalResult: ArrayList<ArtistUser> = ArrayList()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,8 +96,8 @@ class BasicUserSearchFragment : Fragment() {
 
         getMyLocation()
 
-        btn_search.setOnClickListener{
-            busqueda()
+        btn_search.setOnClickListener {
+            applyFilters()
         }
 
     }
@@ -118,7 +120,7 @@ class BasicUserSearchFragment : Fragment() {
             return
         }
         fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
+            .addOnSuccessListener { location: Location? ->
                 userLocation = location
             }
     }
@@ -143,38 +145,72 @@ class BasicUserSearchFragment : Fragment() {
         val kmInDec = Integer.valueOf(newFormat.format(km))
         val meter = valueResult % 1000
         val meterInDec = Integer.valueOf(newFormat.format(meter))
-        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
-                + " Meter   " + meterInDec)
+        Log.i(
+            "Radius Value", "" + valueResult + "   KM  " + kmInDec
+                    + " Meter   " + meterInDec
+        )
         return Radius * c
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private fun busqueda(){
+    private suspend fun getDataFromDataBase(): QuerySnapshot {
         result.clear()
-        auxResult.clear()
-        finalResult.clear()
+        removeList.clear()
+        try {
+            return db.collection("${Constantes.collectionArtistUser}")
+                .get()
+                .await()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    private fun applyFilters() {
         runBlocking {
-            val job : Job = launch(context = Dispatchers.Default) {
-                var datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot
-                obtenerDatos(datos as QuerySnapshot?)
+            val job: Job = launch(context = Dispatchers.Default) {
+                var data = getDataFromDataBase()
+                for (dc: DocumentChange in data.documentChanges!!) {
+                    fillListFiltered(dc)
+                }
             }
             job.join()
         }
-        var resultados = aplicarFiltros()
+        filterResult()
+    }
 
-        if(rd_btn_list_mode.isChecked){
+    private fun fillListFiltered(dc: DocumentChange){
+
+        val fav = ArtistUser(
+            dc.document.get("userId").toString(),
+            dc.document.get("userName").toString(),
+            dc.document.get("email").toString(),
+            dc.document.get("phone").toString().toInt(),
+            dc.document.get("img").toString(),
+            dc.document.get("rol") as ArrayList<Rol>?,
+            dc.document.get("idFavoritos") as ArrayList<String>?,
+            dc.document.get("prices") as ArrayList<String>?,
+            dc.document.get("sizes") as ArrayList<String>?,
+            dc.document.get("cif").toString(),
+            dc.document.get("latitudUbicacion").toString().toDouble(),
+            dc.document.get("longitudUbicacion").toString().toDouble()
+        )
+        result.add(fav)
+    }
+
+    private fun showResults() {
+        if (rd_btn_list_mode.isChecked) {
             val resultIntent = Intent(requireContext(), ListResutlActivity::class.java)
             val args = Bundle()
-            args.putSerializable("USER_LIST", resultados)
+            args.putSerializable("USER_LIST", result)
             args.putString("userLat", userLocation!!.latitude.toString())
             args.putString("userLon", userLocation!!.longitude.toString())
             resultIntent.putExtra("BUNDLE", args)
             startActivity(resultIntent)
-        }else{
+        } else {
             val resultIntent = Intent(requireContext(), SearchResultMapsActivity::class.java)
             val args = Bundle()
-            args.putSerializable("USER_LIST", resultados)
+            args.putSerializable("USER_LIST", result)
             args.putString("userLat", userLocation!!.latitude.toString())
             args.putString("userLon", userLocation!!.longitude.toString())
             resultIntent.putExtra("BUNDLE", args)
@@ -182,150 +218,80 @@ class BasicUserSearchFragment : Fragment() {
         }
     }
 
-    private fun aplicarFiltros() : ArrayList<ArtistUser>{
-        //PRIMER FILTRO EL NOMBRE
-        if(ed_txt_search_by_name.text.toString().trim().isNotEmpty()){
-            val nombre = ed_txt_search_by_name.text.toString()
-            for(artist in result){
-                if(artist.userName!!.startsWith(nombre) || artist.userName!!.contains(nombre) || artist.userName.equals(nombre)){
-                    finalResult.add(artist)
-                }
+    private fun filterResult() {
+        for (artist in result) {
+            checkAllEmpty(artist)
+        }
+        for (artist in removeList) {
+            result.remove(artist)
+        }
+        showResults()
+    }
+
+    private fun applyFilterName(artistUser: ArtistUser, textName: String) {
+        val artistUserName = artistUser.userName!!.lowercase()
+        if (!artistUserName.contains(textName) || !artistUserName.startsWith(textName)) {
+            removeList.add(artistUser)
+        }
+    }
+
+    private fun applyFilterDistance(artistUser: ArtistUser, textDistance: String) {
+        val dist = calculationByDistance(
+            userLocation,
+            artistUser.latitudUbicacion!!,
+            artistUser.longitudUbicacion!!
+        )
+        if (dist > textDistance.toDouble()) {
+            removeList.add(artistUser)
+        }
+    }
+
+    private fun applyFilterPrice(artistUser: ArtistUser, textPrice: String) {
+        val prices = artistUser.prices!!
+        for (price in prices) {
+            if(price.toDouble() <= textPrice.toDouble()) {
+                return
             }
         }
-        if(ed_txt_max_distance.text.toString().trim().isNotEmpty()){
-            aplicarFiltroDistancia()
-        }
-        if(ed_txt_max_price.text.toString().trim().isNotEmpty()){
-            aplicarFiltroPrecio()
-        }
-
-        if(ed_txt_max_size.text.toString().trim().isNotEmpty()){
-            aplicarFiltroSize()
-        }
-
-        if(checkAllEmpty()){
-            return result
-        }else{
-            return finalResult
-        }
-
+        removeList.add(artistUser)
     }
-
-    private fun aplicarFiltroDistancia(){
-        auxResult.addAll(finalResult)
-        //auxResult = (finalResult)
-        finalResult.clear()
-
-        for(artist in result){
-            //var latLonArtist : LatLng = LatLng(artist.latitudUbicacion!!,artist.longitudUbicacion!!)
-            var dist = calculationByDistance(userLocation,artist.latitudUbicacion!!,artist.longitudUbicacion!!)
-            if(dist < ed_txt_max_distance.text.toString().toDouble()){
-                if(!finalResult.contains(artist)){
-                    auxResult.add(artist)
-                    //finalResult.add(artist)
-                }
+    private fun applyFilterSize(artistUser: ArtistUser, textSize: String) {
+        val sizes = artistUser.sizes!!
+        for (size in sizes) {
+            if(size.toDouble() <= textSize.toDouble()) {
+                return
             }
         }
-        finalResult.addAll(auxResult)
+        removeList.add(artistUser)
     }
 
-    private fun aplicarFiltroPrecio(){
-        auxResult.clear()
+    private fun checkAllEmpty(artistUser: ArtistUser) {
+        val name = ed_txt_search_by_name.text.toString().trim().lowercase()
+        val distance = ed_txt_max_distance.text.toString().trim()
+        val price = ed_txt_max_price.text.toString().trim()
+        val size = ed_txt_max_size.text.toString().trim()
 
-        for(artist in result){
-            val maxPrice = ed_txt_max_price.text.toString().trim()
-                for(artistPrice in artist.prices!!){
-                    if(artistPrice != null ){
-                        if(artistPrice.toString().toDouble() <= maxPrice.toString().toDouble()){
-                            if(!finalResult.contains(artist)){
-                                auxResult.add(artist)
-                                break
-                            }
-                        }
-                    }
-                }
-        }
-        finalResult.addAll(auxResult)
-    }
-
-    private fun aplicarFiltroSize(){
-        auxResult.clear()
-
-        for(artist in result){
-            val maxSize = ed_txt_max_size.text.toString().trim()
-            for(artistSize in artist.sizes!!){
-                if(artistSize != null ){
-                    if(artistSize.toString().toDouble() <= maxSize.toString().toDouble()){
-                        if(!finalResult.contains(artist)){
-                            auxResult.add(artist)
-                            break
-                        }
-                    }
-                }
-            }
-        }
-        finalResult.addAll(auxResult)
-    }
-
-    private fun checkAllEmpty() : Boolean{
-        var isAllEmpty = true
-        if(ed_txt_search_by_name.text.toString().trim().isNotEmpty()){
-            isAllEmpty = false
+        if (name.isNotEmpty()) {
+            applyFilterName(artistUser, name)
+            return
         }
 
-        if(ed_txt_max_distance.text.toString().trim().isNotEmpty()){
-            isAllEmpty = false
+        if (distance.isNotEmpty()) {
+            applyFilterDistance(artistUser, distance)
+            return
         }
 
-        if(ed_txt_max_price.text.toString().trim().isNotEmpty()){
-            isAllEmpty = false
+        if (size.isNotEmpty()) {
+            applyFilterSize(artistUser, price)
+            return
         }
 
-        if(ed_txt_max_size.text.toString().trim().isNotEmpty()){
-            isAllEmpty = false
-        }
-        return isAllEmpty
-    }
-
-    private fun changeResultMode(){
-
-    }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-    suspend fun getDataFromFireStore()  : QuerySnapshot? {
-        return try{
-            val data = db.collection("${Constantes.collectionArtistUser}")
-                .get()
-                .await()
-            data
-        }catch (e : Exception){
-            null
+        if (price.isNotEmpty()) {
+            applyFilterPrice(artistUser, price)
+            return
         }
     }
 
-    private fun obtenerDatos(datos: QuerySnapshot?) {
-        result.clear()
-        for(dc: DocumentChange in datos?.documentChanges!!){
-            if (dc.type == DocumentChange.Type.ADDED){
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                var fav= ArtistUser(
-                    dc.document.get("userId").toString(),
-                    dc.document.get("userName").toString(),
-                    dc.document.get("email").toString(),
-                    dc.document.get("phone").toString().toInt(),
-                    dc.document.get("img").toString(),
-                    dc.document.get("rol") as ArrayList<Rol>?,
-                    dc.document.get("idFavoritos") as ArrayList<String>?,
-                    dc.document.get("prices") as ArrayList<String>?,
-                    dc.document.get("sizes") as ArrayList<String>?,
-                    dc.document.get("cif").toString(),
-                    dc.document.get("latitudUbicacion").toString().toDouble(),
-                    dc.document.get("longitudUbicacion").toString().toDouble()
-                )
-                result.add(fav)
-            }
-        }
-
-    }
 }

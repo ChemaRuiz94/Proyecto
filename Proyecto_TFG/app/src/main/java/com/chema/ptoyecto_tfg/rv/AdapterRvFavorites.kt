@@ -61,7 +61,13 @@ class AdapterRvFavorites (
         }
     }
 
-
+//    val nextFrag = MuroFragment()
+//    val fragmentManager = context.supportFragmentManager
+//    val fragmentTransaction = fragmentManager.beginTransaction()
+//
+//    fragmentTransaction.replace(R.id.fragment_favorites, nextFrag, null)
+//    fragmentTransaction.addToBackStack(android.R.attr.tag.toString())
+//    fragmentTransaction.commitAllowingStateLoss()
     private fun goToArtistMuroContainer(){
         val intent = Intent(context, ArtistMuroConatinerActivity::class.java)
         context.startActivity(intent)

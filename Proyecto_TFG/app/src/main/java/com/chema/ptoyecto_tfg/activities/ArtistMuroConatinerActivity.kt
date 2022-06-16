@@ -6,12 +6,20 @@ import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
+import android.app.Activity
+
+
+
 
 class ArtistMuroConatinerActivity : AppCompatActivity() {
 
+    companion object{
+        var fa: Activity? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fa = this
         setContentView(R.layout.activity_artist_muro_conatiner)
         VariablesCompartidas.userArtistVisitMode = true
         goToArtistMuro()
@@ -19,7 +27,7 @@ class ArtistMuroConatinerActivity : AppCompatActivity() {
 
     private fun goToArtistMuro(){
         val nextFrag = MuroFragment()
-        this.getSupportFragmentManager().beginTransaction()
+        this.supportFragmentManager.beginTransaction()
             .replace(R.id.activity_artist_muro_container, nextFrag, "findThisFragment")
             .addToBackStack(null)
             .commit()
