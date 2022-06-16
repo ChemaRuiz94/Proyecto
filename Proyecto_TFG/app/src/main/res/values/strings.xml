@@ -22,6 +22,8 @@
     <string name="contact">Contact</string>
     <string name="edit_muro">Edit</string>
     <string name="selectLocation">Your Studio´s location</string>
+    <string name="add_post">POST</string>
+    <string name="add_style">Add Style..</string>
 
 
     <string name="saveEdit">Save edit</string>

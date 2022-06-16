@@ -84,8 +84,6 @@ class MuroFragment : Fragment() {
     var postList: ArrayList<Post> = ArrayList<Post>()
     var postIdList: ArrayList<String> = ArrayList<String>()
     var images: ArrayList<Imagen> = ArrayList()
-    private lateinit var rv: RecyclerView
-    private lateinit var miAdapter: AdapterRvPostAritstMuro
     lateinit var adaptador: ImagenesAdapter
 
     private lateinit var fltBtnFavCamera: FloatingActionButton
@@ -305,7 +303,8 @@ class MuroFragment : Fragment() {
                         img = Utils.getBitmap(it)!!
                         if(img != null){
                             if(postIdList.contains(i.name)){
-                                images.add(Imagen(i.name, img!!))
+                                val name = i.name.toString()
+                                images.add(Imagen(name, img!!))
 
                             }
                         }
