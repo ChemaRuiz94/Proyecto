@@ -144,7 +144,6 @@ class DetailActivity : AppCompatActivity() {
         } else {
             getImageStorage()
             getPostFirebase()
-            putPostStyles()
         }
     }
 
@@ -186,11 +185,12 @@ class DetailActivity : AppCompatActivity() {
                     if (post.get("etiquetas") as ArrayList<String>? != null) {
                         etiquetas = post.get("etiquetas") as ArrayList<String>?
                     }
-                    Toast.makeText(this, "POST_ID -> ${postId.toString()}", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this, "IMG_ID -> ${idImg.toString()}", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this, "USER_ID -> ${userId.toString()}", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this, "ETIQUETAS -> ${etiquetas!!.size}", Toast.LENGTH_SHORT).show()
                     postDetail = Post(postId, userId, idImg, etiquetas)
+                    if (etiquetas!!.size > 0) {
+                        putPostStyles()
+                    }
+                    return@addOnSuccessListener
+
                 }
             }
             .addOnFailureListener { exception ->
@@ -198,16 +198,12 @@ class DetailActivity : AppCompatActivity() {
             }
     }
 
-    private fun putPostStyles(){
-        if(postDetail != null){
-            var stFin = ""
-            for(sty in postDetail!!.etiquetas!!){
-                var stAux = ""
-                stAux = "${stFin.toString()}#${sty.toString()}"
-                stFin = stAux
-            }
-            ed_txt_styles.setText(stFin)
+    private fun putPostStyles() {
+        var stFin = ""
+        for (sty in postDetail!!.etiquetas!!) {
+            stFin = "${stFin}\n#${sty}"
         }
+        ed_txt_styles.setText(stFin)
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
