@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.TabBasicUserActivity
 import com.chema.ptoyecto_tfg.activities.ChatActivity
+import com.chema.ptoyecto_tfg.activities.DetailActivity
 import com.chema.ptoyecto_tfg.activities.SignUpBasicActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentMuroBinding
 import com.chema.ptoyecto_tfg.models.*
@@ -196,6 +197,7 @@ class MuroFragment : Fragment() {
             fltBtnFavCamera.visibility = View.VISIBLE
             checkFav()
 
+            /*
             if (VariablesCompartidas.usuarioArtistaActual != null && userMuro!!.userId!!.equals(
                     VariablesCompartidas!!.usuarioArtistaActual!!.userId
                 )
@@ -205,6 +207,8 @@ class MuroFragment : Fragment() {
                 fltBtnFavCamera.visibility = View.INVISIBLE
 
             }
+
+             */
 
         }
         if (VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null) {
@@ -353,7 +357,11 @@ class MuroFragment : Fragment() {
     private fun changeFavCamera() {
         if (editMode) {
             //subir foto en modo propietario del muro
-            fileUpload()
+            val nombre = "newImage"
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("stImage", nombre.toString())
+            requireContext().startActivity(intent)
+
         } else {
             //cambiar fav en modo visitante del muro
             if (VariablesCompartidas.usuarioBasicoActual != null) {
@@ -583,52 +591,5 @@ class MuroFragment : Fragment() {
     }
 
 
-    private fun fileUpload() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        stId = UUID.randomUUID().toString()
-        startActivityForResult(
-            Intent.createChooser(intent, "Seleccione una imagen"),
-            Constantes.CODE_GALLERY
-        )
-    }
 
-
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constantes.CODE_GALLERY) {
-            if (resultCode === Activity.RESULT_OK) {
-                val selectedImage = data?.data
-                val selectedPath: String? = selectedImage?.path
-                if (selectedPath != null) {
-                    var imageStream: InputStream? = null
-                    try {
-                        imageStream = selectedImage.let {
-                            requireActivity().contentResolver.openInputStream(
-                                it
-                            )
-                        }
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                    }
-                    val bmp = BitmapFactory.decodeStream(imageStream)
-                    photo = Bitmap.createScaledBitmap(bmp, 200, 300, true)
-                    //img.setImageBitmap(photo)
-                    val imageRef = storageRef.child("${stId}.jpg")
-                    val uploadTask = imageRef.putBytes(Utils.getBytes(photo!!)!!)
-                    uploadTask.addOnSuccessListener {
-                        //saveComentarioFirebase( Utils.getBytes(photo!!)  )
-                        val byteArray: ByteArray? = Utils.getBytes(photo!!)
-                        savePostFirebase(byteArray)
-                        //refreshRV(viewAux)
-                    }.addOnFailureListener {
-                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }
 }

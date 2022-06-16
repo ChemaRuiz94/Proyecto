@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 
 import android.content.Intent
 import android.os.Parcelable
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -40,10 +41,10 @@ class DetailActivity : AppCompatActivity() {
         btn_add_post = findViewById(R.id.btn_add_post)
         flt_btn_add_style = findViewById(R.id.flt_btn_add_style)
 
-        val intent = intent
-        val bitmap = intent.getParcelableExtra<Parcelable>("BtmImage") as Bitmap?
-
-
-
+        if(idImg.equals("newImage")){
+            ed_txt_add_style.visibility = View.VISIBLE
+            btn_add_post.visibility = View.VISIBLE
+            flt_btn_add_style.visibility = View.VISIBLE
+        }
     }
 }
