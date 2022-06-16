@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.activities.ListResutlActivity
+import com.chema.ptoyecto_tfg.activities.SearchResultMapsActivity
 import com.chema.ptoyecto_tfg.activities.SelectStudioMapsActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentBasicUserSearchBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
@@ -97,12 +98,6 @@ class BasicUserSearchFragment : Fragment() {
             busqueda()
         }
 
-        rd_btn_list_mode.setOnClickListener{
-
-        }
-        rd_btn_map_mode.setOnClickListener{
-
-        }
     }
 
     override fun onDestroyView() {
@@ -128,7 +123,9 @@ class BasicUserSearchFragment : Fragment() {
             }
     }
 
-
+    /*
+    Calcula la distancia entre dos puntos
+     */
     private fun calculationByDistance(location: Location?, lat2: Double?, lon2: Double?): Double {
         val Radius = 6371 // radius of earth in Km
         val lat1 = location!!.latitude
@@ -164,10 +161,28 @@ class BasicUserSearchFragment : Fragment() {
             }
             job.join()
         }
-        aplicarFiltros()
+        var resultados = aplicarFiltros()
+
+        if(rd_btn_list_mode.isChecked){
+            val resultIntent = Intent(requireContext(), ListResutlActivity::class.java)
+            val args = Bundle()
+            args.putSerializable("USER_LIST", resultados)
+            args.putString("userLat", userLocation!!.latitude.toString())
+            args.putString("userLon", userLocation!!.longitude.toString())
+            resultIntent.putExtra("BUNDLE", args)
+            startActivity(resultIntent)
+        }else{
+            val resultIntent = Intent(requireContext(), SearchResultMapsActivity::class.java)
+            val args = Bundle()
+            args.putSerializable("USER_LIST", resultados)
+            args.putString("userLat", userLocation!!.latitude.toString())
+            args.putString("userLon", userLocation!!.longitude.toString())
+            resultIntent.putExtra("BUNDLE", args)
+            startActivity(resultIntent)
+        }
     }
 
-    private fun aplicarFiltros() {
+    private fun aplicarFiltros() : ArrayList<ArtistUser>{
         //PRIMER FILTRO EL NOMBRE
         if(ed_txt_search_by_name.text.toString().trim().isNotEmpty()){
             val nombre = ed_txt_search_by_name.text.toString()
@@ -189,17 +204,9 @@ class BasicUserSearchFragment : Fragment() {
         }
 
         if(checkAllEmpty()){
-            val resultIntent = Intent(requireContext(), ListResutlActivity::class.java)
-            val args = Bundle()
-            args.putSerializable("USER_LIST", result)
-            resultIntent.putExtra("BUNDLE", args)
-            startActivity(resultIntent)
+            return result
         }else{
-            val resultIntent = Intent(requireContext(), ListResutlActivity::class.java)
-            val args = Bundle()
-            args.putSerializable("USER_LIST", finalResult)
-            resultIntent.putExtra("BUNDLE", args)
-            startActivity(resultIntent)
+            return finalResult
         }
 
     }

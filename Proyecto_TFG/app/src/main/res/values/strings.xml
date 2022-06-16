@@ -102,5 +102,6 @@
     <string name="title_activity_tab_basic_user">TabBasicUserActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_search_result_maps">SearchResultMapsActivity</string>
 
 </resources>

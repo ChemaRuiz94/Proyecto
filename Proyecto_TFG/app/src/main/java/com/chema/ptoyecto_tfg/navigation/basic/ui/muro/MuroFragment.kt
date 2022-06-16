@@ -121,6 +121,7 @@ class MuroFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewAux = view
         fltBtnFavCamera = view.findViewById(R.id.fl_btn_fav_artist_muro)
         btnContactEdit = view.findViewById(R.id.btn_contact_edit)
@@ -173,8 +174,9 @@ class MuroFragment : Fragment() {
     //++++++++++++++++++++++++++++++++++++++++++++++
 
     private fun cargarDatosArtist() {
-        if (VariablesCompartidas.idUserArtistVisitMode != null) {
+        if (VariablesCompartidas.usuarioArtistaVisitaMuro != null) {
             userMuro = VariablesCompartidas.usuarioArtistaVisitaMuro
+            Toast.makeText(context,"CARGAR DATOS 1 : ${userMuro!!.userName.toString()}",Toast.LENGTH_SHORT).show()
 
             if (userMuro!!.img != null) {
                 imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
@@ -217,6 +219,7 @@ class MuroFragment : Fragment() {
             imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             editMode = true
 
+            Toast.makeText(context,"CARGAR DATOS 2 : ${userMuro!!.userName.toString()}",Toast.LENGTH_SHORT).show()
             for (price in userMuro!!.prices!!) {
                 val n = userMuro!!.prices!!.indexOf(price)
                 val size = userMuro!!.sizes!![n]
