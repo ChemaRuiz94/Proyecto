@@ -35,13 +35,22 @@ class AdapterRvCitas (
     override fun onBindViewHolder(holder: AdapterRvCitas.ViewHolder, position: Int) {
         //holder?.item.text = this.valores!![position].toString()
         val chat : Chat = allChats!![position]
-        var name = chat.userNameArtist
+        var name : String? = null
         val idChat = chat.idChat
 
         if(VariablesCompartidas.usuarioArtistaActual != null){
+            /*
             if(name.equals(VariablesCompartidas.usuarioArtistaActual!!.userName)){
                 name = chat.userNameOther
             }
+             */
+            if(chat.idUserOther.toString().equals(VariablesCompartidas.idUsuarioActual)){
+                name = chat.userNameArtist
+            }else{
+                name = chat.userNameOther
+            }
+        }else{
+            name = chat.userNameArtist
         }
 
         holder.txt_userName.text = name

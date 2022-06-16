@@ -478,12 +478,15 @@ class MuroFragment : Fragment() {
                         chat.get("userNameOther").toString(),
                         chat.get("date").toString()
                     )
-                    if (ch != null) {
-                        existe = true
+                    if (ch != null ) {
+                        if(ch.idUserOther!!.toString().equals(VariablesCompartidas.idUsuarioActual)){
+                            existe = true
+                            var myIntent = Intent(context, ChatActivity::class.java)
+                            myIntent.putExtra("idChat", idChat)
+                            startActivity(myIntent)
+                        }
                     }
-                    var myIntent = Intent(context, ChatActivity::class.java)
-                    myIntent.putExtra("idChat", idChat)
-                    startActivity(myIntent)
+
                 }
                 if (!existe) {
                     crearChat()

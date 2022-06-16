@@ -165,8 +165,8 @@ class ChatActivity : AppCompatActivity() {
         val newFragment = DatePickerFragment(ed_txt_comentario)
         newFragment.show(supportFragmentManager, "datePicker")
         var dateSt : String? = ed_txt_comentario.text.toString()
-        saveComentarioFirebase(crearComentario(dateSt.toString()))
         addDateToChat(dateSt)
+        saveComentarioFirebase(crearComentario(dateSt.toString()))
         refreshRV()
 
     }
@@ -176,7 +176,7 @@ class ChatActivity : AppCompatActivity() {
         db.collection("${Constantes.collectionChat}")
             .document("${idChat.toString()}")
             .update("date",date).addOnSuccessListener {
-                Toast.makeText(this, "CORRECTOOOO", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "CORRECTOOOO", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
             }

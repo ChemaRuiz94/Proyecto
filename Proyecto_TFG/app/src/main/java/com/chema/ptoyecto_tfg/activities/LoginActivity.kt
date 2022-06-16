@@ -168,6 +168,7 @@ class LoginActivity : AppCompatActivity() {
 
                     )
                     VariablesCompartidas.usuarioBasicoActual = us
+                    VariablesCompartidas.idUsuarioActual = us.userId
                     VariablesCompartidas.usuarioArtistaActual = null
                     isBasicUser = true
                     var myIntent = Intent(this, TabBasicUserActivity::class.java)
@@ -210,6 +211,7 @@ class LoginActivity : AppCompatActivity() {
 
                     )
                     VariablesCompartidas.usuarioArtistaActual = us
+                    VariablesCompartidas.idUsuarioActual = us.userId
                     VariablesCompartidas.usuarioBasicoActual = null
                     isBasicUser = true
                     var myIntent = Intent(this, BasicUserNavDrawActivity::class.java)

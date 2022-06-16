@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 object VariablesCompartidas {
 
     var emailUsuarioActual: String? = null
+    var idUsuarioActual: String? = null
     var usuarioBasicoActual: BasicUser? = null
     var usuarioArtistaActual: ArtistUser? = null
     var usuarioArtistaVisitaMuro: ArtistUser? = null

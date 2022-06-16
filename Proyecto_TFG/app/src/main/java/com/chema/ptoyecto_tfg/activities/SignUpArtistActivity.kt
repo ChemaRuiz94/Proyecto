@@ -212,6 +212,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
 
         var u = ArtistUser(id,userName,email,phone,img,listRoles,listIdFavoritos,prices,sizes,cif,latitudStudio,longitudStudio)
         VariablesCompartidas.usuarioArtistaActual = u
+        VariablesCompartidas.idUsuarioActual = u.userId
         db.collection("${Constantes.collectionArtistUser}")
             .document(id)
             .set(user)

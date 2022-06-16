@@ -183,6 +183,7 @@ class SignUpBasicActivity : AppCompatActivity() {
 
         var u = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
         VariablesCompartidas.usuarioBasicoActual = u
+        VariablesCompartidas.idUsuarioActual = u.userId
         VariablesCompartidas.usuarioArtistaActual = null
 
         db.collection("${Constantes.collectionUser}")
