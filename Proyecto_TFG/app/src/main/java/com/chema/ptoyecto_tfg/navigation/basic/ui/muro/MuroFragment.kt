@@ -144,7 +144,7 @@ class MuroFragment : Fragment() {
             changeContactEdit()
         }
 
-        if(userMuro == null){
+        if (userMuro == null) {
             cargarDatosArtist()
             getPost(view)
             getImgStorage()
@@ -255,6 +255,7 @@ class MuroFragment : Fragment() {
         //getImgStorage()
         //cargarRV(view)
     }
+
     /*
     Buscamos los post que tenga el mismo id que el propietario del muro
      */
@@ -277,7 +278,8 @@ class MuroFragment : Fragment() {
                 val postId: String? = dc.document.get("postId").toString()
                 val userId: String? = dc.document.get("userId").toString()
                 val imgId: String? = dc.document.get("imgId").toString()
-                val etiquetas: ArrayList<String>? = dc.document.get("etiquetas") as ArrayList<String>
+                val etiquetas: ArrayList<String>? =
+                    dc.document.get("etiquetas") as ArrayList<String>
 
                 if (imgId != null) {
                     postIdList.add(imgId)
@@ -288,29 +290,29 @@ class MuroFragment : Fragment() {
                     val post = Post(postId, userId, imgId, etiquetas)
                     postList.add(post)
                 }
-                Log.d("CHE_DE","IMG ID : ${imgId}")
+                Log.d("CHE_DE", "IMG ID : ${imgId}")
             }
         }
     }
 
-    private fun getImgStorage(){
+    private fun getImgStorage() {
         adaptador.deseleccionar()
         storageRef.listAll()
             .addOnSuccessListener { list ->
                 runBlocking {
-                val job : Job = launch(context = Dispatchers.Default) {
-                for (i in list.items) {
-                    i.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener {
-                        val img = Utils.getBitmap(it)!!
-                        val name = i.name
-                        if(img != null && postIdList.contains(name)){
-                            images.add(Imagen(name, img))
+                    val job: Job = launch(context = Dispatchers.Default) {
+                        for (i in list.items) {
+                            i.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener {
+                                val img = Utils.getBitmap(it)!!
+                                val name = i.name
+                                if (img != null && postIdList.contains(name)) {
+                                    images.add(Imagen(name, img))
+                                }
+                            }.await()
                         }
-                    }.await()
                     }
-                }
-                //adaptador.notifyDataSetChanged()
-                job.join()
+                    //adaptador.notifyDataSetChanged()
+                    job.join()
                 }
                 mostrarLista()
             }
@@ -319,7 +321,7 @@ class MuroFragment : Fragment() {
     private fun mostrarLista() {
         val rvImagenes = viewAux.findViewById<RecyclerView>(R.id.rv_post_artist_muro)
         rvImagenes.setHasFixedSize(true)
-        rvImagenes.layoutManager = LinearLayoutManager(viewAux.context )
+        rvImagenes.layoutManager = LinearLayoutManager(viewAux.context)
         rvImagenes.adapter = adaptador
     }
 
@@ -421,45 +423,38 @@ class MuroFragment : Fragment() {
 
 
     private fun getChat() {
-        var existe = false
         db.collection("${Constantes.collectionChat}")
             .whereEqualTo("idUserArtist", userMuro!!.userId)
             .get()
             .addOnSuccessListener { chats ->
-                //Existe
-                for (chat in chats) {
+                //No existen chats
+                if (chats.isEmpty) {
+                    crearChat()
+                } else {
+                    for (chat in chats) {
 
-                    var idChat: String? = null
-                    if (chat.get("idChat") != null) {
-                        idChat = chat.get("idChat").toString()
-                    }
-                    var ch = Chat(
-                        chat.get("idChat").toString(),
-                        chat.get("idUserArtist").toString(),
-                        chat.get("userNameArtist").toString(),
-                        chat.get("idUserOther").toString(),
-                        chat.get("userNameOther").toString(),
-                        chat.get("date").toString()
-                    )
-                    if (ch != null ) {
-                        if(ch.idUserOther!!.toString().equals(VariablesCompartidas.idUsuarioActual)){
-                            existe = true
+                        var idChat: String? = null
+                        if (chat.get("idChat") != null) {
+                            idChat = chat.get("idChat").toString()
+                        }
+                        var ch = Chat(
+                            chat.get("idChat").toString(),
+                            chat.get("idUserArtist").toString(),
+                            chat.get("userNameArtist").toString(),
+                            chat.get("idUserOther").toString(),
+                            chat.get("userNameOther").toString(),
+                            chat.get("date").toString()
+                        )
+                        if (ch.idUserOther!!.toString() == VariablesCompartidas.idUsuarioActual) {
                             var myIntent = Intent(context, ChatActivity::class.java)
                             myIntent.putExtra("idChat", idChat)
-                            //myIntent.putExtra("userName", ch.userName)
+                            myIntent.putExtra("userName", ch.userNameArtist)
                             myIntent.putExtra("date", ch.date)
                             startActivity(myIntent)
                         }
-                    }
 
+                    }
                 }
-                if (!existe) {
-                    crearChat()
-                }
-            }
-            .addOnFailureListener { exception ->
-                //No existe
-                crearChat()
             }
     }
 
@@ -492,6 +487,7 @@ class MuroFragment : Fragment() {
             .addOnSuccessListener {
                 val myIntent = Intent(context, ChatActivity::class.java)
                 myIntent.putExtra("idChat", idChat)
+                myIntent.putExtra("date", date)
                 myIntent.putExtra("userName", userMuro!!.userName)
                 startActivity(myIntent)
 
@@ -566,7 +562,6 @@ class MuroFragment : Fragment() {
 
         }
     }
-
 
 
 }
