@@ -44,9 +44,9 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_basic_user_nav_draw)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         if(VariablesCompartidas.usuarioArtistaActual != null){
+            VariablesCompartidas.usuarioArtistaVisitaMuro = VariablesCompartidas.usuarioArtistaActual
+            VariablesCompartidas.userArtistOwner = true
             appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.nav_search, R.id.nav_citas,R.id.nav_favorites, R.id.nav_artist_profile, R.id.nav_muro
@@ -62,7 +62,6 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         val headerView = navigationView.getHeaderView(0)
         val navUserEmail = headerView.findViewById<View>(R.id.txt_userEmail_header) as TextView
         val navUserName = headerView.findViewById<View>(R.id.txt_userName_header) as TextView
-        //val imgBasicUserHeader = headerView.findViewById<View>(R.id.image_basic_user_header) as ImageView
 
         if(VariablesCompartidas.usuarioArtistaActual != null){
             val u = VariablesCompartidas.usuarioArtistaActual as ArtistUser
@@ -73,11 +72,19 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        VariablesCompartidas.usuarioArtistaVisitaMuro = VariablesCompartidas.usuarioArtistaActual
+    }
+
+    /*
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.basic_user_nav_draw, menu)
         return true
     }
+
+     */
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_basic_user_nav_draw)
@@ -107,6 +114,7 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 VariablesCompartidas.usuarioArtistaActual = null
+                VariablesCompartidas.usuarioArtistaVisitaMuro = null
                 finish()
                 view.dismiss()
             }

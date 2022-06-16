@@ -31,6 +31,7 @@ import com.chema.ptoyecto_tfg.databinding.FragmentMuroBinding
 import com.chema.ptoyecto_tfg.models.*
 import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
 import com.chema.ptoyecto_tfg.rv.AdapterRvPostAritstMuro
+import com.chema.ptoyecto_tfg.rv.ImagenesAdapter
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
@@ -68,34 +69,36 @@ class MuroFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private var favorite : Boolean = false
-    private  var userMuro : ArtistUser? = null
-    private  var userArtistActual : ArtistUser? = null
-    private  var userBasicActual : BasicUser? = null
+    private var favorite: Boolean = false
+    private var userMuro: ArtistUser? = null
+    private var userArtistActual: ArtistUser? = null
+    private var userBasicActual: BasicUser? = null
 
     private val db = Firebase.firestore
-    private lateinit var myStorage : StorageReference
+    private lateinit var myStorage: StorageReference
     var stId = ""
-    lateinit var viewAux : View
+    lateinit var viewAux: View
     var storage = Firebase.storage
     var storageRef = storage.reference
     private var photo: Bitmap? = null
-    var postList : ArrayList<Post> = ArrayList<Post>()
-    var postIdList : ArrayList<String> = ArrayList<String>()
-    var imgPostList : ArrayList<Bitmap> = ArrayList<Bitmap>()
-    private lateinit var rv : RecyclerView
+    var postList: ArrayList<Post> = ArrayList<Post>()
+    var postIdList: ArrayList<String> = ArrayList<String>()
+    var images: ArrayList<Imagen> = ArrayList()
+    private lateinit var rv: RecyclerView
     private lateinit var miAdapter: AdapterRvPostAritstMuro
+    lateinit var adaptador: ImagenesAdapter
 
-    private lateinit var fltBtnFavCamera : FloatingActionButton
-    private lateinit var txtUserName : TextView
-    private lateinit var txtEmail : TextView
-    private lateinit var ed_txt_prizes_sizes : EditText
-    private lateinit var txtUbi : TextView
-    private lateinit var txtWeb : TextView
-    private lateinit var btnContactEdit : Button
-    private lateinit var imgArtist : ImageView
+    private lateinit var fltBtnFavCamera: FloatingActionButton
+    private lateinit var txtUserName: TextView
+    private lateinit var txtEmail: TextView
+    private lateinit var ed_txt_prizes_sizes: EditText
+    private lateinit var txtUbi: TextView
+    private lateinit var txtWeb: TextView
+    private lateinit var btnContactEdit: Button
+    private lateinit var imgArtist: ImageView
 
-    private var editMode : Boolean = false
+
+    private var editMode: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -129,16 +132,24 @@ class MuroFragment : Fragment() {
         storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
         myStorage = storage.getReference()
         //myStorage = FirebaseStorage.getInstance().getReference()
+        adaptador = ImagenesAdapter(view.context as AppCompatActivity, images)
 
-        fltBtnFavCamera.setOnClickListener{
+
+        fltBtnFavCamera.setOnClickListener {
             changeFavCamera()
         }
 
-        btnContactEdit.setOnClickListener{
+        btnContactEdit.setOnClickListener {
             changeContactEdit()
         }
 
-        cargarDatosArtist(view)
+        if(userMuro == null){
+            cargarDatosArtist()
+            getPost(view)
+            getImgStorage()
+            //VariablesCompartidas.usuarioArtistaVisitaMuro = userMuro
+        }
+
     }
 
 
@@ -147,30 +158,34 @@ class MuroFragment : Fragment() {
         _binding = null
         VariablesCompartidas.userArtistVisitMode = false
         VariablesCompartidas.idUserArtistVisitMode = null
+        userMuro = null
+        VariablesCompartidas.usuarioArtistaVisitaMuro = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
         VariablesCompartidas.userArtistVisitMode = false
         VariablesCompartidas.idUserArtistVisitMode = null
+        userMuro = null
+        VariablesCompartidas.usuarioArtistaVisitaMuro = null
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++
 
-    private fun cargarDatosArtist(view: View) {
-        if(VariablesCompartidas.idUserArtistVisitMode != null){
-
+    private fun cargarDatosArtist() {
+        if (VariablesCompartidas.idUserArtistVisitMode != null) {
             userMuro = VariablesCompartidas.usuarioArtistaVisitaMuro
 
-            if(userMuro!!.img != null){
+            if (userMuro!!.img != null) {
                 imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             }
 
-            if(userMuro!!.prices != null && userMuro!!.sizes != null){
-                for(price in userMuro!!.prices!!){
+            if (userMuro!!.prices != null && userMuro!!.sizes != null) {
+                for (price in userMuro!!.prices!!) {
                     val n = userMuro!!.prices!!.indexOf(price)
                     val size = userMuro!!.sizes!![n]
-                    val st = " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
+                    val st =
+                        " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
                     ed_txt_prizes_sizes.text.append(st)
                 }
             }
@@ -182,7 +197,10 @@ class MuroFragment : Fragment() {
             fltBtnFavCamera.visibility = View.VISIBLE
             checkFav()
 
-            if(VariablesCompartidas.usuarioArtistaActual != null && userMuro!!.userId!!.equals(VariablesCompartidas!!.usuarioArtistaActual!!.userId) ){
+            if (VariablesCompartidas.usuarioArtistaActual != null && userMuro!!.userId!!.equals(
+                    VariablesCompartidas!!.usuarioArtistaActual!!.userId
+                )
+            ) {
                 checkFav()
                 btnContactEdit.visibility = View.INVISIBLE
                 fltBtnFavCamera.visibility = View.INVISIBLE
@@ -190,7 +208,7 @@ class MuroFragment : Fragment() {
             }
 
         }
-        if(VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null){
+        if (VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null) {
             userMuro = VariablesCompartidas.usuarioArtistaActual
             txtUserName.setText(userMuro!!.userName.toString())
             btnContactEdit.setText(R.string.edit_muro)
@@ -199,132 +217,155 @@ class MuroFragment : Fragment() {
             imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             editMode = true
 
-            for(price in userMuro!!.prices!!){
+            for (price in userMuro!!.prices!!) {
                 val n = userMuro!!.prices!!.indexOf(price)
                 val size = userMuro!!.sizes!![n]
                 val st = " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
                 ed_txt_prizes_sizes.text.append(st)
             }
-
         }
-        refreshRV(view)
+
     }
 
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private fun refreshRV(view: View){
+
+    private fun getPost(view: View) {
         postList.clear()
         postIdList.clear()
-        imgPostList.clear()
+        images.clear()
         runBlocking {
-            val job : Job = launch(context = Dispatchers.Default) {
-                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot
+            val job: Job = launch(context = Dispatchers.Default) {
+                val datos: QuerySnapshot = getDataFromFireStore() as QuerySnapshot
                 obtenerDatos(datos as QuerySnapshot?)
             }
             job.join()
         }
-        getUserImagesStorage()
-        cargarRV(view)
+        //getUserImagesStorage()
+        //getImgStorage()
+        //cargarRV(view)
     }
-
-    private fun cargarRV(view: View){
+/*
+    private fun cargarRV(view: View) {
 
         rv = view.findViewById(R.id.rv_post_artist_muro)
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(view.context)
         miAdapter = AdapterRvPostAritstMuro(view.context as AppCompatActivity, imgPostList)
         rv.adapter = miAdapter
-
     }
+
+ */
+
+
 
 
     /*
     Buscamos los post que tenga el mismo id que el propietario del muro
      */
-    suspend fun getDataFromFireStore()  : QuerySnapshot? {
-        return try{
-            val data = db.collection("${Constantes.collectionPost}").whereEqualTo("userId",userMuro!!.userId)
+    suspend fun getDataFromFireStore(): QuerySnapshot? {
+        return try {
+            val data = db.collection("${Constantes.collectionPost}")
+                .whereEqualTo("userId", userMuro!!.userId)
                 .get()
                 .await()
             data
-        }catch (e : Exception){
+        } catch (e: Exception) {
             null
         }
     }
 
     private fun obtenerDatos(datos: QuerySnapshot?) {
-        for(dc: DocumentChange in datos?.documentChanges!!){
-            if (dc.type == DocumentChange.Type.ADDED){
+        postIdList.clear()
+        for (dc: DocumentChange in datos?.documentChanges!!) {
+            if (dc.type == DocumentChange.Type.ADDED) {
 
-                var postId : String? = null
-                if(dc.document.get("postId") != null){
+                var postId: String? = null
+                if (dc.document.get("postId") != null) {
                     postId = dc.document.get("postId").toString()
                 }
-                var userId : String? = null
-                if(dc.document.get("userId") != null){
+                var userId: String? = null
+                if (dc.document.get("userId") != null) {
                     userId = dc.document.get("userId").toString()
                 }
 
-                var imgId : String? = null
-                if(dc.document.get("imgId") != null){
+                var imgId: String? = null
+                if (dc.document.get("imgId") != null) {
                     imgId = dc.document.get("imgId").toString()
+                    postIdList.add(imgId.toString())
                 }
-                var etiquetas : ArrayList<String>? = ArrayList<String>()
-                if(dc.document.get("etiquetas") != null){
+                var etiquetas: ArrayList<String>? = ArrayList<String>()
+                if (dc.document.get("etiquetas") != null) {
                     etiquetas = dc.document.get("etiquetas") as ArrayList<String>
                 }
+                Log.d("CHE_DE","IMG ID : ${imgId}")
                 //se añaden los post a la lista
-                var post = Post(postId,userId,imgId,etiquetas)
-                if(imgId != null){
+                var post = Post(postId, userId, imgId, etiquetas)
+
+                /*
+                if (imgId != null) {
                     postList.add(post)
                     postIdList.add(imgId!!)
+
                 }
+                 */
             }
         }
     }
 
-    private fun getUserImagesStorage(){
-
-        myStorage.listAll()
+    private fun getImgStorage(){
+        adaptador.deseleccionar()
+        var img : Bitmap? = null
+        storageRef.listAll()
             .addOnSuccessListener { lista ->
                 runBlocking {
                 val job : Job = launch(context = Dispatchers.Default) {
-
                 for (i in lista.items) {
                     i.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener {
-                        val img = Utils.getBitmap(it)!!
-                        imgPostList.add(img)
-                        val ur = i.downloadUrl
-                        postIdList.add(ur.toString())
-                        Log.d("Image_i","${ur.toString()}")
-                        }.await()
+                        img = Utils.getBitmap(it)!!
+                        if(img != null){
+                            if(postIdList.contains(i.name)){
+                                images.add(Imagen(i.name, img!!))
+
+                            }
+                        }
+                    }.await()
                     }
                 }
+                //adaptador.notifyDataSetChanged()
                 job.join()
                 }
+                mostrarLista()
             }
     }
+    private fun mostrarLista() {
+        val rvImagenes = viewAux.findViewById<RecyclerView>(R.id.rv_post_artist_muro)
+        rvImagenes.setHasFixedSize(true)
+        rvImagenes.layoutManager = LinearLayoutManager(viewAux.context )
+        rvImagenes.adapter = adaptador
+    }
+
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private fun checkFav() {
-        if(VariablesCompartidas.usuarioBasicoActual != null){
+        if (VariablesCompartidas.usuarioBasicoActual != null) {
             userBasicActual = VariablesCompartidas.usuarioBasicoActual
-            if(userBasicActual!!.idFavoritos!!.contains(userMuro!!.userId)){
+            if (userBasicActual!!.idFavoritos!!.contains(userMuro!!.userId)) {
                 favorite = true
                 fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
-            }else{
+            } else {
                 favorite = false
                 fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
             }
-        }else {
+        } else {
 
             userArtistActual = VariablesCompartidas.usuarioArtistaActual
-            if(userArtistActual!!.idFavoritos!!.contains(userMuro!!.userId)){
+            if (userArtistActual!!.idFavoritos!!.contains(userMuro!!.userId)) {
                 favorite = true
                 fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
-            }else{
+            } else {
                 favorite = false
                 fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
             }
@@ -332,30 +373,30 @@ class MuroFragment : Fragment() {
     }
 
     private fun changeFavCamera() {
-        if (editMode){
+        if (editMode) {
             //subir foto en modo propietario del muro
             fileUpload()
-        }else{
+        } else {
             //cambiar fav en modo visitante del muro
-            if(VariablesCompartidas.usuarioBasicoActual != null){
+            if (VariablesCompartidas.usuarioBasicoActual != null) {
                 changeFavBasic()
-            }else{
+            } else {
                 changeFavArtist()
             }
         }
     }
 
-    private fun changeContactEdit(){
-        if(editMode){
+    private fun changeContactEdit() {
+        if (editMode) {
             //editar muro en modo propietario
-            addNewStyles()
-        }else{
+            addNewPriceSize()
+        } else {
             //contactar con el artista en modo visitante
             getChat()
         }
     }
 
-    private fun addNewStyles() {
+    private fun addNewPriceSize() {
         val dialog = layoutInflater.inflate(R.layout.add_price_size, null)
         val price = dialog.findViewById<EditText>(R.id.edPrice)
         val size = dialog.findViewById<EditText>(R.id.edSize)
@@ -363,9 +404,13 @@ class MuroFragment : Fragment() {
             .setTitle(getString(R.string.add_price_size))
             .setView(dialog)
             .setPositiveButton("OK") { view, _ ->
-                if(price.text.toString().trim().isNotEmpty() && size.text.toString().trim().isNotEmpty()){
+                if (price.text.toString().trim().isNotEmpty() && size.text.toString().trim()
+                        .isNotEmpty()
+                ) {
                     updateArtistAddPriceSize(price.text.toString(), size.text.toString())
-                    val st = " [ ${price.text.toString().toString()}€ <> ${size.text.toString().toString()}x${size.text.toString().toString()}cm ] \n"
+                    val st = " [ ${price.text.toString().toString()}€ <> ${
+                        size.text.toString().toString()
+                    }x${size.text.toString().toString()}cm ] \n"
                     ed_txt_prizes_sizes.text.append(st)
                 }
                 view.dismiss()
@@ -378,8 +423,8 @@ class MuroFragment : Fragment() {
             .show()
     }
 
-    private fun updateArtistAddPriceSize(price : String, size: String) {
-        var artistUser : ArtistUser = VariablesCompartidas.usuarioArtistaActual!!
+    private fun updateArtistAddPriceSize(price: String, size: String) {
+        var artistUser: ArtistUser = VariablesCompartidas.usuarioArtistaActual!!
         artistUser.prices!!.add(price)
         artistUser.sizes!!.add(size)
         db.collection("${Constantes.collectionArtistUser}")
@@ -387,28 +432,32 @@ class MuroFragment : Fragment() {
             .set(artistUser).addOnSuccessListener {
 
                 VariablesCompartidas.usuarioArtistaActual = artistUser
-                Toast.makeText( requireContext(), R.string.Suscesfull, Toast.LENGTH_SHORT).show()
 
-            }.addOnFailureListener{
+            }.addOnFailureListener {
                 Toast.makeText(requireContext(), R.string.ERROR, Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun savePostFirebase(img: ByteArray?){
-        val postId = UUID.randomUUID().toString()
+    private fun savePostFirebase(img: ByteArray?) {
+        var postId = UUID.randomUUID().toString()
+        val imgStId = "$stId.jpg"
         var etiquetas: ArrayList<String>? = ArrayList()
-        val post : Post = Post(postId, VariablesCompartidas.usuarioArtistaActual!!.userId, stId, etiquetas )
+        val post: Post =
+            Post(postId, VariablesCompartidas.usuarioArtistaActual!!.userId, imgStId, etiquetas)
         //guardamos la opinion en firebase
         db.collection("${Constantes.collectionPost}")
             .document(post.postId.toString()) //Será la clave del documento.
             .set(post).addOnSuccessListener {
+                cargarDatosArtist()
+                getPost(viewAux)
+                getImgStorage()
                 //Toast.makeText(this, getString(R.string.Suscesfull), Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener{
+            }.addOnFailureListener {
                 Toast.makeText(context, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun getChat(){
+    private fun getChat() {
         var existe = false
         db.collection("${Constantes.collectionChat}")
             .whereEqualTo("idUserArtist", userMuro!!.userId)
@@ -417,8 +466,8 @@ class MuroFragment : Fragment() {
                 //Existe
                 for (chat in chats) {
 
-                    var idChat : String? = null
-                    if(chat.get("idChat") != null){
+                    var idChat: String? = null
+                    if (chat.get("idChat") != null) {
                         idChat = chat.get("idChat").toString()
                     }
                     var ch = Chat(
@@ -428,36 +477,35 @@ class MuroFragment : Fragment() {
                         chat.get("idUserOther").toString(),
                         chat.get("userNameOther").toString(),
                         chat.get("date").toString()
-                        )
-                    if(ch != null){
+                    )
+                    if (ch != null) {
                         existe = true
                     }
                     var myIntent = Intent(context, ChatActivity::class.java)
-                    myIntent.putExtra("idChat",idChat)
+                    myIntent.putExtra("idChat", idChat)
                     startActivity(myIntent)
                 }
-                if(!existe){
+                if (!existe) {
                     crearChat()
                 }
             }
             .addOnFailureListener { exception ->
                 //No existe
-                Toast.makeText(context, "NO EXISTE CHAT", Toast.LENGTH_SHORT).show()
                 crearChat()
             }
     }
 
-    private fun crearChat(){
+    private fun crearChat() {
 
-        var idChat : String? = UUID.randomUUID().toString()
-        var idUserArtist : String? = userMuro!!.userId
-        var idUserOther : String? = null
-        var userNameOther : String? = null
-        val date : String? = ""
-        if(VariablesCompartidas.usuarioBasicoActual != null){
+        var idChat: String? = UUID.randomUUID().toString()
+        var idUserArtist: String? = userMuro!!.userId
+        var idUserOther: String? = null
+        var userNameOther: String? = null
+        val date: String? = ""
+        if (VariablesCompartidas.usuarioBasicoActual != null) {
             idUserOther = VariablesCompartidas.usuarioBasicoActual!!.userId.toString()
             userNameOther = VariablesCompartidas.usuarioBasicoActual!!.userName.toString()
-        }else{
+        } else {
             idUserOther = VariablesCompartidas.usuarioArtistaActual!!.userId.toString()
             userNameOther = VariablesCompartidas.usuarioArtistaActual!!.userName.toString()
         }
@@ -475,76 +523,72 @@ class MuroFragment : Fragment() {
             .set(chat)
             .addOnSuccessListener {
                 val myIntent = Intent(context, ChatActivity::class.java)
-                myIntent.putExtra("idChat",idChat)
-                myIntent.putExtra("userName",userMuro!!.userName)
+                myIntent.putExtra("idChat", idChat)
+                myIntent.putExtra("userName", userMuro!!.userName)
                 startActivity(myIntent)
 
-            }.addOnFailureListener{
-                Toast.makeText(context,R.string.ERROR , Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
             }
     }
 
     //++++++++++++++++++++++++++++++++++++++++
-    private fun changeFavArtist(){
+    private fun changeFavArtist() {
         val db = FirebaseFirestore.getInstance()
 
-        if(favorite){
+        if (favorite) {
             //SI YA LO SIGUE, LO DA UNFOLLOW
-            var userMod : ArtistUser? = userArtistActual
+            var userMod: ArtistUser? = userArtistActual
             userMod!!.idFavoritos!!.remove(userMuro!!.userId.toString())
             db.collection("${Constantes.collectionArtistUser}")
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
-                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userArtistActual = userMod
                     fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
-                }.addOnFailureListener{
+                }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
-        }else{
+        } else {
             //SI NO LO SIGUE, LO DA FOLLOW
-            var userMod : ArtistUser? = userArtistActual
+            var userMod: ArtistUser? = userArtistActual
             userMod!!.idFavoritos!!.add(userMuro!!.userId.toString())
             db.collection("${Constantes.collectionArtistUser}")
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
-                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userArtistActual = userMod
                     fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
-                }.addOnFailureListener{
+                }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
 
         }
     }
 
-    private fun changeFavBasic(){
+    private fun changeFavBasic() {
         val db = FirebaseFirestore.getInstance()
 
-        if(favorite){
+        if (favorite) {
             //SI YA LO SIGUE, LO DA UNFOLLOW
-            var userMod : BasicUser? = userBasicActual
+            var userMod: BasicUser? = userBasicActual
             userMod!!.idFavoritos!!.remove(userMuro!!.userId.toString())
             db.collection("${Constantes.collectionUser}")
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
-                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userBasicActual = userMod
                     fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
-                }.addOnFailureListener{
+                }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
-        }else{
+        } else {
             //SI NO LO SIGUE, LO DA FOLLOW
-            var userMod : BasicUser? = userBasicActual
+            var userMod: BasicUser? = userBasicActual
             userMod!!.idFavoritos!!.add(userMuro!!.userId.toString())
             db.collection("${Constantes.collectionUser}")
                 .document("${userMod!!.userId}")
                 .set(userMod!!).addOnSuccessListener {
-                    Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
                     userBasicActual = userMod
                     fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
-                }.addOnFailureListener{
+                }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
 
@@ -590,9 +634,9 @@ class MuroFragment : Fragment() {
                     val uploadTask = imageRef.putBytes(Utils.getBytes(photo!!)!!)
                     uploadTask.addOnSuccessListener {
                         //saveComentarioFirebase( Utils.getBytes(photo!!)  )
-                        val byteArray : ByteArray? = Utils.getBytes(photo!!)
-                        savePostFirebase( byteArray  )
-                        refreshRV(viewAux)
+                        val byteArray: ByteArray? = Utils.getBytes(photo!!)
+                        savePostFirebase(byteArray)
+                        //refreshRV(viewAux)
                     }.addOnFailureListener {
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                     }

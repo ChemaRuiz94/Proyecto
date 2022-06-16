@@ -1,4 +1,5 @@
 package com.chema.ptoyecto_tfg.models
 
-class Imagen {
-}
+import android.graphics.Bitmap
+
+data class Imagen(var nombre:String, var img: Bitmap)

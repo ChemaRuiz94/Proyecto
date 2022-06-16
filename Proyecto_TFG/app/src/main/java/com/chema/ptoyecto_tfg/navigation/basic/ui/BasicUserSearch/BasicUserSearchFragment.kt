@@ -159,10 +159,10 @@ class BasicUserSearchFragment : Fragment() {
         finalResult.clear()
         runBlocking {
             val job : Job = launch(context = Dispatchers.Default) {
-                var datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot //Obtenermos la colección
-                obtenerDatos(datos as QuerySnapshot?)  //'Destripamos' la colección y la metemos en nuestro ArrayList
+                var datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot
+                obtenerDatos(datos as QuerySnapshot?)
             }
-            job.join() //Esperamos a que el método acabe: https://dzone.com/articles/waiting-for-coroutines
+            job.join()
         }
         aplicarFiltros()
     }

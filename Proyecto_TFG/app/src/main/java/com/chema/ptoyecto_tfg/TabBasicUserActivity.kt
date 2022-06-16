@@ -41,9 +41,6 @@ class TabBasicUserActivity : AppCompatActivity() {
     }
 
 
-
-
-
     override fun onBackPressed() {
         AlertDialog.Builder(this)
             .setTitle("Cerrar sersion")
@@ -53,6 +50,7 @@ class TabBasicUserActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 VariablesCompartidas.usuarioBasicoActual = null
+                VariablesCompartidas.usuarioArtistaVisitaMuro = null
                 finish()
                 view.dismiss()
             }

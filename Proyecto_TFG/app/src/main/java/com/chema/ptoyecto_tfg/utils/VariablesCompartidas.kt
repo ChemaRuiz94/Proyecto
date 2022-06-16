@@ -12,6 +12,7 @@ object VariablesCompartidas {
     var usuarioArtistaVisitaMuro: ArtistUser? = null
 
     var userArtistVisitMode : Boolean = false
+    var userArtistOwner : Boolean = false
     var idUserArtistVisitMode : String? = null
 
     var marcadorActual : LatLng = LatLng(40.416, -3.703)
