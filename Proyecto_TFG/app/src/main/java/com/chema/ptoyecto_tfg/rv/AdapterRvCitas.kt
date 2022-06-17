@@ -63,15 +63,16 @@ class AdapterRvCitas (
         }
 
         holder.txt_userName.setOnClickListener{
-           goToChat(idChat,name,date)
+           goToChat(idChat,name,chat.idUserOther!!, date)
         }
 
     }
 
-    private fun goToChat(idChat: String?, userName : String?, date : String?){
+    private fun goToChat(idChat: String?, userName : String?, idOther : String , date : String?){
         val myIntent = Intent(context, ChatActivity::class.java)
         myIntent.putExtra("idChat",idChat)
         myIntent.putExtra("userName",userName)
+        myIntent.putExtra("idOther",idOther)
         myIntent.putExtra("date",date)
         context.startActivity(myIntent)
     }

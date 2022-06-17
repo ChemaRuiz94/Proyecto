@@ -16,6 +16,7 @@ import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.DatePickerFragment
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.errorprone.annotations.Var
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -34,6 +35,7 @@ class ChatActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var idChat : String? = null
     private var userName : String? = null
+    private var idOther : String? = null
     private var date : String? = null
 
     private var dateStPropuesta : String? = ""
@@ -61,9 +63,6 @@ class ChatActivity : AppCompatActivity() {
 
         cargarRV()
 
-        if(VariablesCompartidas.usuarioArtistaActual != null){
-            flt_btn_send_date.visibility = View.VISIBLE
-        }
 
         val extras = intent.extras
         if (extras == null) {
@@ -71,6 +70,7 @@ class ChatActivity : AppCompatActivity() {
         } else {
             idChat = extras.getString("idChat")
             userName = extras.getString("userName")
+            idOther = extras.getString("idOther")
             date = extras.getString("date")
             txt_userName.text = userName
             if(date!!.isNotEmpty()) {
@@ -78,6 +78,9 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
+        if(idOther == VariablesCompartidas.idUsuarioActual){
+            flt_btn_send_date.visibility = View.INVISIBLE
+        }
         getDataFromFireStore()
 
         flt_btn_sendComentario.setOnClickListener{

@@ -31,6 +31,7 @@ import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.rv.AdapterRvEtiquetas
 import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
 import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -222,20 +223,23 @@ class BasicUserSearchFragment : Fragment() {
             }
             job.join()
 
-            val job2: Job = launch(context = Dispatchers.Default) {
-                var dataPost = getDataFromDataBaseStyles()
-                for (dc: DocumentChange in dataPost.documentChanges!!) {
-                    fillFilteredStyle(dc)
+            if(etiquetas.size > 0){
+                val job2: Job = launch(context = Dispatchers.Default) {
+                    var dataPost = getDataFromDataBaseStyles()
+                    for (dc: DocumentChange in dataPost.documentChanges!!) {
+                        fillFilteredStyle(dc)
+                    }
                 }
+                job2.join()
             }
-            job2.join()
+
         }
         filterResult()
     }
 
     private fun fillListFiltered(dc: DocumentChange){
 
-        val fav = ArtistUser(
+        val art = ArtistUser(
             dc.document.get("userId").toString(),
             dc.document.get("userName").toString(),
             dc.document.get("email").toString(),
@@ -249,7 +253,10 @@ class BasicUserSearchFragment : Fragment() {
             dc.document.get("latitudUbicacion").toString().toDouble(),
             dc.document.get("longitudUbicacion").toString().toDouble()
         )
-        result.add(fav)
+        //no mostraremos el usuario actual en la lista
+        if(!art.userId.toString().equals(VariablesCompartidas.idUsuarioActual)){
+            result.add(art)
+        }
     }
 
     private fun showResults() {
@@ -368,7 +375,7 @@ class BasicUserSearchFragment : Fragment() {
         }
 
         if (size.isNotEmpty()) {
-            applyFilterSize(artistUser, price)
+            applyFilterSize(artistUser, size)
             return
         }
 

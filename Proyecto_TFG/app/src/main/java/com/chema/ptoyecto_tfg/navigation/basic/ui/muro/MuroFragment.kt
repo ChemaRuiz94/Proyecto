@@ -167,7 +167,9 @@ class MuroFragment : Fragment() {
         VariablesCompartidas.idUserArtistVisitMode = null
         userMuro = null
         VariablesCompartidas.usuarioArtistaVisitaMuro = null
-        ArtistMuroConatinerActivity.fa!!.finish()
+        if (ArtistMuroConatinerActivity.fa != null) {
+            ArtistMuroConatinerActivity.fa!!.finish()
+        }
     }
 
     override fun onDestroy() {
@@ -176,7 +178,9 @@ class MuroFragment : Fragment() {
         VariablesCompartidas.idUserArtistVisitMode = null
         userMuro = null
         VariablesCompartidas.usuarioArtistaVisitaMuro = null
-        ArtistMuroConatinerActivity.fa!!.finish()
+        if (ArtistMuroConatinerActivity.fa != null) {
+            ArtistMuroConatinerActivity.fa!!.finish()
+        }
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++
@@ -423,37 +427,38 @@ class MuroFragment : Fragment() {
 
 
     private fun getChat() {
+        var existe = false
         db.collection("${Constantes.collectionChat}")
             .whereEqualTo("idUserArtist", userMuro!!.userId)
             .get()
             .addOnSuccessListener { chats ->
                 //No existen chats
-                if (chats.isEmpty) {
-                    crearChat()
-                } else {
-                    for (chat in chats) {
 
-                        var idChat: String? = null
-                        if (chat.get("idChat") != null) {
-                            idChat = chat.get("idChat").toString()
-                        }
-                        var ch = Chat(
-                            chat.get("idChat").toString(),
-                            chat.get("idUserArtist").toString(),
-                            chat.get("userNameArtist").toString(),
-                            chat.get("idUserOther").toString(),
-                            chat.get("userNameOther").toString(),
-                            chat.get("date").toString()
-                        )
-                        if (ch.idUserOther!!.toString() == VariablesCompartidas.idUsuarioActual) {
-                            var myIntent = Intent(context, ChatActivity::class.java)
-                            myIntent.putExtra("idChat", idChat)
-                            myIntent.putExtra("userName", ch.userNameArtist)
-                            myIntent.putExtra("date", ch.date)
-                            startActivity(myIntent)
-                        }
+                for (chat in chats) {
 
+                    var idChat: String? = null
+                    if (chat.get("idChat") != null) {
+                        idChat = chat.get("idChat").toString()
                     }
+                    var ch = Chat(
+                        chat.get("idChat").toString(),
+                        chat.get("idUserArtist").toString(),
+                        chat.get("userNameArtist").toString(),
+                        chat.get("idUserOther").toString(),
+                        chat.get("userNameOther").toString(),
+                        chat.get("date").toString()
+                    )
+                    if (ch.idUserOther!!.toString() == VariablesCompartidas.idUsuarioActual) {
+                        existe = true
+                        var myIntent = Intent(context, ChatActivity::class.java)
+                        myIntent.putExtra("idChat", idChat)
+                        myIntent.putExtra("userName", ch.userNameArtist)
+                        myIntent.putExtra("date", ch.date)
+                        startActivity(myIntent)
+                    }
+                }
+                if (!existe) {
+                    crearChat()
                 }
             }
     }
@@ -464,7 +469,7 @@ class MuroFragment : Fragment() {
         var idUserArtist: String? = userMuro!!.userId
         var idUserOther: String? = null
         var userNameOther: String? = null
-        val date: String? = ""
+        val date: String? = "No date yet"
         if (VariablesCompartidas.usuarioBasicoActual != null) {
             idUserOther = VariablesCompartidas.usuarioBasicoActual!!.userId.toString()
             userNameOther = VariablesCompartidas.usuarioBasicoActual!!.userName.toString()
@@ -488,6 +493,7 @@ class MuroFragment : Fragment() {
                 val myIntent = Intent(context, ChatActivity::class.java)
                 myIntent.putExtra("idChat", idChat)
                 myIntent.putExtra("date", date)
+                myIntent.putExtra("idOther", idUserOther)
                 myIntent.putExtra("userName", userMuro!!.userName)
                 startActivity(myIntent)
 
@@ -510,6 +516,7 @@ class MuroFragment : Fragment() {
                     userArtistActual = userMod
                     VariablesCompartidas.usuarioArtistaActual = userArtistActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
+                    favorite = false
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
@@ -523,6 +530,7 @@ class MuroFragment : Fragment() {
                     userArtistActual = userMod
                     VariablesCompartidas.usuarioArtistaActual = userArtistActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
+                    favorite = true
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
@@ -543,6 +551,7 @@ class MuroFragment : Fragment() {
                     userBasicActual = userMod
                     VariablesCompartidas.usuarioBasicoActual = userBasicActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_unfavorite)
+                    favorite = false
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
@@ -556,6 +565,7 @@ class MuroFragment : Fragment() {
                     userBasicActual = userMod
                     VariablesCompartidas.usuarioBasicoActual = userBasicActual
                     fltBtnFavCamera.setImageResource(R.drawable.ic_favorite)
+                    favorite = true
                 }.addOnFailureListener {
                     Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
                 }
