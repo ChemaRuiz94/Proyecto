@@ -18,7 +18,12 @@
     <string name="cif">CIF</string>
     <string name="pwd">Password</string>
     <string name="pwdRepeat">Repeat Password</string>
+    <string name="web">Web site</string>
+    <string name="contact">Contact</string>
+    <string name="edit_muro">Edit</string>
     <string name="selectLocation">Your Studio´s location</string>
+    <string name="add_post">POST</string>
+    <string name="add_style">Add Style..</string>
 
 
     <string name="saveEdit">Save edit</string>
@@ -35,7 +40,11 @@
     <string name="phoneNotCorrect">Phone not correct</string>
     <string name="select_studio_location">Select studio location</string>
     <string name="select_this_location">Select this location?</string>
-    <string name="changePassword">Change Password</string>s
+    <string name="changePassword">Change Password</string>
+    <string name="del_acount">Delete your Acount?</string>
+    <string name="delete">DELETE</string>
+    <string name="del_user">Delete User</string>
+    <string name="add_price_size">Add price and size</string>
 
 
     <string name="YES">YES</string>
@@ -52,6 +61,7 @@
     <string name="accept_permissions">accept permissions</string>
 
     <string name="title_activity_basic_user_nav_draw">BasicUserNavDrawActivity</string>
+    <string name="title_activity_artist_user_nav_draw">ArtistUserNavDrawActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -61,15 +71,18 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
+    <string name="menu_favorites">Favorites</string>
 
     <string name="menu_my_profile">My profile</string>
+    <string name="menu_citas">Dates</string>
     <string name="menu_search">Search</string>
     <string name="menu_muro">Muro</string>
+    <string name="menu_log_out">Log Out</string>
+    <string name="menu_delete_user">Delete my profile</string>
 
     <string name="change_password">Change password</string>
 
+    <string name="date">Date </string>
     <string name="search">Search</string>
     <string name="map_mode">Map mode</string>
     <string name="list_mode">List mode</string>
@@ -78,13 +91,21 @@
     <string name="max_price">Max. prcie</string>
     <string name="max_distance">Max. distance</string>
     <string name="cm">cm</string>
-    <string name="km">Km</string>d
-    <string name="price">€</string>d
+    <string name="km">Km</string>
+    <string name="price">€</string>
+    <string name="add_price">Add price</string>
+    <string name="add_size">Add size</string>
     <string name="search_by_name">Search by name...</string>
     <string name="title_activity_select_studio_maps">SelectStudioMapsActivity</string>
 
     <string name="satellite_mode">Satellite Mode</string>
     <string name="normal_mode">Normal Mode</string>
     <string name="hybrid_mode">Hybrid Mode</string>
+    <string name="title_activity_tab_basic_user">TabBasicUserActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_search_result_maps">SearchResultMapsActivity</string>
+
+    <string name="remove_tag">¿Quieres eliminar el tag?</string>
 
 </resources>

@@ -22,6 +22,7 @@ import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.activities.LoginActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentBasicUserProfileBinding
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Constantes
@@ -36,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.lang.Exception
 
 class BasicUserProfileFragment  : Fragment() {
     private lateinit var auth: FirebaseAuth
@@ -57,6 +59,7 @@ class BasicUserProfileFragment  : Fragment() {
     lateinit var edTxtBasicUserName : EditText
     lateinit var edTxtBasicUserEmail : EditText
     lateinit var edTxtBasicUserPhone : EditText
+    lateinit var txt_del_basic_user : TextView
     lateinit var btn_enable_edit : FloatingActionButton
     lateinit var btn_change_pwd : Button
 
@@ -87,6 +90,7 @@ class BasicUserProfileFragment  : Fragment() {
         edTxtBasicUserName = view.findViewById(R.id.ed_txt_userName_basic_profile)
         edTxtBasicUserEmail = view.findViewById(R.id.ed_txt_email_basic_profile)
         edTxtBasicUserPhone = view.findViewById(R.id.ed_txt_phone_basic_profile)
+        txt_del_basic_user = view.findViewById(R.id.txt_del_basic_user)
         btn_enable_edit = view.findViewById(R.id.flt_btn_edit_basic_user_profile)
         btn_change_pwd = view.findViewById(R.id.btn_change_password_basic_profile)
 
@@ -100,6 +104,10 @@ class BasicUserProfileFragment  : Fragment() {
 
         btn_change_pwd.setOnClickListener{
             changePwd()
+        }
+
+        txt_del_basic_user.setOnClickListener{
+            checkEliminar(VariablesCompartidas.usuarioBasicoActual!!)
         }
 
         cargarDatosUser()
@@ -148,6 +156,7 @@ class BasicUserProfileFragment  : Fragment() {
             edTxtBasicUserPhone.isEnabled = false
             edTxtBasicUserEmail.isEnabled = false
             btn_change_pwd.visibility = View.INVISIBLE
+            txt_del_basic_user.visibility = View.INVISIBLE
             editMode = false
         }else{
             btn_enable_edit.setImageResource(R.drawable.ic_save)
@@ -156,6 +165,7 @@ class BasicUserProfileFragment  : Fragment() {
             edTxtBasicUserPhone.isEnabled = true
             edTxtBasicUserEmail.isEnabled = true
             btn_change_pwd.visibility = View.VISIBLE
+            txt_del_basic_user.visibility = View.VISIBLE
             editMode = true
         }
     }
@@ -180,19 +190,32 @@ class BasicUserProfileFragment  : Fragment() {
             .show()
     }
 
-    fun editar(){
 
-        if(edTxtBasicUserEmail.text.trim().isNotEmpty() && edTxtBasicUserPhone.text.trim().isNotEmpty() && edTxtBasicUserName.text.trim().isNotEmpty()){
+    private fun checkEliminar(usuario: BasicUser) {
+        AlertDialog.Builder(requireContext()).setTitle(R.string.del_acount)
+            .setPositiveButton(R.string.delete) { view, _ ->
+                val db = FirebaseFirestore.getInstance()
+                db.collection("${Constantes.collectionUser}").document("${usuario.userId}").delete()
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                startActivity(intent)
+                VariablesCompartidas.usuarioBasicoActual = null
+                Toast.makeText(context, R.string.Suscesfull, Toast.LENGTH_SHORT).show()
+                view.dismiss()
+            }.setNegativeButton(R.string.Cancel) { view, _ ->//cancela
+                view.dismiss()
+            }.create().show()
+    }
+
+    private fun editar(){
+
+        if(edTxtBasicUserEmail.text.trim().isNotEmpty() && edTxtBasicUserPhone.text.trim().isNotEmpty() && edTxtBasicUserName.text.trim().isNotEmpty() && Utils.checkMovil(edTxtBasicUserPhone.text.toString().trim())){
 
             var email_mod = edTxtBasicUserEmail.text.toString().trim()
             var userName_mod = edTxtBasicUserName.text.toString().trim()
             var phone_mod = edTxtBasicUserPhone.text.toString().trim().toInt()
 
-
             photo = imgUsuarioPerfil.drawToBitmap()
             val imgST = Utils.ImageToString(photo!!)
-
-
             var basicUser = BasicUser(basciUserActual.userId,userName_mod,email_mod,phone_mod,imgST,basciUserActual.rol,basciUserActual.idFavoritos)
 
 
@@ -200,25 +223,8 @@ class BasicUserProfileFragment  : Fragment() {
                 .document(VariablesCompartidas.usuarioBasicoActual!!.userId.toString()) //Será la clave del documento.
                 .set(basicUser).addOnSuccessListener {
 
-                    //val us : User = user as User
-
-                    Log.i("profile", currentUser.email.toString())
                     VariablesCompartidas.usuarioBasicoActual = basciUserActual
-
                     currentUser!!.updateEmail(basicUser.email.toString())
-
-                    val navigationView: NavigationView =
-                        (context as AppCompatActivity).findViewById(R.id.nav_view)
-                    val header: View = navigationView.getHeaderView(0)
-                    val imgHe = header.findViewById<ImageView>(R.id.image_basic_user_header)
-                    val nameHead = header.findViewById<TextView>(R.id.txt_userName_header)
-                    val emailHead = header.findViewById<TextView>(R.id.txt_userEmail_header)
-
-                    imgHe.setImageBitmap(photo)
-                    nameHead.text = basicUser.userName
-                    emailHead.text = basicUser.email
-
-                    Toast.makeText( requireContext(), R.string.Suscesfull, Toast.LENGTH_SHORT).show()
 
                 }.addOnFailureListener{
                     Toast.makeText(requireContext(), R.string.ERROR, Toast.LENGTH_SHORT).show()

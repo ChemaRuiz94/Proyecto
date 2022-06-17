@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
@@ -53,7 +54,6 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var btnSelectStudio: Button
 
     private var ubiActual : LatLng? = LatLng(40.416, -3.703)
-    private var ubicacionCambiada = false
     private var latitudStudio : Double? = null
     private var longitudStudio: Double? = null
     private var photo: Bitmap? = null
@@ -102,7 +102,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if(checkPwdIguales()){
 
-                if(checkMovil(edTxtArtistPhone.text.toString().trim())){
+                if(Utils.checkMovil(edTxtArtistPhone.text.toString().trim())){
 
                     if(latitudStudio != null && longitudStudio != null){
                         //SIGN UP
@@ -158,20 +158,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
         return false
     }
 
-    /*
-    * Comprueba si el numero de telefono es correcto
-    */
-    private fun checkMovil(target: CharSequence?): Boolean {
-        return if (target == null) {
-            false
-        } else {
-            if (target.length < 6 || target.length > 13) {
-                false
-            } else {
-                Patterns.PHONE.matcher(target).matches()
-            }
-        }
-    }
+
 
     /*
    Comprobar si se puede crear el usuario en Firebase
@@ -196,35 +183,36 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
         val id = UUID.randomUUID().toString()
         val rol = Rol(1,"${Constantes.rolArtistUser}")
         var listRoles : ArrayList<Rol> = ArrayList()
+        var prices : ArrayList<String>? = ArrayList()
+        var sizes : ArrayList<String>? = ArrayList()
         listRoles.add(rol)
         var listIdFavoritos : ArrayList<String> = ArrayList()
         val cif = edTxtArtistCif.text.toString()
-        var img : String? = null
+        var img : String? = ""
         if(photo != null){
-            img = photoSt
-        }
+            img = photoSt        }
 
         var userName = edTxtArtistUserName.text.toString()
         var phone = edTxtArtistPhone.text.toString().toInt()
 
-        //var user = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
         var user = hashMapOf(
             "userId" to id,
             "userName" to userName,
             "email" to email,
             "phone" to phone,
             "img" to img,
-            "listRoles" to listRoles,
-            "listIdFavoritos" to listIdFavoritos,
+            "rol" to listRoles,
+            "idFavoritos" to listIdFavoritos,
+            "prices" to prices,
+            "sizes" to sizes,
             "cif" to cif,
             "latitudUbicacion" to latitudStudio,
             "longitudUbicacion" to longitudStudio
-
         )
 
-        var u = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
-        VariablesCompartidas.usuarioBasicoActual = u
-
+        var u = ArtistUser(id,userName,email,phone,img,listRoles,listIdFavoritos,prices,sizes,cif,latitudStudio,longitudStudio)
+        VariablesCompartidas.usuarioArtistaActual = u
+        VariablesCompartidas.idUsuarioActual = u.userId
         db.collection("${Constantes.collectionArtistUser}")
             .document(id)
             .set(user)
@@ -321,7 +309,6 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
                     longitudStudio = VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble()
 
                     ubiActual = LatLng(latitudStudio!!,longitudStudio!!)
-                    ubicacionCambiada = true
 
                     val ubi = LatLng(VariablesCompartidas.latitudStudioSeleccionado.toString().toDouble(), VariablesCompartidas.longitudStudioSeleccionado.toString().toDouble())
                     mMap?.clear()

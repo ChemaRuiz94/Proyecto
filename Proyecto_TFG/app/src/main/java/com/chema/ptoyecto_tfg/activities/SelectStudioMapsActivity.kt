@@ -54,9 +54,15 @@ class SelectStudioMapsActivity : AppCompatActivity(), OnMapReadyCallback, Google
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
-        val Madrid = LatLng(40.416, -3.703)
-        mMap?.addMarker(MarkerOptions().position(Madrid).title("SELECT STUDIO LOCATION"))
-        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(Madrid,10f))
+        var ubi : LatLng = LatLng(40.416, -3.703)
+        var stUbi : String = getString(R.string.select_studio_location)
+
+        if(VariablesCompartidas.usuarioArtistaActual != null){
+            ubi = LatLng(VariablesCompartidas.usuarioArtistaActual!!.latitudUbicacion!!,VariablesCompartidas.usuarioArtistaActual!!.longitudUbicacion!!)
+            stUbi = VariablesCompartidas.usuarioArtistaActual!!.userName!!
+        }
+        mMap?.addMarker(MarkerOptions().position(ubi).title(stUbi))
+        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(ubi,10f))
 
         mMap.setOnMapClickListener(this)
         mMap.setOnMarkerClickListener(this)

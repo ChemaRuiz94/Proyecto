@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
+import com.chema.ptoyecto_tfg.TabBasicUserActivity
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
@@ -90,7 +91,7 @@ class SignUpBasicActivity : AppCompatActivity() {
             if(checkPwdIguales()){
 
                 //comprueba si el formato de numero de telefono es correcto
-                if(checkMovil(edTxtPhoneSignUpUser.text.trim())){
+                if(Utils.checkMovil(edTxtPhoneSignUpUser.text.trim())){
 
                     checkFirebaseAuth()
 
@@ -140,21 +141,6 @@ class SignUpBasicActivity : AppCompatActivity() {
     }
 
     /*
-    * Comprueba si el numero de telefono es correcto
-     */
-    private fun checkMovil(target: CharSequence?): Boolean {
-        return if (target == null) {
-            false
-        } else {
-            if (target.length < 6 || target.length > 13) {
-                false
-            } else {
-                Patterns.PHONE.matcher(target).matches()
-            }
-        }
-    }
-
-    /*
     Comprobar si se puede crear el usuario en Firebase
      */
     private fun checkFirebaseAuth(){
@@ -191,18 +177,20 @@ class SignUpBasicActivity : AppCompatActivity() {
             "email" to email,
             "phone" to phone,
             "img" to img,
-            "listRoles" to listRoles,
-            "listIdFavoritos" to listIdFavoritos
+            "rol" to listRoles,
+            "idFavoritos" to listIdFavoritos
         )
 
         var u = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
         VariablesCompartidas.usuarioBasicoActual = u
+        VariablesCompartidas.idUsuarioActual = u.userId
+        VariablesCompartidas.usuarioArtistaActual = null
 
         db.collection("${Constantes.collectionUser}")
             .document(id)
             .set(user)
             .addOnSuccessListener {
-                val myIntent = Intent(this,BasicUserNavDrawActivity::class.java)
+                val myIntent = Intent(this, TabBasicUserActivity::class.java)
                 startActivity(myIntent)
 
                 //Toast.makeText(this,"GO MAIN", Toast.LENGTH_SHORT).show()

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Patterns
 import androidx.appcompat.app.AlertDialog
 import com.chema.ptoyecto_tfg.R
 import java.io.ByteArrayOutputStream
@@ -34,6 +35,16 @@ object Utils {
         return imageString
     }
 
+    fun getBytes(bitmap: Bitmap): ByteArray? {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream)
+        return stream.toByteArray()
+    }
+
+    fun getBitmap(image: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(image, 0, image.size)
+    }
+
     fun getBitmapFromURL(src: String?): Bitmap? {
         return try {
             val url = URL(src)
@@ -54,6 +65,23 @@ object Utils {
         builder.setPositiveButton((R.string.aceptar),null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+
+
+    /*
+   * Comprueba si el numero de telefono es correcto
+   */
+    fun checkMovil(target: CharSequence?): Boolean {
+        return if (target == null) {
+            false
+        } else {
+            if (target.length < 6 || target.length > 13) {
+                false
+            } else {
+                Patterns.PHONE.matcher(target).matches()
+            }
+        }
     }
 
 }
