@@ -14,20 +14,27 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.activities.ListResutlActivity
 import com.chema.ptoyecto_tfg.activities.SearchResultMapsActivity
 import com.chema.ptoyecto_tfg.activities.SelectStudioMapsActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentBasicUserSearchBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
+import com.chema.ptoyecto_tfg.models.Post
 import com.chema.ptoyecto_tfg.models.Rol
+import com.chema.ptoyecto_tfg.rv.AdapterRvEtiquetas
+import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -58,13 +65,21 @@ class BasicUserSearchFragment : Fragment() {
     private lateinit var ed_txt_max_distance: EditText
     private lateinit var ed_txt_max_price: EditText
     private lateinit var ed_txt_max_size: EditText
+    private lateinit var ed_txt_new_style: EditText
+    private lateinit var txt_styles_search: EditText
     private lateinit var rd_btn_list_mode: RadioButton
     private lateinit var rd_btn_map_mode: RadioButton
-    private var resultModeInList: Boolean = true
+    private lateinit var flt_btn_new_style: FloatingActionButton
 
     private var result: ArrayList<ArtistUser> = ArrayList()
     private var removeList: ArrayList<ArtistUser> = ArrayList()
     private var finalResult: ArrayList<ArtistUser> = ArrayList()
+    private var etiquetas: ArrayList<String> = ArrayList()
+    private var postsResult: ArrayList<Post> = ArrayList()
+
+
+    private lateinit var rv : RecyclerView
+    private lateinit var miAdapter: AdapterRvEtiquetas
 
 
     override fun onCreateView(
@@ -91,22 +106,39 @@ class BasicUserSearchFragment : Fragment() {
         ed_txt_max_distance = view.findViewById(R.id.ed_txt_max_distance)
         ed_txt_max_price = view.findViewById(R.id.ed_txt_max_price)
         ed_txt_max_size = view.findViewById(R.id.ed_txt_max_size)
+        ed_txt_new_style = view.findViewById(R.id.ed_txt_new_style)
         rd_btn_list_mode = view.findViewById(R.id.rd_btn_list_mode)
         rd_btn_map_mode = view.findViewById(R.id.rd_btn_map_mode)
+        flt_btn_new_style = view.findViewById(R.id.flt_btn_new_style)
+
+        cargarRV(view)
 
         getMyLocation()
 
+        flt_btn_new_style.setOnClickListener{
+            addTag()
+        }
         btn_search.setOnClickListener {
             applyFilters()
         }
 
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
     //++++++++++++++++++++++++++++++++++++++++++++++++
+
+    private fun cargarRV(view: View){
+
+        rv = view.findViewById(R.id.rv_etiquetas)
+        rv.setHasFixedSize(true)
+        rv.layoutManager = LinearLayoutManager(view.context)
+        miAdapter = AdapterRvEtiquetas(context as AppCompatActivity, etiquetas)
+        rv.adapter = miAdapter
+    }
 
     private fun getMyLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -154,6 +186,20 @@ class BasicUserSearchFragment : Fragment() {
 
     //++++++++++++++++++++++++++++++++++++++++++++++++
 
+    private suspend fun getDataFromDataBaseStyles(): QuerySnapshot {
+        postsResult.clear()
+        etiquetas = miAdapter.getTags()
+
+        try {
+            return db.collection("${Constantes.collectionPost}")
+                .whereArrayContainsAny("etiquetas", etiquetas)
+                .get()
+                .await()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
     private suspend fun getDataFromDataBase(): QuerySnapshot {
         result.clear()
         removeList.clear()
@@ -175,6 +221,14 @@ class BasicUserSearchFragment : Fragment() {
                 }
             }
             job.join()
+
+            val job2: Job = launch(context = Dispatchers.Default) {
+                var dataPost = getDataFromDataBaseStyles()
+                for (dc: DocumentChange in dataPost.documentChanges!!) {
+                    fillFilteredStyle(dc)
+                }
+            }
+            job2.join()
         }
         filterResult()
     }
@@ -255,6 +309,7 @@ class BasicUserSearchFragment : Fragment() {
         }
         removeList.add(artistUser)
     }
+
     private fun applyFilterSize(artistUser: ArtistUser, textSize: String) {
         val sizes = artistUser.sizes!!
         for (size in sizes) {
@@ -264,6 +319,37 @@ class BasicUserSearchFragment : Fragment() {
         }
         removeList.add(artistUser)
     }
+
+    private fun applyFilterStyles(artistUser: ArtistUser){
+        for(post in postsResult){
+            if(post.userId.equals(artistUser.userId)){
+                return
+            }
+        }
+        removeList.add(artistUser)
+    }
+
+
+    private fun addTag() {
+        val tag = ed_txt_new_style.text.toString().trim()
+
+        if (tag.isNotEmpty()) {
+            miAdapter.addTag(tag)
+            ed_txt_new_style.setText("")
+        }
+    }
+
+    private fun fillFilteredStyle(dc: DocumentChange) {
+        val po = Post(
+            dc.document.get("postId").toString(),
+            dc.document.get("userId").toString(),
+            dc.document.get("imgId").toString(),
+            dc.document.get("etiquetas") as ArrayList<String>?
+        )
+
+        postsResult.add(po)
+    }
+
 
     private fun checkAllEmpty(artistUser: ArtistUser) {
         val name = ed_txt_search_by_name.text.toString().trim().lowercase()
@@ -290,7 +376,13 @@ class BasicUserSearchFragment : Fragment() {
             applyFilterPrice(artistUser, price)
             return
         }
+
+        if(miAdapter.itemCount > 0){
+            applyFilterStyles(artistUser)
+            return
+        }
     }
+
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

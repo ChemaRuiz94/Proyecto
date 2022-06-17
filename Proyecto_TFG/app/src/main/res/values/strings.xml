@@ -106,4 +106,6 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_search_result_maps">SearchResultMapsActivity</string>
 
+    <string name="remove_tag">¿Quieres eliminar el tag?</string>
+
 </resources>

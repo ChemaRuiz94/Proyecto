@@ -194,14 +194,15 @@
         app:layout_constraintVertical_bias="0.456" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_style"
-        android:layout_width="371dp"
-        android:layout_height="205dp"
+        android:id="@+id/rv_etiquetas"
+        android:layout_width="384dp"
+        android:layout_height="192dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.407"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.692" />
+        app:layout_constraintVertical_bias="0.699" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/flt_btn_new_style"
