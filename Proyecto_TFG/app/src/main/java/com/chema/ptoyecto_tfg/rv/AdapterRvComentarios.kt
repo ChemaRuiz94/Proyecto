@@ -51,6 +51,11 @@ class AdapterRvComentarios  (
         }
     }
 
+    fun addComentario(comentario: Comentario){
+        opiniones.add(comentario)
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val ed_txt_multiline_comentario = view.findViewById<EditText>(R.id.ed_txt_multiline_comentario)

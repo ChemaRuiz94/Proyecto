@@ -59,6 +59,8 @@ class ChatActivity : AppCompatActivity() {
         flt_btn_sendComentario = findViewById(R.id.flt_btn_sendComentario)
         flt_btn_send_date = findViewById(R.id.flt_btn_send_date)
 
+        cargarRV()
+
         if(VariablesCompartidas.usuarioArtistaActual != null){
             flt_btn_send_date.visibility = View.VISIBLE
         }
@@ -76,20 +78,13 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-        runBlocking {
-            val job : Job = launch(context = Dispatchers.Default) {
-                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot
-                obtenerDatos(datos as QuerySnapshot?)
-            }
-            job.join()
-        }
+        getDataFromFireStore()
 
         flt_btn_sendComentario.setOnClickListener{
             val text  = ed_txt_comentario.text.toString()
             if(text.trim().isNotEmpty()){
                 //guarda el comentario a firebase
                 saveComentarioFirebase(crearComentario(text))
-                refreshRV()
             }
         }
 
@@ -100,15 +95,20 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    suspend fun getDataFromFireStore()  : QuerySnapshot? {
-        return try{
-            val data = db.collection("${Constantes.collectionComentario}")
+    fun getDataFromFireStore()  {
+        try{
+            db.collection("${Constantes.collectionComentario}")
                 .whereEqualTo("idChat",idChat)
-                .get()
-                .await()
-            data
+                .addSnapshotListener { snapshots, e ->
+                    if (e != null) {
+                        Toast.makeText(this, R.string.ERROR, Toast.LENGTH_SHORT).show()
+                        return@addSnapshotListener
+                    }
+                    obtenerDatos(snapshots)
+                }
         }catch (e : Exception){
-            null
+            Toast.makeText(this, R.string.ERROR, Toast.LENGTH_SHORT).show()
+            throw e
         }
     }
 
@@ -152,7 +152,10 @@ class ChatActivity : AppCompatActivity() {
                     dc.document.get("mesComentario").toString().toInt(),
                     dc.document.get("yearComentario").toString().toInt()
                 )
-                comentariosList.add(com)
+//                comentariosList.add(com)
+                miAdapter.addComentario(com)
+                rv.scrollToPosition(miAdapter.itemCount - 1)
+
             }
         }
     }
@@ -168,7 +171,7 @@ class ChatActivity : AppCompatActivity() {
                         sendDate()
                     }
                 }
-
+//                miAdapter.addComentario(coment)
                 ed_txt_comentario.setText("")
             }.addOnFailureListener{
                 Toast.makeText(this, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
@@ -222,18 +225,10 @@ class ChatActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
         miAdapter = AdapterRvComentarios(this, comentariosOrdenados)
         rv.adapter = miAdapter
+        //scroll to bottom
     }
 
     private fun refreshRV(){
-
-        runBlocking {
-            val job : Job = launch(context = Dispatchers.Default) {
-                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot
-                obtenerDatos(datos as QuerySnapshot?)
-            }
-
-            job.join()
-        }
         comentariosOrdenados.clear()
         comentariosOrdenados =  ordenarComentarios()
         cargarRV()
