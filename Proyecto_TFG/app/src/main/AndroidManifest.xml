@@ -16,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ptoyecto_TFG">
         <activity
+            android:name=".activities.SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".rv.AdapterRvEtiquetas"
             android:exported="true" />
         <activity
@@ -60,7 +69,6 @@
             android:exported="true"
             android:label="@string/title_activity_basic_user_nav_draw"
             android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />
-
         <activity
             android:name=".activities.SignUpArtistActivity"
             android:exported="true" />
