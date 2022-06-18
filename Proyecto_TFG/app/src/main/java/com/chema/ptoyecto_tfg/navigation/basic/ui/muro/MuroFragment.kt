@@ -428,38 +428,50 @@ class MuroFragment : Fragment() {
 
     private fun getChat() {
         var existe = false
-        db.collection("${Constantes.collectionChat}")
-            .whereEqualTo("idUserArtist", userMuro!!.userId)
-            .get()
-            .addOnSuccessListener { chats ->
-                //No existen chats
-                for (chat in chats) {
 
-                    var idChat: String? = null
-                    if (chat.get("idChat") != null) {
-                        idChat = chat.get("idChat").toString()
+        runBlocking {
+            val job: Job = launch(context = Dispatchers.Default) {
+                db.collection("${Constantes.collectionChat}")
+                    .whereEqualTo("idUserArtist", userMuro!!.userId)
+                    .get()
+                    .addOnSuccessListener { chats ->
+                        //No existen chats
+                        for (chat in chats) {
+
+                            var idChat: String? = null
+                            if (chat.get("idChat") != null) {
+                                idChat = chat.get("idChat").toString()
+                            }
+                            var ch = Chat(
+                                chat.get("idChat").toString(),
+                                chat.get("idUserArtist").toString(),
+                                chat.get("userNameArtist").toString(),
+                                chat.get("idUserOther").toString(),
+                                chat.get("userNameOther").toString(),
+                                chat.get("date").toString()
+                            )
+                            if (ch.idUserOther!!.toString() == VariablesCompartidas.idUsuarioActual) {
+                                existe = true
+                                var myIntent = Intent(context, ChatActivity::class.java)
+                                myIntent.putExtra("idChat", idChat)
+                                myIntent.putExtra("userName", ch.userNameArtist)
+                                myIntent.putExtra("date", ch.date)
+                                startActivity(myIntent)
+                            }
+                        }
+                        if (!existe) {
+                            crearChat()
+                        }
+                    }.addOnFailureListener{
+                        if (!existe) {
+                            crearChat()
+                        }
                     }
-                    var ch = Chat(
-                        chat.get("idChat").toString(),
-                        chat.get("idUserArtist").toString(),
-                        chat.get("userNameArtist").toString(),
-                        chat.get("idUserOther").toString(),
-                        chat.get("userNameOther").toString(),
-                        chat.get("date").toString()
-                    )
-                    if (ch.idUserOther!!.toString() == VariablesCompartidas.idUsuarioActual) {
-                        existe = true
-                        var myIntent = Intent(context, ChatActivity::class.java)
-                        myIntent.putExtra("idChat", idChat)
-                        myIntent.putExtra("userName", ch.userNameArtist)
-                        myIntent.putExtra("date", ch.date)
-                        startActivity(myIntent)
-                    }
-                }
-                if (!existe) {
-                    crearChat()
-                }
             }
+            job.join()
+        }
+
+
     }
 
     private fun crearChat() {

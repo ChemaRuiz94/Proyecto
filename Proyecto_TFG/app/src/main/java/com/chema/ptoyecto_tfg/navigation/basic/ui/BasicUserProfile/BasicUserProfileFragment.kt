@@ -46,6 +46,7 @@ class BasicUserProfileFragment  : Fragment() {
 
     lateinit var basciUserActual : BasicUser
     private var photo: Bitmap? = null
+    private var photoSt: String? = null
 
     private lateinit var basicUserProfileViewModel: BasicUserProfileViewModel
     private var _binding: FragmentBasicUserProfileBinding? = null
@@ -110,6 +111,7 @@ class BasicUserProfileFragment  : Fragment() {
             checkEliminar(VariablesCompartidas.usuarioBasicoActual!!)
         }
 
+
         cargarDatosUser()
     }
 
@@ -118,13 +120,17 @@ class BasicUserProfileFragment  : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        cargarDatosUser()
+    }
+
     //++++++++++++++++++++++++++++++++++++++++++++++++++
     /*
     Cargar los datos del usuario
      */
     fun cargarDatosUser(){
         basciUserActual = VariablesCompartidas.usuarioBasicoActual as BasicUser
-
         edTxtBasicUserName.apply {
             text.clear()
             append(basciUserActual.userName)
@@ -223,7 +229,7 @@ class BasicUserProfileFragment  : Fragment() {
                 .document(VariablesCompartidas.usuarioBasicoActual!!.userId.toString()) //Será la clave del documento.
                 .set(basicUser).addOnSuccessListener {
 
-                    VariablesCompartidas.usuarioBasicoActual = basciUserActual
+                    VariablesCompartidas.usuarioBasicoActual = basicUser
                     currentUser!!.updateEmail(basicUser.email.toString())
 
                 }.addOnFailureListener{

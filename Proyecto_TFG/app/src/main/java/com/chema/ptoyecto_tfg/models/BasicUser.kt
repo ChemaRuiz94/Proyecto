@@ -8,6 +8,6 @@ data class BasicUser(
     var email: String?,
     var phone: Int?,
     var img: String?,
-    var rol: ArrayList<Rol>?,
+    var rol: String,
     var idFavoritos: ArrayList<String>?
 ):Serializable

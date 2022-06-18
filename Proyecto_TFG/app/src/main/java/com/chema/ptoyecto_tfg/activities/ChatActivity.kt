@@ -163,6 +163,8 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+
+
     fun saveComentarioFirebase(coment: Comentario){
         //guardamos la opinion en firebase
         db.collection("${Constantes.collectionComentario}")

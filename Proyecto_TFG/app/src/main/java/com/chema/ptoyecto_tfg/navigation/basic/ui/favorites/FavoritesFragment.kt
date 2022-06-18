@@ -175,7 +175,7 @@ class FavoritesFragment : Fragment() {
                     dc.document.get("email").toString(),
                     dc.document.get("phone").toString().toInt(),
                     dc.document.get("img").toString(),
-                    dc.document.get("rol") as ArrayList<Rol>?,
+                    dc.document.get("rol").toString(),
                     dc.document.get("idFavoritos") as ArrayList<String>?,
                     dc.document.get("prices") as ArrayList<String>?,
                     dc.document.get("sizes") as ArrayList<String>?,

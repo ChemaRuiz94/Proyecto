@@ -158,10 +158,9 @@ class SignUpBasicActivity : AppCompatActivity() {
 
     private fun regUser(email: String){
         val id = UUID.randomUUID().toString()
-        val rol = Rol(1,"${Constantes.rolBasicUser}")
-        var listRoles : ArrayList<Rol> = ArrayList()
+        val rol = ("${Constantes.rolAdminUser}")
         var listIdFavoritos : ArrayList<String> = ArrayList()
-        listRoles.add(rol)
+
         var img : String? = null
         if(photo != null){
             img = photoSt
@@ -177,11 +176,11 @@ class SignUpBasicActivity : AppCompatActivity() {
             "email" to email,
             "phone" to phone,
             "img" to img,
-            "rol" to listRoles,
+            "rol" to rol,
             "idFavoritos" to listIdFavoritos
         )
 
-        var u = BasicUser(id,userName,email,phone,img,listRoles,listIdFavoritos)
+        var u = BasicUser(id,userName,email,phone,img,rol,listIdFavoritos)
         VariablesCompartidas.usuarioBasicoActual = u
         VariablesCompartidas.idUsuarioActual = u.userId
         VariablesCompartidas.usuarioArtistaActual = null

@@ -42,6 +42,8 @@
     <string name="select_this_location">Select this location?</string>
     <string name="changePassword">Change Password</string>
     <string name="del_acount">Delete your Acount?</string>
+    <string name="del_coment">Delete this coment?</string>
+    <string name="del_chat">Delete this chat?</string>
     <string name="delete">DELETE</string>
     <string name="del_user">Delete User</string>
     <string name="add_price_size">Add price and size</string>

@@ -181,11 +181,10 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     private fun regArtistUser(email: String){
         val id = UUID.randomUUID().toString()
-        val rol = Rol(1,"${Constantes.rolArtistUser}")
-        var listRoles : ArrayList<Rol> = ArrayList()
+        val rol = ("${Constantes.rolArtistUser}")
         var prices : ArrayList<String>? = ArrayList()
         var sizes : ArrayList<String>? = ArrayList()
-        listRoles.add(rol)
+
         var listIdFavoritos : ArrayList<String> = ArrayList()
         val cif = edTxtArtistCif.text.toString()
         var img : String? = ""
@@ -201,7 +200,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
             "email" to email,
             "phone" to phone,
             "img" to img,
-            "rol" to listRoles,
+            "rol" to rol,
             "idFavoritos" to listIdFavoritos,
             "prices" to prices,
             "sizes" to sizes,
@@ -210,7 +209,7 @@ class SignUpArtistActivity : AppCompatActivity(), OnMapReadyCallback {
             "longitudUbicacion" to longitudStudio
         )
 
-        var u = ArtistUser(id,userName,email,phone,img,listRoles,listIdFavoritos,prices,sizes,cif,latitudStudio,longitudStudio)
+        var u = ArtistUser(id,userName,email,phone,img,rol,listIdFavoritos,prices,sizes,cif,latitudStudio,longitudStudio)
         VariablesCompartidas.usuarioArtistaActual = u
         VariablesCompartidas.idUsuarioActual = u.userId
         db.collection("${Constantes.collectionArtistUser}")

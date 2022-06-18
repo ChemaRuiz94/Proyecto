@@ -8,7 +8,7 @@ data class ArtistUser(
     var email: String?,
     var phone: Int?,
     var img: String?,
-    var rol: ArrayList<Rol>?,
+    var rol: String,
     var idFavoritos: ArrayList<String>?,
     var prices: ArrayList<String>?,
     var sizes: ArrayList<String>?,

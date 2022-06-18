@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.TabBasicUserActivity
 import com.chema.ptoyecto_tfg.models.ArtistUser
@@ -38,12 +39,12 @@ class LoginActivity : AppCompatActivity() {
     private var RC_SIGN_IN = 1
 
     //Components
-    private lateinit var btnLogin : Button
-    private lateinit var btnGoogle : Button
-    private lateinit var edTxtEmailLogin : EditText
-    private lateinit var edTxtPwdLogin : EditText
-    private lateinit var txtSignUp : TextView
-    private lateinit var imageView2 : ImageView
+    private lateinit var btnLogin: Button
+    private lateinit var btnGoogle: Button
+    private lateinit var edTxtEmailLogin: EditText
+    private lateinit var edTxtPwdLogin: EditText
+    private lateinit var txtSignUp: TextView
+    private lateinit var imageView2: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,15 +64,15 @@ class LoginActivity : AppCompatActivity() {
 
         imageView2.setImageResource(R.drawable.busco_tinta_logo)
         //buttons
-        btnLogin.setOnClickListener{
+        btnLogin.setOnClickListener {
             checkLogin()
         }
 
-        btnGoogle.setOnClickListener{
+        btnGoogle.setOnClickListener {
             check_login_google()
         }
 
-        txtSignUp.setOnClickListener{
+        txtSignUp.setOnClickListener {
             showSignUpMode()
         }
     }
@@ -79,28 +80,29 @@ class LoginActivity : AppCompatActivity() {
     /*
     Comprueba que el login se haga correctamente
      */
-    private fun checkLogin(){
+    private fun checkLogin() {
 
-        if(checkCamposVacios()){
+        if (checkCamposVacios()) {
             val email = edTxtEmailLogin.text.toString()
             val pwd = edTxtPwdLogin.text.toString()
 
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(email,pwd).addOnCompleteListener {
-                if (it.isSuccessful){
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pwd)
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
 
-                    VariablesCompartidas.emailUsuarioActual = (it.result?.user?.email?:"")
-                    isBasicUser = false
-                    findUserByEmail(email)
-                    if(!isBasicUser){
-                        findArtistUserByEmail(email)
+                        VariablesCompartidas.emailUsuarioActual = (it.result?.user?.email ?: "")
+                        isBasicUser = false
+                        findUserByEmail(email)
+                        if (!isBasicUser) {
+                            findArtistUserByEmail(email)
+                        }
+
+                    } else {
+                        Toast.makeText(this, R.string.LoginERROR, Toast.LENGTH_SHORT).show()
                     }
-
-                } else {
-                    Toast.makeText(this,R.string.LoginERROR , Toast.LENGTH_SHORT).show()
                 }
-            }
-        }else{
-            Toast.makeText(this,R.string.emptyCamps , Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, R.string.emptyCamps, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -108,12 +110,12 @@ class LoginActivity : AppCompatActivity() {
     /*
     Comprueba que los campos esten rellenos
      */
-    private fun checkCamposVacios():Boolean{
+    private fun checkCamposVacios(): Boolean {
 
-        if(edTxtEmailLogin.text.toString().trim().isEmpty()){
+        if (edTxtEmailLogin.text.toString().trim().isEmpty()) {
             return false
         }
-        if(edTxtPwdLogin.text.toString().trim().isEmpty()){
+        if (edTxtPwdLogin.text.toString().trim().isEmpty()) {
             return false
         }
         return true
@@ -123,7 +125,7 @@ class LoginActivity : AppCompatActivity() {
     Pregunta al usuario con que tipo de cuenta
     desea registrarse
      */
-    fun showSignUpMode(){
+    fun showSignUpMode() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.user_type))
             .setMessage(getString(R.string.str_user_type))
@@ -145,7 +147,7 @@ class LoginActivity : AppCompatActivity() {
     /*
     find basic user
      */
-    private fun findUserByEmail(email: String){
+    private fun findUserByEmail(email: String) {
 
         db.collection("${Constantes.collectionUser}")
             .whereEqualTo("email", email)
@@ -154,7 +156,7 @@ class LoginActivity : AppCompatActivity() {
                 //Existe
                 for (user in users) {
                     var phone = 0;
-                    if (user.get("phone").toString() != ""){
+                    if (user.get("phone").toString() != "") {
                         phone = user.get("phone").toString().toInt()
                     }
                     var us = BasicUser(
@@ -163,7 +165,7 @@ class LoginActivity : AppCompatActivity() {
                         user.get("email").toString(),
                         phone,
                         user.get("img").toString(),
-                        user.get("rol") as ArrayList<Rol>?,
+                        user.get("rol").toString(),
                         user.get("idFavoritos") as ArrayList<String>?
 
                     )
@@ -171,8 +173,22 @@ class LoginActivity : AppCompatActivity() {
                     VariablesCompartidas.idUsuarioActual = us.userId
                     VariablesCompartidas.usuarioArtistaActual = null
                     isBasicUser = true
-                    var myIntent = Intent(this, TabBasicUserActivity::class.java)
-                    startActivity(myIntent)
+                    Log.d("CHE_D", "${us}")
+                    val rol = us.rol
+                    Toast.makeText(this, "ROL : ${rol.toString()} ", Toast.LENGTH_SHORT).show()
+                    if (rol.equals("${Constantes.rolAdminUser}")) {
+
+                        var myIntent = Intent(this, MainActivity::class.java)
+                        startActivity(myIntent)
+                    } else {
+                        var myIntent = Intent(this, TabBasicUserActivity::class.java)
+                        startActivity(myIntent)
+                    }
+
+
+
+
+
                 }
             }
             .addOnFailureListener { exception ->
@@ -181,10 +197,11 @@ class LoginActivity : AppCompatActivity() {
                 //Log.w(ContentValues.TAG, "Error getting documents: ", exception)
             }
     }
+
     /*
     find artist user
      */
-    private fun findArtistUserByEmail(email: String){
+    private fun findArtistUserByEmail(email: String) {
         db.collection("${Constantes.collectionArtistUser}")
             .whereEqualTo("email", email)
             .get()
@@ -192,7 +209,7 @@ class LoginActivity : AppCompatActivity() {
 
                 for (user in users) {
                     var phone = 0;
-                    if (user.get("phone").toString() != ""){
+                    if (user.get("phone").toString() != "") {
                         phone = user.get("phone").toString().toInt()
                     }
                     var us = ArtistUser(
@@ -201,7 +218,7 @@ class LoginActivity : AppCompatActivity() {
                         user.get("email").toString(),
                         phone,
                         user.get("img").toString(),
-                        user.get("rol") as ArrayList<Rol>?,
+                        user.get("rol").toString(),
                         user.get("idFavoritos") as ArrayList<String>?,
                         user.get("prices") as ArrayList<String>?,
                         user.get("sizes") as ArrayList<String>?,
@@ -209,7 +226,7 @@ class LoginActivity : AppCompatActivity() {
                         user.get("latitudUbicacion").toString().toDouble(),
                         user.get("longitudUbicacion").toString().toDouble(),
 
-                    )
+                        )
                     VariablesCompartidas.usuarioArtistaActual = us
                     VariablesCompartidas.idUsuarioActual = us.userId
                     VariablesCompartidas.usuarioBasicoActual = null
@@ -225,13 +242,13 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun check_login_google(){
+    private fun check_login_google() {
         val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.request_id_token)) //Esto se encuentra en el archivo google-services.json: client->oauth_client -> client_id
             .requestEmail()
             .build()
 
-        val googleClient = GoogleSignIn.getClient(this,googleConf)
+        val googleClient = GoogleSignIn.getClient(this, googleConf)
         val signInIntent = googleClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -249,9 +266,10 @@ class LoginActivity : AppCompatActivity() {
 
                 //Ya tenemos la id de la cuenta. Ahora nos autenticamos con FireBase.
                 if (account != null) {
-                    val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    val credential: AuthCredential =
+                        GoogleAuthProvider.getCredential(account.idToken, null)
                     auth.signInWithCredential(credential).addOnCompleteListener {
-                        if (it.isSuccessful){
+                        if (it.isSuccessful) {
 
                             val user = auth.currentUser!!
                             VariablesCompartidas.emailUsuarioActual = user.email!!
@@ -271,14 +289,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun regUser(acount: GoogleSignInAccount){
+    private fun regUser(acount: GoogleSignInAccount) {
         val id = UUID.randomUUID().toString()
-        val rol = Rol(1,"${Constantes.rolBasicUser}")
-        var listRoles : ArrayList<Rol> = ArrayList()
-        var listIdFavoritos : ArrayList<String> = ArrayList()
-        listRoles.add(rol)
-        var imgBM : Bitmap? = null
-        var imgSt : String? = null
+        val rol = ("${Constantes.rolBasicUser}")
+        var listIdFavoritos: ArrayList<String> = ArrayList()
+
+        var imgBM: Bitmap? = null
+        var imgSt: String? = null
 
 
         var userName = acount.displayName
@@ -292,22 +309,22 @@ class LoginActivity : AppCompatActivity() {
             "email" to email,
             "phone" to phone,
             "img" to imgSt,
-            "listRoles" to listRoles,
+            "listRoles" to rol,
             "listIdFavoritos" to listIdFavoritos
         )
 
-        var u = BasicUser(id,userName,email,phone,imgSt,listRoles,listIdFavoritos)
+        var u = BasicUser(id, userName, email, phone, imgSt, rol, listIdFavoritos)
         VariablesCompartidas.usuarioBasicoActual = u
 
         db.collection("${Constantes.collectionUser}")
             .document(id)
             .set(user)
             .addOnSuccessListener {
-                val myIntent = Intent(this,TabBasicUserActivity::class.java)
+                val myIntent = Intent(this, TabBasicUserActivity::class.java)
                 startActivity(myIntent)
 
-            }.addOnFailureListener{
-                Toast.makeText(this,R.string.ERROR , Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(this, R.string.ERROR, Toast.LENGTH_SHORT).show()
             }
     }
 

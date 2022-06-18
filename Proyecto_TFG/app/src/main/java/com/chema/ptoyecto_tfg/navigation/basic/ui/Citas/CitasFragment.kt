@@ -151,7 +151,9 @@ class CitasFragment : Fragment() {
                     dc.document.get("userNameOther").toString(),
                     dc.document.get("date").toString()
                 )
-                allChat.add(chat)
+                if(!allChat.contains(chat)){
+                    allChat.add(chat)
+                }
             }
         }
     }
