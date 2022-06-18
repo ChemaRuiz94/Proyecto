@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment">
+    tools:context=".navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment"
+    style="@style/def_backgrand">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -31,6 +32,7 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
+        style="@style/modif_edit_text"
         android:id="@+id/ed_txt_userName_basic_profile"
         android:layout_width="265dp"
         android:layout_height="48dp"
@@ -45,6 +47,7 @@
         app:layout_constraintVertical_bias="0.446" />
 
     <EditText
+        style="@style/modif_edit_text"
         android:id="@+id/ed_txt_email_basic_profile"
         android:layout_width="265dp"
         android:layout_height="48dp"
@@ -59,6 +62,7 @@
         app:layout_constraintVertical_bias="0.556" />
 
     <EditText
+        style="@style/modif_edit_text"
         android:id="@+id/ed_txt_phone_basic_profile"
         android:layout_width="265dp"
         android:layout_height="48dp"
@@ -113,6 +117,7 @@
 
 
     <Button
+        style="@style/def_buttons"
         android:id="@+id/btn_change_password_basic_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -136,9 +141,11 @@
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.023"
+        style="@style/flt_buttons"/>
 
     <TextView
+        style="@style/text_link_red"
         android:id="@+id/txt_del_basic_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

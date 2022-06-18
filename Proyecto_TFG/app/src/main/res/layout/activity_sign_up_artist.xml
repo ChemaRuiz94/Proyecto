@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignUpArtistActivity">
+    tools:context=".activities.SignUpArtistActivity"
+    style="@style/def_backgrand">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -23,6 +24,7 @@
             android:id="@+id/img_sign_up_artist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/dark_gray"
             android:clickable="true"
             android:scaleType="centerCrop"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck"
@@ -31,6 +33,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
+        style="@style/def_buttons"
         android:id="@+id/btnSignUpArtist"
         android:layout_width="82dp"
         android:layout_height="36dp"
@@ -43,6 +46,7 @@
         app:layout_constraintVertical_bias="0.986" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/ed_txt_cif_sign_up_artist"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -58,6 +62,7 @@
         app:layout_constraintVertical_bias="0.671" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/ed_txt_email_sign_up_artist"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -73,6 +78,7 @@
         app:layout_constraintVertical_bias="0.321" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/ed_txt_user_name_sign_up_artist"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -88,6 +94,7 @@
         app:layout_constraintVertical_bias="0.234" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/ed_txt_pwd_sign_up_artist"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -103,6 +110,7 @@
         app:layout_constraintVertical_bias="0.41" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/ed_txt_repeat_pwd_sign_up_artist"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -118,6 +126,7 @@
         app:layout_constraintVertical_bias="0.498" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/ed_txt_phone_sign_up_artist"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -147,6 +156,7 @@
         tools:layout="@layout/fragment_map_sign_up_artist" />
 
     <Button
+        style="@style/def_buttons"
         android:id="@+id/btn_select_location"
         android:layout_width="262dp"
         android:layout_height="36dp"
