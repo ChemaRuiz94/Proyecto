@@ -118,14 +118,7 @@ class SearchResultMapsActivity : AppCompatActivity(), OnMapReadyCallback, Google
         val index : Int = resultadosSt.indexOf(p0.title.toString())
         val artistUser : ArtistUser = resultados!![index]
         VariablesCompartidas.usuarioArtistaVisitaMuro = artistUser
-        /*
-        val nextFrag = MuroFragment()
-        this.getSupportFragmentManager().beginTransaction()
-            .replace(R.id.activity_artist_muro_container, nextFrag, "findThisFragment")
-            .addToBackStack(null)
-            .commit()
 
-         */
         val intent = Intent(this, ArtistMuroConatinerActivity::class.java)
         startActivity(intent)
     }
