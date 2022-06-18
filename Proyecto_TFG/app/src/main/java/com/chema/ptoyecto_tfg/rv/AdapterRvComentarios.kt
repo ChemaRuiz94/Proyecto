@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.Comentario
 import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AdapterRvComentarios  (
@@ -55,12 +56,19 @@ class AdapterRvComentarios  (
         }
 
         holder.ed_txt_multiline_comentario.setOnLongClickListener{
-            delComentario(comentario)
+            if (comentario.idUser == VariablesCompartidas.idUsuarioActual) {
+                Toast.makeText(context, "CLICK EDT", Toast.LENGTH_SHORT).show()
+                delComentFirebase(comentario)
+            }
             false
         }
 
         holder.item_opinion.setOnLongClickListener{
-            delComentario(comentario)
+            if (comentario.idUser == VariablesCompartidas.idUsuarioActual) {
+
+                Toast.makeText(context, "CLICK item_opinion", Toast.LENGTH_SHORT).show()
+                delComentFirebase(comentario)
+            }
             false
         }
     }
@@ -71,12 +79,11 @@ class AdapterRvComentarios  (
     }
 
     fun delComentario(comentario: Comentario){
-        delComent(comentario)
         opiniones.remove(comentario)
         notifyDataSetChanged()
     }
 
-    private fun delComent(comentario: Comentario){
+    private fun delComentFirebase(comentario: Comentario){
         AlertDialog.Builder(context).setTitle(R.string.del_coment)
             .setPositiveButton(R.string.delete) { view, _ ->
 

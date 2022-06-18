@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -78,7 +79,14 @@ class CitasFragment : Fragment() {
             isBasicUser = true
             id = userBasicAct!!.userId.toString()
         }
-        refreshRV(view, id)
+        cargarRV(view)
+        if(isBasicUser){
+            getDataFromFireStore("idUserOther",id)
+        }else{
+            getDataFromFireStore("idUserOther",id)
+            getDataFromFireStore("idUserArtist",id)
+
+        }
     }
 
     override fun onDestroyView() {
@@ -88,36 +96,9 @@ class CitasFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        refreshRV(view2!!,id)
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++
-
-    private fun refreshRV(view: View, id : String?){
-        allChat.clear()
-        if(isBasicUser){
-            runBlocking {
-                val job : Job = launch(context = Dispatchers.Default) {
-                    val datos : QuerySnapshot = getDataFromFireStore("idUserOther",id) as QuerySnapshot
-                    obtenerDatos(datos as QuerySnapshot?)
-                }
-                job.join()
-            }
-        }else{
-            runBlocking {
-                val job : Job = launch(context = Dispatchers.Default) {
-                    val datos : QuerySnapshot = getDataFromFireStore("idUserOther",id) as QuerySnapshot
-                    obtenerDatos(datos as QuerySnapshot?)
-                    val datos2 : QuerySnapshot = getDataFromFireStore("idUserArtist",id) as QuerySnapshot
-                    obtenerDatos(datos2 as QuerySnapshot?)
-                }
-                job.join()
-            }
-
-        }
-
-        cargarRV(view)
-    }
     private fun cargarRV(view: View){
 
         rv = view.findViewById(R.id.rv_citas)
@@ -127,33 +108,37 @@ class CitasFragment : Fragment() {
         rv.adapter = miAdapter
     }
 
-    suspend fun getDataFromFireStore(field : String ,id : String?)  : QuerySnapshot? {
-        return try{
+    fun getDataFromFireStore(field : String ,id : String?) {
+        try{
             val data = db.collection("${Constantes.collectionChat}")
                 .whereEqualTo("${field.toString()}", id)
-                .get()
-                .await()
-            data
+                .addSnapshotListener { snapshots, e ->
+                    if (e != null) {
+                        Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
+                        return@addSnapshotListener
+                    }
+                    obtenerDatos(snapshots)
+                }
         }catch (e : Exception){
-            null
+            throw e
         }
     }
 
     private fun obtenerDatos(datos: QuerySnapshot?) {
         for(dc: DocumentChange in datos?.documentChanges!!){
+            var chat= Chat(
+                dc.document.get("idChat").toString(),
+                dc.document.get("idUserArtist").toString(),
+                dc.document.get("userNameArtist").toString(),
+                dc.document.get("idUserOther").toString(),
+                dc.document.get("userNameOther").toString(),
+                dc.document.get("date").toString()
+            )
             if (dc.type == DocumentChange.Type.ADDED){
-
-                var chat= Chat(
-                    dc.document.get("idChat").toString(),
-                    dc.document.get("idUserArtist").toString(),
-                    dc.document.get("userNameArtist").toString(),
-                    dc.document.get("idUserOther").toString(),
-                    dc.document.get("userNameOther").toString(),
-                    dc.document.get("date").toString()
-                )
-                if(!allChat.contains(chat)){
-                    allChat.add(chat)
-                }
+                miAdapter.addChat(chat)
+            }
+            if (dc.type == DocumentChange.Type.REMOVED) {
+                miAdapter.removeChat(chat)
             }
         }
     }

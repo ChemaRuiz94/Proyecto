@@ -175,7 +175,6 @@ class LoginActivity : AppCompatActivity() {
                     isBasicUser = true
                     Log.d("CHE_D", "${us}")
                     val rol = us.rol
-                    Toast.makeText(this, "ROL : ${rol.toString()} ", Toast.LENGTH_SHORT).show()
                     if (rol.equals("${Constantes.rolAdminUser}")) {
 
                         var myIntent = Intent(this, MainActivity::class.java)

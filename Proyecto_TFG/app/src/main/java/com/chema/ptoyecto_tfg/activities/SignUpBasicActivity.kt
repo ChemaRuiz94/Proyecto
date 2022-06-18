@@ -158,7 +158,7 @@ class SignUpBasicActivity : AppCompatActivity() {
 
     private fun regUser(email: String){
         val id = UUID.randomUUID().toString()
-        val rol = ("${Constantes.rolAdminUser}")
+        val rol = ("${Constantes.rolBasicUser}")
         var listIdFavoritos : ArrayList<String> = ArrayList()
 
         var img : String? = null

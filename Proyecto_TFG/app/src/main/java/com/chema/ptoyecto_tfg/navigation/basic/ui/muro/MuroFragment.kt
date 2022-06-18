@@ -378,6 +378,7 @@ class MuroFragment : Fragment() {
             //editar muro en modo propietario
             addNewPriceSize()
         } else {
+            btnContactEdit.isEnabled = false
             //contactar con el artista en modo visitante
             getChat()
         }

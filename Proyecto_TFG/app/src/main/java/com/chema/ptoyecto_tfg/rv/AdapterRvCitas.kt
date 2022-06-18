@@ -35,7 +35,6 @@ class AdapterRvCitas (
     private val allChats: ArrayList<Chat>?,
 ) : RecyclerView.Adapter<AdapterRvCitas.ViewHolder>() {
 
-
     override fun getItemCount(): Int {
         return allChats!!.size
     }
@@ -87,6 +86,16 @@ class AdapterRvCitas (
             false
         }
 
+    }
+
+    fun addChat(chat: Chat) {
+        allChats!!.add(chat)
+        notifyDataSetChanged()
+    }
+
+    fun removeChat(chat: Chat) {
+        allChats!!.remove(chat)
+        notifyDataSetChanged()
     }
 
     private fun goToChat(idChat: String?, userName : String?, idOther : String , date : String?){
