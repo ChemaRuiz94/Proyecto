@@ -125,6 +125,7 @@ class CitasFragment : Fragment() {
     }
 
     private fun obtenerDatos(datos: QuerySnapshot?) {
+        var pos = 0
         for(dc: DocumentChange in datos?.documentChanges!!){
             var chat= Chat(
                 dc.document.get("idChat").toString(),
@@ -134,12 +135,13 @@ class CitasFragment : Fragment() {
                 dc.document.get("userNameOther").toString(),
                 dc.document.get("date").toString()
             )
-            if (dc.type == DocumentChange.Type.ADDED){
-                miAdapter.addChat(chat)
+            when(dc.type) {
+
+                DocumentChange.Type.ADDED -> miAdapter.addChat(chat)
+                DocumentChange.Type.MODIFIED -> miAdapter.updateChat(chat, pos)
+                DocumentChange.Type.REMOVED -> miAdapter.removeChat(chat)
             }
-            if (dc.type == DocumentChange.Type.REMOVED) {
-                miAdapter.removeChat(chat)
-            }
+            pos++
         }
     }
 }

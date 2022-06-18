@@ -505,7 +505,7 @@ class MuroFragment : Fragment() {
                 val myIntent = Intent(context, ChatActivity::class.java)
                 myIntent.putExtra("idChat", idChat)
                 myIntent.putExtra("date", date)
-                myIntent.putExtra("idOther", idUserOther)
+                myIntent.putExtra("idUserArtist", idUserArtist)
                 myIntent.putExtra("userName", userMuro!!.userName)
                 startActivity(myIntent)
 

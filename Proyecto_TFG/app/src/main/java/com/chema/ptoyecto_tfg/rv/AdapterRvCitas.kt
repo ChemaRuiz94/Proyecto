@@ -54,11 +54,6 @@ class AdapterRvCitas (
         val date = chat.date
 
         if(VariablesCompartidas.usuarioArtistaActual != null){
-            /*
-            if(name.equals(VariablesCompartidas.usuarioArtistaActual!!.userName)){
-                name = chat.userNameOther
-            }
-             */
             if(chat.idUserOther.toString().equals(VariablesCompartidas.idUsuarioActual)){
                 name = chat.userNameArtist
             }else{
@@ -69,20 +64,14 @@ class AdapterRvCitas (
         }
 
         holder.txt_userName.text = name
-
-        if(chat.date != null){
-            holder.txt_date.text = date
-        }else{
-            holder.txt_date.text = ""
-        }
+        holder.txt_date.text = date
 
         holder.txt_userName.setOnClickListener{
-           goToChat(idChat,name,chat.idUserOther!!, date)
+           goToChat(idChat,name,chat.idUserArtist!!, date)
         }
 
         holder.txt_userName.setOnLongClickListener{
             delChat(idChat)
-            this.notifyDataSetChanged()
             false
         }
 
@@ -98,11 +87,16 @@ class AdapterRvCitas (
         notifyDataSetChanged()
     }
 
-    private fun goToChat(idChat: String?, userName : String?, idOther : String , date : String?){
+    fun updateChat(chat: Chat, position: Int){
+        allChats!![position] = chat
+        notifyDataSetChanged()
+    }
+
+    private fun goToChat(idChat: String?, userName : String?, idUserArtist : String , date : String?){
         val myIntent = Intent(context, ChatActivity::class.java)
         myIntent.putExtra("idChat",idChat)
         myIntent.putExtra("userName",userName)
-        myIntent.putExtra("idOther",idOther)
+        myIntent.putExtra("idUserArtist",idUserArtist)
         myIntent.putExtra("date",date)
         context.startActivity(myIntent)
     }
