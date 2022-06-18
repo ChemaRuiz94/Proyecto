@@ -38,7 +38,6 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
         binding = ActivityBasicUserNavDrawBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarBasicUserNavDraw.toolbar)
 
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -54,7 +53,7 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
             )
         }
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         //COMPONENTES DE CABECERA

@@ -5,10 +5,7 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.TabBasicUserActivity
@@ -46,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var edTxtEmailLogin : EditText
     private lateinit var edTxtPwdLogin : EditText
     private lateinit var txtSignUp : TextView
+    private lateinit var imageView2 : ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,11 +55,13 @@ class LoginActivity : AppCompatActivity() {
         edTxtEmailLogin = findViewById(R.id.edTxtEmailLogin)
         edTxtPwdLogin = findViewById(R.id.edTxtPwdLogin)
         txtSignUp = findViewById(R.id.txtSignUp)
+        imageView2 = findViewById(R.id.imageView2)
 
         auth = Firebase.auth
         VariablesCompartidas.usuarioBasicoActual = null
         VariablesCompartidas.usuarioArtistaActual = null
 
+        imageView2.setImageResource(R.drawable.busco_tinta_logo)
         //buttons
         btnLogin.setOnClickListener{
             checkLogin()

@@ -5,9 +5,11 @@
     android:id="@+id/mainActivityRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ChatActivity">
+    tools:context=".activities.ChatActivity"
+    style="@style/def_backgrand">
 
     <TextView
+        style="@style/text_label_black"
         android:id="@+id/txt_userName"
         android:layout_width="156dp"
         android:layout_height="29dp"
@@ -28,7 +30,9 @@
         app:layout_constraintVertical_bias="0.022" />
 
     <androidx.recyclerview.widget.RecyclerView
+
         android:id="@+id/rv_chat"
+        style="@style/rv_backgrand"
         android:layout_width="397dp"
         android:layout_height="584dp"
         android:layout_above="@+id/mainActivityTextContainer"
@@ -39,7 +43,6 @@
         android:layout_marginTop="57dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
-        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
@@ -80,15 +83,17 @@
             app:layout_constraintStart_toStartOf="@+id/ed_txt_comentario"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.98"
-            app:srcCompat="@drawable/ic_check" />
+            app:srcCompat="@drawable/ic_check"
+            style="@style/flt_buttons"/>
 
 
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/flt_btn_send_date"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        style="@style/flt_buttons"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -106,6 +111,7 @@
         app:srcCompat="@drawable/ic_menu_dates" />
 
     <TextView
+        style="@style/text_label_gray"
         android:id="@+id/txt_fecha_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

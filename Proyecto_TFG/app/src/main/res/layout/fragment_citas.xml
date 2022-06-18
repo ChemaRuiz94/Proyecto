@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_favorites"
-    tools:context=".navigation.basic.ui.Citas.CitasFragment">
+    tools:context=".navigation.basic.ui.Citas.CitasFragment"
+    style="@style/def_backgrand">
 
 
     <androidx.recyclerview.widget.RecyclerView
