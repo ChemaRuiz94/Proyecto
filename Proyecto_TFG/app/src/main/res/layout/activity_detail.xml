@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DetailActivity">
+    tools:context=".activities.DetailActivity"
+    style="@style/def_backgrand">
 
     <ImageView
         android:id="@+id/img_detail"
@@ -19,6 +20,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <EditText
+        style="@style/text_label_gray"
         android:id="@+id/ed_txt_styles"
         android:layout_width="388dp"
         android:layout_height="113dp"
@@ -34,6 +36,7 @@
         app:layout_constraintVertical_bias="0.754" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/ed_txt_add_style"
         android:layout_width="326dp"
         android:layout_height="59dp"
@@ -61,9 +64,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.88"
-        app:srcCompat="@drawable/ic_new_label" />
+        app:srcCompat="@drawable/ic_new_label"
+        style="@style/flt_buttons"/>
 
     <Button
+        style="@style/def_buttons"
         android:id="@+id/btn_add_post"
         android:layout_width="161dp"
         android:layout_height="50dp"

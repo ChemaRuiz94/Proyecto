@@ -7,6 +7,7 @@
     tools:context=".activities.ListResutlActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        style="@style/def_backgrand"
         android:id="@+id/rv_list_result"
         android:layout_width="409dp"
         android:layout_height="729dp"

@@ -433,7 +433,6 @@ class MuroFragment : Fragment() {
             .get()
             .addOnSuccessListener { chats ->
                 //No existen chats
-
                 for (chat in chats) {
 
                     var idChat: String? = null

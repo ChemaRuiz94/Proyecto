@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:id="@+id/item_opinion">
+    android:id="@+id/item_opinion"
+    style="@style/rv_backgrand">
 
 
     <TextView
+        style="@style/text_label_gray"
         android:id="@+id/txt_hora_comentario"
         android:layout_width="101dp"
         android:layout_height="17dp"
@@ -48,6 +50,7 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
+        style="@style/text_label_gray"
         android:id="@+id/txt_nombreUser_comentario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

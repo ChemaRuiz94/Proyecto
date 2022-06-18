@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navigation.basic.ui.muro.MuroFragment">
+    tools:context=".navigation.basic.ui.muro.MuroFragment"
+    style="@style/def_backgrand">
+
+    <FrameLayout
+        style="@style/head_backgrand"
+        android:layout_width="412dp"
+        android:layout_height="155dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </FrameLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -58,6 +72,7 @@
         app:layout_constraintVertical_bias="0.348" />
 
     <TextView
+        style="@style/text_link_white"
         android:id="@+id/txt_artist_user_name_muro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,6 +87,7 @@
         app:layout_constraintVertical_bias="0.037" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/txt_artist_web_muro"
         android:layout_width="127dp"
         android:layout_height="19dp"
@@ -84,6 +100,7 @@
         app:layout_constraintVertical_bias="0.176" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/txt_ubi_artist_muro"
         android:layout_width="198dp"
         android:layout_height="18dp"
@@ -96,6 +113,7 @@
         app:layout_constraintVertical_bias="0.138" />
 
     <TextView
+        style="@style/text_link_white"
         android:id="@+id/txt_email_artist_muro"
         android:layout_width="183dp"
         android:layout_height="18dp"
@@ -119,9 +137,11 @@
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.038"
+        style="@style/flt_buttons"/>
 
     <Button
+        style="@style/def_buttons"
         android:id="@+id/btn_contact_edit"
         android:layout_width="144dp"
         android:layout_height="38dp"
@@ -135,6 +155,7 @@
         app:layout_constraintVertical_bias="0.37" />
 
     <androidx.recyclerview.widget.RecyclerView
+        style="@style/rv_backgrand"
         android:id="@+id/rv_post_artist_muro"
         android:layout_width="403dp"
         android:layout_height="422dp"
@@ -146,19 +167,22 @@
 
     <EditText
         android:id="@+id/ed_txt_prizes_sizes"
-        android:layout_width="376dp"
-        android:layout_height="68dp"
+        android:layout_width="395dp"
+        android:layout_height="73dp"
         android:ems="10"
         android:enabled="false"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:textSize="10sp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.255" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

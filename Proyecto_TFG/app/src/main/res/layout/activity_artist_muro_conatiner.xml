@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_artist_muro_container"
-    tools:context=".activities.ArtistMuroConatinerActivity">
+    tools:context=".activities.ArtistMuroConatinerActivity"
+    style="@style/def_backgrand">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

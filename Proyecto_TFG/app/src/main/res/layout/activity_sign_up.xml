@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignUpBasicActivity">
+    tools:context=".activities.SignUpBasicActivity"
+    style="@style/def_backgrand">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -24,6 +25,7 @@
             android:id="@+id/imgSignUpUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/dark_gray"
             android:clickable="true"
             android:scaleType="centerCrop"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck"
@@ -32,6 +34,7 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/edTxtEmailSignUpUser"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -46,6 +49,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/edTxtPwdReapaetSignUpUser"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -61,6 +65,7 @@
         app:layout_constraintVertical_bias="0.75" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/edTxtUserNameSignUpUser"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -76,6 +81,7 @@
         app:layout_constraintVertical_bias="0.367" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/edTxtPwdSignUpUser"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -91,6 +97,7 @@
         app:layout_constraintVertical_bias="0.632" />
 
     <EditText
+        style="@style/def_edit_text"
         android:id="@+id/edTxtPhoneSignUpUser"
         android:layout_width="280dp"
         android:layout_height="37dp"
@@ -106,6 +113,7 @@
         app:layout_constraintVertical_bias="0.872" />
 
     <Button
+        style="@style/def_buttons"
         android:id="@+id/btnSignUpUser"
         android:layout_width="82dp"
         android:layout_height="36dp"
