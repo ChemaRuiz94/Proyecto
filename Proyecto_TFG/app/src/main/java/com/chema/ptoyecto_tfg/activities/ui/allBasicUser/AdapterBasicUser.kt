@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.BasicUser
-import com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment
+import com.chema.ptoyecto_tfg.navigation.artist.ui.BasicUserProfile.BasicUserProfileFragment
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas

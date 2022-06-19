@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.Citas.CitasFragment"
+        android:name="com.chema.ptoyecto_tfg.navigation.artist.ui.Citas.ChatsFragment"
         android:label="@string/title_all_chats"
         tools:layout="@layout/fragment_citas" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserSearch
+package com.chema.ptoyecto_tfg.navigation.artist.ui.BasicUserSearch
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -23,18 +22,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.activities.ListResutlActivity
 import com.chema.ptoyecto_tfg.activities.SearchResultMapsActivity
-import com.chema.ptoyecto_tfg.activities.SelectStudioMapsActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentBasicUserSearchBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.Post
-import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.rv.AdapterRvEtiquetas
-import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,11 +43,9 @@ import java.lang.Exception
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class BasicUserSearchFragment : Fragment() {
 
-    private lateinit var basicUserSearchViewModel: BasicUserSearchViewModel
     private var _binding: FragmentBasicUserSearchBinding? = null
 
     private val binding get() = _binding!!
@@ -88,7 +81,6 @@ class BasicUserSearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        basicUserSearchViewModel = ViewModelProvider(this).get(BasicUserSearchViewModel::class.java)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 

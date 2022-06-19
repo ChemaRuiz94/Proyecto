@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +23,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.chema.ptoyecto_tfg.databinding.ActivitySearchResultMapsBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
-import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.Marker

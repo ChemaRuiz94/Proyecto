@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.chema.ptoyecto_tfg.R
-import com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment
-import com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserSearch.BasicUserSearchFragment
-import com.chema.ptoyecto_tfg.navigation.basic.ui.Citas.CitasFragment
-import com.chema.ptoyecto_tfg.navigation.basic.ui.favorites.FavoritesFragment
+import com.chema.ptoyecto_tfg.navigation.artist.ui.BasicUserProfile.BasicUserProfileFragment
+import com.chema.ptoyecto_tfg.navigation.artist.ui.BasicUserSearch.BasicUserSearchFragment
+import com.chema.ptoyecto_tfg.navigation.artist.ui.Citas.ChatsFragment
+import com.chema.ptoyecto_tfg.navigation.artist.ui.favorites.FavoritesFragment
 
 private val TAB_TITLES = arrayOf(
 
@@ -33,7 +33,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
                 return BasicUserSearchFragment()
             }
             1 -> {
-                return CitasFragment()
+                return ChatsFragment()
             }
             2 -> {
                 return FavoritesFragment()

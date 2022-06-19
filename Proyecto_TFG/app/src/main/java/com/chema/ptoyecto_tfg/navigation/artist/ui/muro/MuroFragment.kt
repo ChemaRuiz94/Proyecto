@@ -1,15 +1,9 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.muro
+package com.chema.ptoyecto_tfg.navigation.artist.ui.muro
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,37 +11,26 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
-import com.chema.ptoyecto_tfg.TabBasicUserActivity
 import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
 import com.chema.ptoyecto_tfg.activities.ChatActivity
 import com.chema.ptoyecto_tfg.activities.DetailActivity
-import com.chema.ptoyecto_tfg.activities.SignUpBasicActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentMuroBinding
 import com.chema.ptoyecto_tfg.models.*
-import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
-import com.chema.ptoyecto_tfg.rv.AdapterRvPostAritstMuro
 import com.chema.ptoyecto_tfg.rv.ImagenesAdapter
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
@@ -55,18 +38,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import java.io.ByteArrayOutputStream
-import java.io.FileNotFoundException
-import java.io.InputStream
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.sign
-import kotlin.random.Random
 
 class MuroFragment : Fragment() {
 
-    private lateinit var muroViewModel: MuroViewModel
     private var _binding: FragmentMuroBinding? = null
 
     private val binding get() = _binding!!
@@ -105,15 +82,12 @@ class MuroFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        muroViewModel =
-            ViewModelProvider(this).get(MuroViewModel::class.java)
 
         _binding = FragmentMuroBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         storage = Firebase.storage("gs://proyecto-tfg-e2f22.appspot.com")
         myStorage = storage.getReference()
-        //myStorage = FirebaseStorage.getInstance().getReference()
 
         return root
     }
@@ -148,7 +122,6 @@ class MuroFragment : Fragment() {
             cargarDatosArtist()
             getPost(view)
             getImgStorage()
-            //VariablesCompartidas.usuarioArtistaVisitaMuro = userMuro
         }
 
     }
@@ -203,23 +176,12 @@ class MuroFragment : Fragment() {
                 }
             }
 
-
             txtUserName.text = (userMuro!!.userName.toString())
             txtEmail.text = (userMuro!!.email.toString())
             btnContactEdit.setText(R.string.contact)
             fltBtnFavCamera.visibility = View.VISIBLE
             checkFav()
 
-            /*
-            if (VariablesCompartidas.usuarioArtistaActual != null && userMuro!!.userId!!.equals(
-                    VariablesCompartidas!!.usuarioArtistaActual!!.userId
-                )
-            ) {
-                checkFav()
-                btnContactEdit.visibility = View.INVISIBLE
-                fltBtnFavCamera.visibility = View.INVISIBLE
-            }
-             */
         }
         if (VariablesCompartidas.idUserArtistVisitMode == null && VariablesCompartidas.usuarioArtistaActual != null) {
             userMuro = VariablesCompartidas.usuarioArtistaActual
@@ -471,8 +433,6 @@ class MuroFragment : Fragment() {
             }
             job.join()
         }
-
-
     }
 
     private fun crearChat() {

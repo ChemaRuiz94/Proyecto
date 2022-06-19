@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.gallery
+package com.chema.ptoyecto_tfg.navigation.artist.ui.gallery
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -70,7 +70,7 @@
             android:label="@string/title_activity_select_studio_maps"
             android:theme="@style/Theme.Ptoyecto_TFG.ActionBar" />
         <activity
-            android:name=".navigation.basic.BasicUserNavDrawActivity"
+            android:name=".navigation.artist.BasicUserNavDrawActivity"
             android:exported="true"
             android:label="@string/title_activity_basic_user_nav_draw"
             android:theme="@style/Theme.Ptoyecto_TFG.NoActionBar" />

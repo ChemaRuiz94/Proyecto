@@ -7,13 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.TabBasicUserActivity
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
-import com.chema.ptoyecto_tfg.models.Rol
-import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
+import com.chema.ptoyecto_tfg.navigation.artist.BasicUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas

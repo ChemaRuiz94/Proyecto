@@ -1,7 +1,6 @@
 package com.chema.ptoyecto_tfg.activities
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,7 +9,6 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,13 +16,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.ArtistUser
-import com.chema.ptoyecto_tfg.models.BasicUser
-import com.chema.ptoyecto_tfg.models.Rol
-import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
+import com.chema.ptoyecto_tfg.navigation.artist.BasicUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas

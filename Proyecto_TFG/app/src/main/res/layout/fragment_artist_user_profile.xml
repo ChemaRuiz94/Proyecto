@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navigation.basic.ui.ArtistUserProfile.ArtistUserProfileFragment"
+    tools:context=".navigation.artist.ui.ArtistUserProfile.ArtistUserProfileFragment"
     style="@style/def_backgrand"
     android:id="@+id/artsist_user_profile">
 

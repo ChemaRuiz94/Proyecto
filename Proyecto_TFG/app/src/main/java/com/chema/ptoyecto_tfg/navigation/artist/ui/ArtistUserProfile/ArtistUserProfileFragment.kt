@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserProfile
+package com.chema.ptoyecto_tfg.navigation.artist.ui.ArtistUserProfile
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -26,7 +26,6 @@ import com.chema.ptoyecto_tfg.activities.LoginActivity
 import com.chema.ptoyecto_tfg.activities.SelectStudioMapsActivity
 import com.chema.ptoyecto_tfg.databinding.FragmentArtistUserProfileBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
-import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
@@ -49,7 +48,6 @@ import java.lang.Exception
 
 class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
 
-    private lateinit var artistUserProfileViewModel: ArtistUserProfileViewModel
     private var _binding : FragmentArtistUserProfileBinding? = null
 
     private lateinit var auth: FirebaseAuth
@@ -84,7 +82,6 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        artistUserProfileViewModel = ViewModelProvider(this).get(ArtistUserProfileViewModel::class.java)
         _binding = FragmentArtistUserProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 

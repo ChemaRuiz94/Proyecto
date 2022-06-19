@@ -1,8 +1,7 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.Citas
+package com.chema.ptoyecto_tfg.navigation.artist.ui.Citas
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,25 +16,17 @@ import com.chema.ptoyecto_tfg.databinding.FragmentCitasBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.models.Chat
-import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.rv.AdapterRvCitas
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
-import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 
-class CitasFragment : Fragment() {
+class ChatsFragment : Fragment() {
 
-    private lateinit var citasViewModel: CitasViewModel
     private var _binding : FragmentCitasBinding? = null
 
     private val binding get() = _binding!!
@@ -55,7 +46,6 @@ class CitasFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        citasViewModel = ViewModelProvider(this).get(CitasViewModel::class.java)
 
         _binding = FragmentCitasBinding.inflate(inflater, container, false)
         val root: View = binding.root

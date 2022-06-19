@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.favorites
+package com.chema.ptoyecto_tfg.navigation.artist.ui.favorites
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +15,6 @@ import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.databinding.FragmentFavoritesBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
-import com.chema.ptoyecto_tfg.models.Rol
 import com.chema.ptoyecto_tfg.rv.AdapterRvFavorites
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
@@ -33,21 +30,13 @@ import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
-import android.R.attr.tag
 
 import android.R.attr
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
-import android.R.attr.tag
-
-
-
+import com.chema.ptoyecto_tfg.navigation.artist.ui.muro.MuroFragment
 
 
 class FavoritesFragment : Fragment() {
 
-    private lateinit var favoritesViewModel: FavoritesViewModel
     private var _binding: FragmentFavoritesBinding? = null
 
     // This property is only valid between onCreateView and
@@ -77,11 +66,6 @@ class FavoritesFragment : Fragment() {
             isBasicUser = true
         }
 
-
-
-        favoritesViewModel =
-            ViewModelProvider(this).get(FavoritesViewModel::class.java)
-
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -105,11 +89,10 @@ class FavoritesFragment : Fragment() {
 
         runBlocking {
             val job : Job = launch(context = Dispatchers.Default) {
-                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot //Obtenermos la colección
-                obtenerDatos(datos as QuerySnapshot?)  //'Destripamos' la colección y la metemos en nuestro ArrayList
+                val datos : QuerySnapshot = getDataFromFireStore() as QuerySnapshot
+                obtenerDatos(datos as QuerySnapshot?)
             }
-            //Con este método el hilo principal de onCreate se espera a que la función acabe y devuelva la colección con los datos.
-            job.join() //Esperamos a que el método acabe: https://dzone.com/articles/waiting-for-coroutines
+            job.join()
         }
 
         cargarRV(view)
@@ -138,16 +121,6 @@ class FavoritesFragment : Fragment() {
         }catch (e : Exception){
             null
         }
-    }
-
-    fun replaceFragment() {
-        val nextFrag = MuroFragment()
-        val fragmentManager = activity!!.supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-
-        fragmentTransaction.replace(R.id.fragment_favorites, nextFrag, null)
-        fragmentTransaction.addToBackStack(attr.tag.toString())
-        fragmentTransaction.commitAllowingStateLoss()
     }
 
     private fun obtenerDatos(datos: QuerySnapshot?) {
@@ -183,11 +156,10 @@ class FavoritesFragment : Fragment() {
                     dc.document.get("latitudUbicacion").toString().toDouble(),
                     dc.document.get("longitudUbicacion").toString().toDouble()
                 )
-                Log.d("CHE_TAG","${fav.userId.toString()}")
+
                 if(listIdFavoritesUser.contains(fav.userId.toString().trimEnd())){
                     favorites.add(fav)
                 }
-                //favorites.add(fav)
             }
         }
 

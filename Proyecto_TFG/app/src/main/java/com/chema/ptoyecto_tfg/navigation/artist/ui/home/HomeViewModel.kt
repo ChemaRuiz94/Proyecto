@@ -1,13 +1,13 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserProfile
+package com.chema.ptoyecto_tfg.navigation.artist.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class BasicUserProfileViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is Basic User Profile Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 }

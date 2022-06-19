@@ -8,30 +8,30 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserSearch.BasicUserSearchFragment"
+        android:name="com.chema.ptoyecto_tfg.navigation.artist.ui.BasicUserSearch.BasicUserSearchFragment"
         android:label="@string/menu_search"
         tools:layout="@layout/fragment_basic_user_search" />
 
     <fragment
         android:id="@+id/nav_citas"
-        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.Citas.CitasFragment"
+        android:name="com.chema.ptoyecto_tfg.navigation.artist.ui.Citas.ChatsFragment"
         android:label="@string/menu_citas"
         tools:layout="@layout/fragment_citas" />
 
     <fragment
         android:id="@+id/nav_artist_profile"
-        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserProfile.ArtistUserProfileFragment"
+        android:name="com.chema.ptoyecto_tfg.navigation.artist.ui.ArtistUserProfile.ArtistUserProfileFragment"
         android:label="@string/menu_my_profile"
         tools:layout="@layout/fragment_artist_user_profile" />
 
     <fragment
         android:id="@+id/nav_favorites"
-        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.favorites.FavoritesFragment"
+        android:name="com.chema.ptoyecto_tfg.navigation.artist.ui.favorites.FavoritesFragment"
         android:label="@string/menu_favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/nav_muro"
-        android:name="com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment"
+        android:name="com.chema.ptoyecto_tfg.navigation.artist.ui.muro.MuroFragment"
         android:label="@string/menu_muro"
         tools:layout="@layout/fragment_muro" />
 

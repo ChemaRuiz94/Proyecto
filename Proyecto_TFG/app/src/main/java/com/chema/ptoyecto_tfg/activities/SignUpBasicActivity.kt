@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
-import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,24 +16,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.chema.ptoyecto_tfg.MainActivity
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.TabBasicUserActivity
 import com.chema.ptoyecto_tfg.models.BasicUser
-import com.chema.ptoyecto_tfg.models.Rol
-import com.chema.ptoyecto_tfg.navigation.basic.BasicUserNavDrawActivity
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
-import com.firebase.ui.auth.data.model.User
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 

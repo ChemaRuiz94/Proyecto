@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
 import com.chema.ptoyecto_tfg.models.ArtistUser
-import com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserProfile.ArtistUserProfileFragment
+import com.chema.ptoyecto_tfg.navigation.artist.ui.ArtistUserProfile.ArtistUserProfileFragment
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas

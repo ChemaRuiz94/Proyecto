@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserProfile
+package com.chema.ptoyecto_tfg.navigation.artist.ui.BasicUserProfile
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,6 @@ import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -37,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
 import java.io.InputStream
-import java.lang.Exception
 
 class BasicUserProfileFragment  : Fragment() {
     private lateinit var auth: FirebaseAuth
@@ -48,7 +45,6 @@ class BasicUserProfileFragment  : Fragment() {
     private var photo: Bitmap? = null
     private var photoSt: String? = null
 
-    private lateinit var basicUserProfileViewModel: BasicUserProfileViewModel
     private var _binding: FragmentBasicUserProfileBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -72,7 +68,6 @@ class BasicUserProfileFragment  : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        basicUserProfileViewModel = ViewModelProvider(this).get(BasicUserProfileViewModel::class.java)
 
         _binding = FragmentBasicUserProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
