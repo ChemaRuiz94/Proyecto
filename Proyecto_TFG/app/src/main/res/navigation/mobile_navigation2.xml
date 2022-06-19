@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation2"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_all_basic_user">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.chema.ptoyecto_tfg.activities.ui.home.AllBasicUserFragment"
-        android:label="@string/title_home"
+        android:id="@+id/navigation_all_basic_user"
+        android:name="com.chema.ptoyecto_tfg.activities.ui.allBasicUser.AllBasicUserFragment"
+        android:label="@string/title_all_artist_users"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_all_users"
+        android:id="@+id/navigation_all_artist_users"
         android:name="com.chema.ptoyecto_tfg.activities.ui.allUsers.AllArtistUsersFragment"
-        android:label="@string/title_all_users"
+        android:label="@string/title_all_basic_users"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment

@@ -115,8 +115,8 @@
 
     <string name="remove_tag">¿Quieres eliminar el tag?</string>
     <string name="title_activity_admin">AdminActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_all_users">Users</string>
+    <string name="title_all_artist_users">Artist</string>
+    <string name="title_all_basic_users">Users</string>
     <string name="title_all_chats">Chats</string>
 
 </resources>

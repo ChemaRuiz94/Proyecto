@@ -1,6 +1,5 @@
-package com.chema.ptoyecto_tfg.activities.ui.home
+package com.chema.ptoyecto_tfg.activities.ui.allBasicUser
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
-import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
 import com.chema.ptoyecto_tfg.models.BasicUser
-import com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserProfile.ArtistUserProfileFragment
 import com.chema.ptoyecto_tfg.navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.chema.ptoyecto_tfg.utils.Utils

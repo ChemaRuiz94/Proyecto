@@ -37,7 +37,6 @@ class AdapterAllArtistUsers(
         holder.nombreFav.text = artistUser[position].userName
 
         holder.item_user.setOnClickListener {
-            VariablesCompartidas.userArtistVisitMode = true
             VariablesCompartidas.idUserArtistVisitMode = artistUser[position].userId.toString()
             VariablesCompartidas.usuarioArtistaVisitaMuro = artistUser[position]
             goToArtistMuroContainer()

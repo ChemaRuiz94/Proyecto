@@ -16,6 +16,7 @@ import com.chema.ptoyecto_tfg.activities.DetailActivity
 import com.chema.ptoyecto_tfg.models.Imagen
 import com.chema.ptoyecto_tfg.models.Post
 import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ImagenesAdapter(
@@ -86,7 +87,12 @@ class ImagenesAdapter(
             }
 
             itemView.setOnLongClickListener {
-                delPost(context, imagen, imagenesAdapter)
+                if (VariablesCompartidas.userAdminMode) {
+                    delPost(context, imagen, imagenesAdapter)
+                }
+                if (VariablesCompartidas.usuarioArtistaActual != null && !VariablesCompartidas.userArtistVisitMode) {
+                    delPost(context, imagen, imagenesAdapter)
+                }
                 false
             }
         }

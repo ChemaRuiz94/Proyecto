@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.activities.ui.home
+package com.chema.ptoyecto_tfg.activities.ui.allBasicUser
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,13 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
-import com.chema.ptoyecto_tfg.activities.ui.allUsers.AdapterAllArtistUsers
 import com.chema.ptoyecto_tfg.databinding.FragmentHomeBinding
-import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.google.firebase.firestore.DocumentChange
