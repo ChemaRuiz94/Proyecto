@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
-import com.chema.ptoyecto_tfg.databinding.FragmentHomeBinding
+import com.chema.ptoyecto_tfg.databinding.FragmentAllBasicUserBinding
 import com.chema.ptoyecto_tfg.models.BasicUser
 import com.chema.ptoyecto_tfg.utils.Constantes
 import com.google.firebase.firestore.DocumentChange
@@ -25,7 +25,7 @@ class AllBasicUserFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private var allBasicUser = ArrayList<BasicUser>()
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentAllBasicUserBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -37,7 +37,7 @@ class AllBasicUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentAllBasicUserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 

@@ -9,7 +9,7 @@
         android:id="@+id/navigation_all_basic_user"
         android:name="com.chema.ptoyecto_tfg.activities.ui.allBasicUser.AllBasicUserFragment"
         android:label="@string/title_all_artist_users"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_all_basic_user" />
 
     <fragment
         android:id="@+id/navigation_all_artist_users"

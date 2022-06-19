@@ -256,16 +256,19 @@ class BasicUserSearchFragment : Fragment() {
             val resultIntent = Intent(requireContext(), ListResutlActivity::class.java)
             val args = Bundle()
             args.putSerializable("USER_LIST", result)
-            args.putString("userLat", userLocation!!.latitude.toString())
-            args.putString("userLon", userLocation!!.longitude.toString())
             resultIntent.putExtra("BUNDLE", args)
             startActivity(resultIntent)
         } else {
             val resultIntent = Intent(requireContext(), SearchResultMapsActivity::class.java)
             val args = Bundle()
             args.putSerializable("USER_LIST", result)
-            args.putString("userLat", userLocation!!.latitude.toString())
-            args.putString("userLon", userLocation!!.longitude.toString())
+            if(userLocation != null){
+                args.putString("userLat", userLocation!!.latitude.toString())
+                args.putString("userLon", userLocation!!.longitude.toString())
+            }else{
+                args.putString("userLat", "40.416")
+                args.putString("userLon", "-3.703")
+            }
             resultIntent.putExtra("BUNDLE", args)
             startActivity(resultIntent)
         }

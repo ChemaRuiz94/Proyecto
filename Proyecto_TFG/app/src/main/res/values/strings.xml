@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ptoyecto_TFG</string>
+    <string name="app_name">Busco Tinta</string>
     <string name="request_id_token">694797645424-f142hioc3bdj3ml09nbjqq0m7cqbtbmp.apps.googleusercontent.com</string>
 
     <string name="login">Login</string>

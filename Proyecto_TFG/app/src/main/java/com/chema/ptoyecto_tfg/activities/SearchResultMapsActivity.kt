@@ -54,6 +54,8 @@ class SearchResultMapsActivity : AppCompatActivity(), OnMapReadyCallback, Google
         lon = args.getString("userLon")!!
         if(lat != null && lon != null){
             userLocation = LatLng(lat.toString().toDouble(),lon.toString().toDouble())
+        }else{
+            userLocation = LatLng(40.416, -3.703)
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
