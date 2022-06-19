@@ -153,6 +153,9 @@ class ChatsFragment : Fragment() {
                 dc.document.get("userNameOther").toString(),
                 dc.document.get("date").toString()
             )
+            if(allChat.contains(chat)){
+                allChat.remove(chat)
+            }
             when(dc.type) {
 
                 DocumentChange.Type.ADDED -> miAdapter.addChat(chat)

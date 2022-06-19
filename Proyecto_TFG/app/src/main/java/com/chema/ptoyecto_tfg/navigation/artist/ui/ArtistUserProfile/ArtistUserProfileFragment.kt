@@ -273,7 +273,7 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
 
                     currentUser!!.updateEmail(artistUser.email.toString())
 
-                    if(VariablesCompartidas.userAdminMode){
+                    if(!VariablesCompartidas.userAdminMode){
                         val navigationView: NavigationView =
                             (context as AppCompatActivity).findViewById(R.id.nav_view)
                         val header: View = navigationView.getHeaderView(0)
