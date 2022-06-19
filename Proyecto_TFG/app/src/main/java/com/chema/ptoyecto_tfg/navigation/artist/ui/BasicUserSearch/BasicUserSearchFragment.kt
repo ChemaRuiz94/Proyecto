@@ -180,7 +180,7 @@ class BasicUserSearchFragment : Fragment() {
     //++++++++++++++++++++++++++++++++++++++++++++++++
 
     private suspend fun getDataFromDataBaseStyles(): QuerySnapshot {
-        postsResult.clear()
+        //postsResult.clear()
         etiquetas = miAdapter.getTags()
 
         try {

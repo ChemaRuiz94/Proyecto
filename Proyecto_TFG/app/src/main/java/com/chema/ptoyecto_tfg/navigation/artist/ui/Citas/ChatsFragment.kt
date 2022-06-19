@@ -143,7 +143,7 @@ class ChatsFragment : Fragment() {
     }
 
     private fun obtenerDatos(datos: QuerySnapshot?) {
-        var pos = 0
+        //var pos = 0
         for(dc: DocumentChange in datos?.documentChanges!!){
             var chat= Chat(
                 dc.document.get("idChat").toString(),
@@ -153,16 +153,20 @@ class ChatsFragment : Fragment() {
                 dc.document.get("userNameOther").toString(),
                 dc.document.get("date").toString()
             )
+
             if(allChat.contains(chat)){
                 allChat.remove(chat)
             }
+
+
             when(dc.type) {
 
                 DocumentChange.Type.ADDED -> miAdapter.addChat(chat)
-                DocumentChange.Type.MODIFIED -> miAdapter.updateChat(chat, pos)
+                //DocumentChange.Type.MODIFIED -> miAdapter.updateChat(chat, pos)
                 DocumentChange.Type.REMOVED -> miAdapter.removeChat(chat)
             }
-            pos++
+            //pos++
+
         }
     }
 }

@@ -192,12 +192,14 @@ class MuroFragment : Fragment() {
             imgArtist.setImageBitmap(Utils.StringToBitMap(userMuro!!.img.toString()))
             editMode = true
 
+            var finST = ""
             for (price in userMuro!!.prices!!) {
                 val n = userMuro!!.prices!!.indexOf(price)
                 val size = userMuro!!.sizes!![n]
                 val st = " [ ${price.toString()}€ <> ${size.toString()}x${size.toString()}cm ] \n"
-                ed_txt_prizes_sizes.text.append(st)
+                finST += st
             }
+            ed_txt_prizes_sizes.text.append(finST)
         }
 
     }
