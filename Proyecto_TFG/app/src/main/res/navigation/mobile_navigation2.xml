@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation2"
+    app:startDestination="@+id/navigation_all_basic_user">
+
+    <fragment
+        android:id="@+id/navigation_all_basic_user"
+        android:name="com.chema.ptoyecto_tfg.activities.ui.allBasicUser.AllBasicUserFragment"
+        android:label="@string/title_all_artist_users"
+        tools:layout="@layout/fragment_all_basic_user" />
+
+    <fragment
+        android:id="@+id/navigation_all_artist_users"
+        android:name="com.chema.ptoyecto_tfg.activities.ui.allUsers.AllArtistUsersFragment"
+        android:label="@string/title_all_basic_users"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.chema.ptoyecto_tfg.navigation.artist.ui.Citas.ChatsFragment"
+        android:label="@string/title_all_chats"
+        tools:layout="@layout/fragment_citas" />
+</navigation>

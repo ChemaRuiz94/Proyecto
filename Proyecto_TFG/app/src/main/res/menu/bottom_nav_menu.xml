@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_all_basic_user"
+        android:icon="@drawable/ic_menu_profile"
+        android:title="@string/title_all_basic_users" />
+
+    <item
+        android:id="@+id/navigation_all_artist_users"
+        android:icon="@drawable/ic_artist"
+        android:title="@string/title_all_artist_users" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/ic_menu_dates"
+        android:title="@string/title_all_chats" />
+
+</menu>

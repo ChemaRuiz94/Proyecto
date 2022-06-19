@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ptoyecto_TFG</string>
+    <string name="app_name">Busco Tinta</string>
     <string name="request_id_token">694797645424-f142hioc3bdj3ml09nbjqq0m7cqbtbmp.apps.googleusercontent.com</string>
 
     <string name="login">Login</string>
@@ -29,7 +29,8 @@
     <string name="saveEdit">Save edit</string>
     <string name="strMensajeSaveEdit">Do yo want to save changes?</string>
 
-    <string name="chosePhoto">Chose phote</string>
+    <string name="chosePhoto">Chose photo</string>
+    <string name="choseOption">Chose option</string>
     <string name="strMensajeElegirFoto">How do you want to add the photo?</string>
     <string name="strCamara">Camera</string>
     <string name="strGaleria">Gallery</string>
@@ -42,7 +43,13 @@
     <string name="select_this_location">Select this location?</string>
     <string name="changePassword">Change Password</string>
     <string name="del_acount">Delete your Acount?</string>
+    <string name="del_coment">Delete this coment?</string>
+    <string name="del_chat">Delete this chat?</string>
     <string name="delete">DELETE</string>
+    <string name="update">UPDATE</string>
+    <string name="update_this_acount">Update this acount?</string>
+    <string name="delete_this_acount">Delete this acount?</string>
+    <string name="delete_this_post">Delete this post?</string>
     <string name="del_user">Delete User</string>
     <string name="add_price_size">Add price and size</string>
 
@@ -107,5 +114,9 @@
     <string name="title_activity_search_result_maps">SearchResultMapsActivity</string>
 
     <string name="remove_tag">¿Quieres eliminar el tag?</string>
+    <string name="title_activity_admin">AdminActivity</string>
+    <string name="title_all_artist_users">Artist</string>
+    <string name="title_all_basic_users">Users</string>
+    <string name="title_all_chats">Chats</string>
 
 </resources>

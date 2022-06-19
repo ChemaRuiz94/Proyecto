@@ -13,6 +13,7 @@ object VariablesCompartidas {
     var usuarioArtistaVisitaMuro: ArtistUser? = null
 
     var userArtistVisitMode : Boolean = false
+    var userAdminMode : Boolean = false
     var idUserArtistVisitMode : String? = null
 
     var stDatePropuesta : String? = null

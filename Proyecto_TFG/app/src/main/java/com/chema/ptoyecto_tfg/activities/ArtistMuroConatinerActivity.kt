@@ -3,8 +3,7 @@ package com.chema.ptoyecto_tfg.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.chema.ptoyecto_tfg.R
-import com.chema.ptoyecto_tfg.models.ArtistUser
-import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
+import com.chema.ptoyecto_tfg.navigation.artist.ui.muro.MuroFragment
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 import android.app.Activity
 

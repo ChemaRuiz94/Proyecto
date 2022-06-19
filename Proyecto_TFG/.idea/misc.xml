@@ -3,13 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable/ic_unfavorite.xml" value="0.2703125" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable/img_prueba_background.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable/rouended_edittext.xml" value="0.2703125" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable/side_nav_bar.xml" value="0.2703125" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable/splash_img_background.xml" value="0.23055555555555557" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/drawable/splash_screen_background.xml" value="0.1390625" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/font/consolas.xml" value="0.284375" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/font/my_fonts.xml" value="0.284375" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_adapter_rv_etiquetas.xml" value="0.20969202898550723" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_admin.xml" value="0.21240942028985507" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_artist_drawer.xml" value="0.2269021739130435" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_artist_muro_conatiner.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_artist_user_nav_draw.xml" value="0.2269021739130435" />
@@ -24,6 +29,7 @@
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_select_studio_maps.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_sign_up_artist.xml" value="0.264" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_splash_screen.xml" value="0.2164855072463768" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/activity_tab_basic_user.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/add_price_size.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/app_bar_artist_user_nav_draw.xml" value="0.2269021739130435" />
@@ -34,11 +40,13 @@
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_basic_user_profile.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_basic_user_search.xml" value="0.264" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_citas.xml" value="0.20606884057971014" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_dashboard.xml" value="0.21240942028985507" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_favorites.xml" value="0.2269021739130435" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_gallery.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_home.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_map_sign_up_artist.xml" value="0.21875" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_muro.xml" value="0.4" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_notifications.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_slideshow.xml" value="0.22056159420289856" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/fragment_tab_basic_user.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/layout/imagenes_item.xml" value="0.22509057971014493" />
@@ -56,8 +64,12 @@
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/menu/activity_main_drawer.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/menu/artist_user_nav_draw.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/menu/basic_user_nav_draw.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/menu/map_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/menu/menu_basic.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2703125" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2703125" />
+        <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/mipmap-anydpi-v26/splash_img.xml" value="0.23055555555555557" />
         <entry key="..\:/Users/Chema/Documents/2021-2022/2 DAM/Practicas/Proyecto/Proyecto/Proyecto_TFG/app/src/main/res/navigation/mobile_navigation_artist.xml" value="0.10400000000000001" />
       </map>
     </option>

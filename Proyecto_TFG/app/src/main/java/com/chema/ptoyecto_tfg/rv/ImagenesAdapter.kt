@@ -8,13 +8,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.activities.DetailActivity
 import com.chema.ptoyecto_tfg.models.Imagen
+import com.chema.ptoyecto_tfg.models.Post
+import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
+import com.google.firebase.firestore.FirebaseFirestore
 
-class ImagenesAdapter (
+class ImagenesAdapter(
     var context: AppCompatActivity,
     var imagenes: ArrayList<Imagen>,
 ) :
@@ -40,9 +45,6 @@ class ImagenesAdapter (
         return imagenes.size
     }
 
-    fun getSelected(): Imagen {
-        return imagenes[seleccionado]
-    }
 
     fun deseleccionar() {
         if (seleccionado != -1) {
@@ -51,9 +53,11 @@ class ImagenesAdapter (
         }
     }
 
-    fun haveSelected(): Boolean {
-        return seleccionado != -1
+    fun removeImg(img: Imagen) {
+        imagenes.remove(img)
+        notifyDataSetChanged()
     }
+
 
     class ViewHolder(view: View, val ventana: AppCompatActivity) :
         RecyclerView.ViewHolder(view) {
@@ -81,11 +85,52 @@ class ImagenesAdapter (
                     itemView.context.startActivity(intent)
                 }
             }
+
+            itemView.setOnLongClickListener {
+                if (VariablesCompartidas.userAdminMode) {
+                    delPost(context, imagen, imagenesAdapter)
+                }
+                if (VariablesCompartidas.usuarioArtistaActual != null && !VariablesCompartidas.userArtistVisitMode) {
+                    delPost(context, imagen, imagenesAdapter)
+                }
+                false
+            }
         }
 
         private fun marcarSeleccionado(imagenesAdapter: ImagenesAdapter, pos: Int) {
             seleccionado = pos
             imagenesAdapter.notifyDataSetChanged()
+        }
+
+        private fun delPost(
+            context: AppCompatActivity,
+            img: Imagen,
+            imagenesAdapter: ImagenesAdapter
+        ) {
+            AlertDialog.Builder(context).setTitle(R.string.delete_this_post)
+                .setPositiveButton(R.string.delete) { view, _ ->
+
+                    val db = FirebaseFirestore.getInstance()
+                    db.collection("${Constantes.collectionPost}")
+                        .whereEqualTo("imgId", "${img.nombre}").get()
+                        .addOnSuccessListener { posts ->
+                            var postId = ""
+                            for (p in posts) {
+                                if (p.get("postId").toString() != "") {
+                                    postId = p.get("postId").toString()
+                                }
+                            }
+                            if (postId != "") {
+                                db.collection("${Constantes.collectionPost}")
+                                    .document("${postId.toString()}").delete()
+                                imagenesAdapter.removeImg(img)
+                            }
+                        }
+                    //removePost(post)
+                    view.dismiss()
+                }.setNegativeButton(R.string.Cancel) { view, _ ->
+                    view.dismiss()
+                }.create().show()
         }
     }
 
