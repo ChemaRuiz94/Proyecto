@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ptoyecto_TFG">
         <activity
+            android:name=".activities.AdminActivity"
+            android:exported="true"
+            android:label="@string/title_activity_admin" />
+        <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
@@ -63,7 +67,8 @@
         <activity
             android:name=".activities.SelectStudioMapsActivity"
             android:exported="true"
-            android:label="@string/title_activity_select_studio_maps" />
+            android:label="@string/title_activity_select_studio_maps"
+            android:theme="@style/Theme.Ptoyecto_TFG.ActionBar" />
         <activity
             android:name=".navigation.basic.BasicUserNavDrawActivity"
             android:exported="true"

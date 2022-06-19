@@ -29,7 +29,8 @@
     <string name="saveEdit">Save edit</string>
     <string name="strMensajeSaveEdit">Do yo want to save changes?</string>
 
-    <string name="chosePhoto">Chose phote</string>
+    <string name="chosePhoto">Chose photo</string>
+    <string name="choseOption">Chose option</string>
     <string name="strMensajeElegirFoto">How do you want to add the photo?</string>
     <string name="strCamara">Camera</string>
     <string name="strGaleria">Gallery</string>
@@ -45,6 +46,9 @@
     <string name="del_coment">Delete this coment?</string>
     <string name="del_chat">Delete this chat?</string>
     <string name="delete">DELETE</string>
+    <string name="update">UPDATE</string>
+    <string name="update_this_acount">Update this acount</string>
+    <string name="delete_this_acount">Delete this acount</string>
     <string name="del_user">Delete User</string>
     <string name="add_price_size">Add price and size</string>
 
@@ -109,5 +113,9 @@
     <string name="title_activity_search_result_maps">SearchResultMapsActivity</string>
 
     <string name="remove_tag">¿Quieres eliminar el tag?</string>
+    <string name="title_activity_admin">AdminActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_all_users">Users</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>

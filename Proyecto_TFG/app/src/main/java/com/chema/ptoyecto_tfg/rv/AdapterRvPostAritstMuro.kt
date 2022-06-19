@@ -28,6 +28,7 @@ class AdapterRvPostAritstMuro(
         holder.postContentIv.isVisible = false
         holder.postContentIv.setImageBitmap(post)
 
+
         holder.postItemFl.setOnClickListener(View.OnClickListener {
             //goToDetail(post)
             //this.notifyDataSetChanged()

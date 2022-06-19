@@ -276,16 +276,20 @@ class ArtistUserProfileFragment : Fragment(), OnMapReadyCallback {
 
                     currentUser!!.updateEmail(artistUser.email.toString())
 
-                    val navigationView: NavigationView =
-                        (context as AppCompatActivity).findViewById(R.id.nav_view)
-                    val header: View = navigationView.getHeaderView(0)
-                    val imgHe = header.findViewById<ImageView>(R.id.image_basic_user_header)
-                    val nameHead = header.findViewById<TextView>(R.id.txt_userName_header)
-                    val emailHead = header.findViewById<TextView>(R.id.txt_userEmail_header)
+                    if(VariablesCompartidas.idUsuarioActual == artistUser.userId){
+                        val navigationView: NavigationView =
+                            (context as AppCompatActivity).findViewById(R.id.nav_view)
+                        val header: View = navigationView.getHeaderView(0)
+                        val imgHe = header.findViewById<ImageView>(R.id.image_basic_user_header)
+                        val nameHead = header.findViewById<TextView>(R.id.txt_userName_header)
+                        val emailHead = header.findViewById<TextView>(R.id.txt_userEmail_header)
+                        imgHe.setImageBitmap(photo)
+                        nameHead.text = artistUser.userName
+                        emailHead.text = artistUser.email
+                    }
 
-                    imgHe.setImageBitmap(photo)
-                    nameHead.text = artistUser.userName
-                    emailHead.text = artistUser.email
+
+
 
                     Toast.makeText( requireContext(), R.string.Suscesfull, Toast.LENGTH_SHORT).show()
 

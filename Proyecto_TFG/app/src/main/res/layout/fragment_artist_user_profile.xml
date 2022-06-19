@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".navigation.basic.ui.ArtistUserProfile.ArtistUserProfileFragment"
-    style="@style/def_backgrand">
+    style="@style/def_backgrand"
+    android:id="@+id/artsist_user_profile">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"

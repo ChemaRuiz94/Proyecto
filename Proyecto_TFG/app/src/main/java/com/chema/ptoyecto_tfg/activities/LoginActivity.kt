@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
         VariablesCompartidas.usuarioBasicoActual = null
         VariablesCompartidas.usuarioArtistaActual = null
 
-        imageView2.setImageResource(R.drawable.busco_tinta_logo)
+        imageView2.setImageResource(R.drawable.busco_tinta__logo_grande)
         //buttons
         btnLogin.setOnClickListener {
             checkLogin()
@@ -177,7 +177,7 @@ class LoginActivity : AppCompatActivity() {
                     val rol = us.rol
                     if (rol.equals("${Constantes.rolAdminUser}")) {
 
-                        var myIntent = Intent(this, MainActivity::class.java)
+                        var myIntent = Intent(this, AdminActivity::class.java)
                         startActivity(myIntent)
                     } else {
                         var myIntent = Intent(this, TabBasicUserActivity::class.java)
