@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ListResutlActivity">
+    tools:context=".activities.ListResutlActivity"
+    style="@style/rv_backgrand">
 
     <androidx.recyclerview.widget.RecyclerView
-        style="@style/def_backgrand"
+        style="@style/rv_backgrand"
         android:id="@+id/rv_list_result"
         android:layout_width="409dp"
         android:layout_height="729dp"

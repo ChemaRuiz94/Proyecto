@@ -35,7 +35,7 @@ class ChatActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var idChat : String? = null
     private var userName : String? = null
-    private var idOther : String? = null
+    private var idUserArtist : String? = null
     private var date : String? = null
 
     private var dateStPropuesta : String? = ""
@@ -70,16 +70,14 @@ class ChatActivity : AppCompatActivity() {
         } else {
             idChat = extras.getString("idChat")
             userName = extras.getString("userName")
-            idOther = extras.getString("idOther")
+            idUserArtist = extras.getString("idUserArtist")
             date = extras.getString("date")
             txt_userName.text = userName
-            if(date!!.isNotEmpty()) {
-                txt_fecha_chat.text = date
-            }
+            txt_fecha_chat.text = date
         }
 
-        if(idOther == VariablesCompartidas.idUsuarioActual){
-            flt_btn_send_date.visibility = View.INVISIBLE
+        if(idUserArtist == VariablesCompartidas.idUsuarioActual){
+            flt_btn_send_date.visibility = View.VISIBLE
         }
         getDataFromFireStore()
 
@@ -94,7 +92,6 @@ class ChatActivity : AppCompatActivity() {
         flt_btn_send_date.setOnClickListener{
             addDateToChat()
         }
-        refreshRV()
     }
 
 
@@ -118,50 +115,54 @@ class ChatActivity : AppCompatActivity() {
     private fun obtenerDatos(datos: QuerySnapshot?) {
         comentariosList.clear()
         for(dc: DocumentChange in datos?.documentChanges!!){
-            if (dc.type == DocumentChange.Type.ADDED){
 
-                var idComentario : String? = null
-                if(dc.document.get("idComentario") != null){
-                    idComentario = dc.document.get("idComentario").toString()
-                }
-                var idChat : String? = null
-                if(dc.document.get("idChat") != null){
-                    idChat = dc.document.get("idChat").toString()
-                }
-
-                var idUser : String? = null
-                if(dc.document.get("idUser") != null){
-                    idUser = dc.document.get("idUser").toString()
-                }
-                var comentario : String? = null
-                if(dc.document.get("comentario") != null){
-                    comentario = dc.document.get("comentario").toString()
-                }
-                var userNameAutor : String? = null
-                if(dc.document.get("userNameAutor") != null){
-                    userNameAutor = dc.document.get("userNameAutor").toString()
-                }
-
-                var com = Comentario(
-                    idComentario,
-                    idChat,
-                    idUser,
-                    userNameAutor,
-                    comentario,
-                    dc.document.get("horaComentario").toString().toInt(),
-                    dc.document.get("minComentario").toString().toInt(),
-                    dc.document.get("segComentario").toString().toInt(),
-                    dc.document.get("diaComentario").toString().toInt(),
-                    dc.document.get("mesComentario").toString().toInt(),
-                    dc.document.get("yearComentario").toString().toInt()
-                )
-//                comentariosList.add(com)
-                miAdapter.addComentario(com)
-                rv.scrollToPosition(miAdapter.itemCount - 1)
-
+            when (dc.type) {
+                DocumentChange.Type.ADDED -> miAdapter.addComentario(crearComentario(dc))
+                DocumentChange.Type.REMOVED -> miAdapter.delComentario(crearComentario(dc))
             }
+            comentariosOrdenados = ordenarComentarios()
+            rv.scrollToPosition(miAdapter.itemCount - 1)
         }
     }
+
+    private fun crearComentario(dc: DocumentChange): Comentario {
+        var idComentario : String? = null
+        if(dc.document.get("idComentario") != null){
+            idComentario = dc.document.get("idComentario").toString()
+        }
+        var idChat : String? = null
+        if(dc.document.get("idChat") != null){
+            idChat = dc.document.get("idChat").toString()
+        }
+
+        var idUser : String? = null
+        if(dc.document.get("idUser") != null){
+            idUser = dc.document.get("idUser").toString()
+        }
+        var comentario : String? = null
+        if(dc.document.get("comentario") != null){
+            comentario = dc.document.get("comentario").toString()
+        }
+        var userNameAutor : String? = null
+        if(dc.document.get("userNameAutor") != null){
+            userNameAutor = dc.document.get("userNameAutor").toString()
+        }
+
+        return Comentario(
+            idComentario,
+            idChat,
+            idUser,
+            userNameAutor,
+            comentario,
+            dc.document.get("horaComentario").toString().toInt(),
+            dc.document.get("minComentario").toString().toInt(),
+            dc.document.get("segComentario").toString().toInt(),
+            dc.document.get("diaComentario").toString().toInt(),
+            dc.document.get("mesComentario").toString().toInt(),
+            dc.document.get("yearComentario").toString().toInt()
+        )
+    }
+
 
     fun saveComentarioFirebase(coment: Comentario){
         //guardamos la opinion en firebase
@@ -192,7 +193,11 @@ class ChatActivity : AppCompatActivity() {
     private fun sendDate(){
         db.collection("${Constantes.collectionChat}")
             .document("${idChat.toString()}")
-            .update("date","${dateStPropuesta.toString()}").addOnFailureListener{
+            .update("date","${dateStPropuesta.toString()}")
+            .addOnSuccessListener {
+                txt_fecha_chat.text = dateStPropuesta.toString()
+            }
+            .addOnFailureListener{
                 Toast.makeText(this, getString(R.string.ERROR), Toast.LENGTH_SHORT).show()
             }
 
@@ -226,15 +231,10 @@ class ChatActivity : AppCompatActivity() {
         rv = findViewById(R.id.rv_chat)
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(this)
+        comentariosOrdenados =  ordenarComentarios()
         miAdapter = AdapterRvComentarios(this, comentariosOrdenados)
         rv.adapter = miAdapter
         //scroll to bottom
-    }
-
-    private fun refreshRV(){
-        comentariosOrdenados.clear()
-        comentariosOrdenados =  ordenarComentarios()
-        cargarRV()
     }
 
     private fun ordenarComentarios() : ArrayList<Comentario>{

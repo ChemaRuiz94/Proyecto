@@ -4,12 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.Comentario
+import com.chema.ptoyecto_tfg.utils.Constantes
+import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AdapterRvComentarios  (
     private val context: AppCompatActivity,
@@ -31,7 +37,7 @@ class AdapterRvComentarios  (
     override fun onBindViewHolder(holder: AdapterRvComentarios.ViewHolder, position: Int) {
 
         var comentario: Comentario = opiniones[position]
-
+        val idComent = comentario.idComentario
         val autor = comentario.userNameAutor
 
         //AQUI PONEMOS LA FECHA
@@ -47,7 +53,23 @@ class AdapterRvComentarios  (
         if(comentario.comentario != null){
 
             holder.ed_txt_multiline_comentario.setText(comentario.comentario)
+        }
 
+        holder.ed_txt_multiline_comentario.setOnLongClickListener{
+            if (comentario.idUser == VariablesCompartidas.idUsuarioActual) {
+                Toast.makeText(context, "CLICK EDT", Toast.LENGTH_SHORT).show()
+                delComentFirebase(comentario)
+            }
+            false
+        }
+
+        holder.item_opinion.setOnLongClickListener{
+            if (comentario.idUser == VariablesCompartidas.idUsuarioActual) {
+
+                Toast.makeText(context, "CLICK item_opinion", Toast.LENGTH_SHORT).show()
+                delComentFirebase(comentario)
+            }
+            false
         }
     }
 
@@ -56,11 +78,30 @@ class AdapterRvComentarios  (
         notifyDataSetChanged()
     }
 
+    fun delComentario(comentario: Comentario){
+        opiniones.remove(comentario)
+        notifyDataSetChanged()
+    }
+
+    private fun delComentFirebase(comentario: Comentario){
+        AlertDialog.Builder(context).setTitle(R.string.del_coment)
+            .setPositiveButton(R.string.delete) { view, _ ->
+
+                val db = FirebaseFirestore.getInstance()
+                db.collection("${Constantes.collectionComentario}").document("${comentario.idComentario.toString()}").delete()
+
+                view.dismiss()
+            }.setNegativeButton(R.string.Cancel) { view, _ ->
+                view.dismiss()
+            }.create().show()
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val ed_txt_multiline_comentario = view.findViewById<EditText>(R.id.ed_txt_multiline_comentario)
         val txt_hora_comentario = view.findViewById<TextView>(R.id.txt_hora_comentario)
         val txt_nombreUser_comentario = view.findViewById<TextView>(R.id.txt_nombreUser_comentario)
+        val item_opinion = view.findViewById<View>(R.id.item_opinion)
 
     }
 }

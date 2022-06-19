@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navigation.basic.ui.BasicUserProfile.BasicUserProfileFragment"
+    tools:context=".navigation.artist.ui.BasicUserProfile.BasicUserProfileFragment"
     style="@style/def_backgrand">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="35dp"
         app:cardCornerRadius="75dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,39 +31,23 @@
 
     </androidx.cardview.widget.CardView>
 
-    <EditText
-        style="@style/modif_edit_text"
-        android:id="@+id/ed_txt_userName_basic_profile"
-        android:layout_width="265dp"
-        android:layout_height="48dp"
-        android:enabled="false"
-        android:ems="10"
-        android:inputType="textPersonName"
+
+    <Button
+        android:id="@+id/btn_change_password_basic_profile"
+        style="@style/def_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.446" />
+        app:layout_constraintVertical_bias="0.833" />
 
     <EditText
-        style="@style/modif_edit_text"
-        android:id="@+id/ed_txt_email_basic_profile"
-        android:layout_width="265dp"
-        android:layout_height="48dp"
-        android:enabled="false"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.863"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.556" />
-
-    <EditText
-        style="@style/modif_edit_text"
         android:id="@+id/ed_txt_phone_basic_profile"
+        style="@style/modif_edit_text"
         android:layout_width="265dp"
         android:layout_height="48dp"
         android:ems="10"
@@ -74,20 +58,21 @@
         app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.674" />
+        app:layout_constraintVertical_bias="0.614" />
 
     <TextView
-        android:id="@+id/label_basic_userName"
-        android:layout_width="76dp"
-        android:layout_height="25dp"
-        android:text="@string/userName"
-        android:textStyle="bold"
+        android:id="@+id/txt_del_basic_user"
+        style="@style/text_link_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/del_acount"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.443" />
+        app:layout_constraintVertical_bias="0.901" />
 
     <TextView
         android:id="@+id/textView3"
@@ -100,7 +85,50 @@
         app:layout_constraintHorizontal_bias="0.083"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.668" />
+        app:layout_constraintVertical_bias="0.609" />
+
+    <EditText
+        android:id="@+id/ed_txt_userName_basic_profile"
+        style="@style/modif_edit_text"
+        android:layout_width="265dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.863"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.386" />
+
+    <EditText
+        android:id="@+id/ed_txt_email_basic_profile"
+        style="@style/modif_edit_text"
+        android:layout_width="265dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.863"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.496" />
+
+    <TextView
+        android:id="@+id/label_basic_userName"
+        android:layout_width="76dp"
+        android:layout_height="25dp"
+        android:text="@string/userName"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.385" />
 
     <TextView
         android:id="@+id/label_email_basic_profile"
@@ -113,22 +141,7 @@
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.556" />
-
-
-    <Button
-        style="@style/def_buttons"
-        android:id="@+id/btn_change_password_basic_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/change_password"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.893" />
+        app:layout_constraintVertical_bias="0.498" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/flt_btn_edit_basic_user_profile"
@@ -143,20 +156,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023"
         style="@style/flt_buttons"/>
-
-    <TextView
-        style="@style/text_link_red"
-        android:id="@+id/txt_del_basic_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/del_acount"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
