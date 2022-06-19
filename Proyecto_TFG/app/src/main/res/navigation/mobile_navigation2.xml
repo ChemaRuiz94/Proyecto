@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.chema.ptoyecto_tfg.activities.ui.home.HomeFragment"
+        android:name="com.chema.ptoyecto_tfg.activities.ui.home.AllBasicUserFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_all_users"
-        android:name="com.chema.ptoyecto_tfg.activities.ui.allUsers.AllUsersFragment"
+        android:name="com.chema.ptoyecto_tfg.activities.ui.allUsers.AllArtistUsersFragment"
         android:label="@string/title_all_users"
         tools:layout="@layout/fragment_dashboard" />
 

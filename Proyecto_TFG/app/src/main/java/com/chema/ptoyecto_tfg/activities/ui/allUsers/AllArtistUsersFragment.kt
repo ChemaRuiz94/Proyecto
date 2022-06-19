@@ -18,18 +18,20 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 
-class AllUsersFragment : Fragment() {
+class AllArtistUsersFragment : Fragment() {
 
     private lateinit var rv : RecyclerView
-    private lateinit var miAdapter: AdapterAllUsers
+    private lateinit var miAdapterArtist: AdapterAllArtistUsers
+    private val db = FirebaseFirestore.getInstance()
+    private var allArtistUser = ArrayList<ArtistUser>()
+
+
     private var _binding: FragmentDashboardBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val db = FirebaseFirestore.getInstance()
-    private var allArtistUser = ArrayList<ArtistUser>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,8 +64,8 @@ class AllUsersFragment : Fragment() {
         rv = view.findViewById(R.id.rv_all_users)
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(requireActivity())
-        miAdapter = AdapterAllUsers(requireActivity() as AppCompatActivity,allArtistUser)
-        rv.adapter = miAdapter
+        miAdapterArtist = AdapterAllArtistUsers(requireActivity() as AppCompatActivity,allArtistUser)
+        rv.adapter = miAdapterArtist
         //scroll to bottom
     }
 
@@ -96,11 +98,12 @@ class AllUsersFragment : Fragment() {
                 dc.document.get("latitudUbicacion").toString().toDouble(),
                 dc.document.get("longitudUbicacion").toString().toDouble(),
             )
+
             when(dc.type) {
 
-                DocumentChange.Type.ADDED -> miAdapter.addUser(ba)
-                DocumentChange.Type.MODIFIED -> miAdapter.updateUser(ba, pos)
-                DocumentChange.Type.REMOVED -> miAdapter.removeUser(ba)
+                DocumentChange.Type.ADDED -> miAdapterArtist.addUser(ba)
+                DocumentChange.Type.MODIFIED -> miAdapterArtist.updateUser(ba, pos)
+                DocumentChange.Type.REMOVED -> miAdapterArtist.removeUser(ba)
             }
             pos++
         }

@@ -47,8 +47,9 @@
     <string name="del_chat">Delete this chat?</string>
     <string name="delete">DELETE</string>
     <string name="update">UPDATE</string>
-    <string name="update_this_acount">Update this acount</string>
-    <string name="delete_this_acount">Delete this acount</string>
+    <string name="update_this_acount">Update this acount?</string>
+    <string name="delete_this_acount">Delete this acount?</string>
+    <string name="delete_this_post">Delete this post?</string>
     <string name="del_user">Delete User</string>
     <string name="add_price_size">Add price and size</string>
 

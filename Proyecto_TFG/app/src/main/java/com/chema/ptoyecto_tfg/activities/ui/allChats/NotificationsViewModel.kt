@@ -1,4 +1,4 @@
-package com.chema.ptoyecto_tfg.activities.ui.notifications
+package com.chema.ptoyecto_tfg.activities.ui.allChats
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
