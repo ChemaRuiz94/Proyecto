@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.chema.ptoyecto_tfg.databinding.FragmentNotificationsBinding
 
-class NotificationsFragment : Fragment() {
+class AllChatsFragment : Fragment() {
 
     private lateinit var notificationsViewModel: NotificationsViewModel
     private var _binding: FragmentNotificationsBinding? = null

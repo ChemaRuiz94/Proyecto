@@ -63,6 +63,10 @@ class AdapterRvCitas (
             name = chat.userNameArtist
         }
 
+        if(VariablesCompartidas.userAdminMode){
+            name = "${chat.userNameArtist} + ${chat.userNameOther}"
+        }
+
         holder.txt_userName.text = name
         holder.txt_date.text = date
 

@@ -47,10 +47,10 @@ class TabBasicUserActivity : AppCompatActivity() {
             .setMessage("Desea cerrar sesion")
             .setPositiveButton("OK") { view, _ ->
                 super.onBackPressed()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
                 VariablesCompartidas.usuarioBasicoActual = null
                 VariablesCompartidas.usuarioArtistaVisitaMuro = null
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
                 finish()
                 view.dismiss()
             }

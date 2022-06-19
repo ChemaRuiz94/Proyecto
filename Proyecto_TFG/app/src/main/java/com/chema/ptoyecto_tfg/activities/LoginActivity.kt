@@ -176,17 +176,13 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("CHE_D", "${us}")
                     val rol = us.rol
                     if (rol.equals("${Constantes.rolAdminUser}")) {
-
+                        VariablesCompartidas.userAdminMode = true
                         var myIntent = Intent(this, AdminActivity::class.java)
                         startActivity(myIntent)
                     } else {
                         var myIntent = Intent(this, TabBasicUserActivity::class.java)
                         startActivity(myIntent)
                     }
-
-
-
-
 
                 }
             }

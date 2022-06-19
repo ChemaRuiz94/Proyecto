@@ -69,24 +69,37 @@ class CitasFragment : Fragment() {
         view2 = view
         rv = view.findViewById(R.id.rv_citas)
         id  = ""
-        if(VariablesCompartidas.usuarioArtistaActual != null){
-            userArtistAct = VariablesCompartidas.usuarioArtistaActual as ArtistUser
-            isBasicUser = false
-            id = userArtistAct!!.userId.toString()
-        }
-        if(VariablesCompartidas.usuarioBasicoActual != null){
+
+        if(!VariablesCompartidas.userAdminMode){
+
+            if(VariablesCompartidas.usuarioArtistaActual != null){
+                userArtistAct = VariablesCompartidas.usuarioArtistaActual as ArtistUser
+                isBasicUser = false
+                id = userArtistAct!!.userId.toString()
+            }
+            if(VariablesCompartidas.usuarioBasicoActual != null){
+                userBasicAct = VariablesCompartidas.usuarioBasicoActual as BasicUser
+                isBasicUser = true
+                id = userBasicAct!!.userId.toString()
+            }
+            cargarRV(view)
+            if(isBasicUser){
+                getDataFromFireStore("idUserOther",id)
+            }else{
+                getDataFromFireStore("idUserOther",id)
+                getDataFromFireStore("idUserArtist",id)
+            }
+
+        }else{
+
             userBasicAct = VariablesCompartidas.usuarioBasicoActual as BasicUser
             isBasicUser = true
             id = userBasicAct!!.userId.toString()
-        }
-        cargarRV(view)
-        if(isBasicUser){
-            getDataFromFireStore("idUserOther",id)
-        }else{
-            getDataFromFireStore("idUserOther",id)
-            getDataFromFireStore("idUserArtist",id)
 
+            cargarRV(view)
+            getAllChatsFromFireStore()
         }
+
     }
 
     override fun onDestroyView() {
@@ -106,6 +119,21 @@ class CitasFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(view.context)
         miAdapter = AdapterRvCitas(view.context as AppCompatActivity, allChat)
         rv.adapter = miAdapter
+    }
+
+    fun getAllChatsFromFireStore() {
+        try{
+            val data = db.collection("${Constantes.collectionChat}")
+                .addSnapshotListener { snapshots, e ->
+                    if (e != null) {
+                        Toast.makeText(context, R.string.ERROR, Toast.LENGTH_SHORT).show()
+                        return@addSnapshotListener
+                    }
+                    obtenerDatos(snapshots)
+                }
+        }catch (e : Exception){
+            throw e
+        }
     }
 
     fun getDataFromFireStore(field : String ,id : String?) {

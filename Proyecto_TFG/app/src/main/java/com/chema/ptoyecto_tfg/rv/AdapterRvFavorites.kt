@@ -5,21 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.utils.Utils
 //import android.R
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.chema.ptoyecto_tfg.navigation.basic.ui.muro.MuroFragment
 import android.content.Intent
-import android.util.Log
 import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
-import com.chema.ptoyecto_tfg.databinding.ActivityArtistMuroConatinerBinding
 import com.chema.ptoyecto_tfg.utils.VariablesCompartidas
 
 
@@ -35,7 +28,7 @@ class AdapterRvFavorites (
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.item_user_favorite_layout, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_user_layout, parent, false)
         )
     }
 

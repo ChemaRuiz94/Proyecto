@@ -1,7 +1,6 @@
 package com.chema.ptoyecto_tfg.activities.ui.allUsers
 
 import android.content.Intent
-import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.chema.ptoyecto_tfg.R
 import com.chema.ptoyecto_tfg.activities.ArtistMuroConatinerActivity
-import com.chema.ptoyecto_tfg.databinding.FragmentArtistUserProfileBinding
 import com.chema.ptoyecto_tfg.models.ArtistUser
 import com.chema.ptoyecto_tfg.navigation.basic.ui.ArtistUserProfile.ArtistUserProfileFragment
 import com.chema.ptoyecto_tfg.utils.Constantes
@@ -29,7 +27,7 @@ class AdapterAllUsers(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.item_user_favorite_layout, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_user_layout, parent, false)
         )
     }
 

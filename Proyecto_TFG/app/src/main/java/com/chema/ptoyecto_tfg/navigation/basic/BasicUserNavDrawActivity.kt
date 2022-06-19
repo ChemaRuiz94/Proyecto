@@ -110,10 +110,10 @@ class BasicUserNavDrawActivity : AppCompatActivity() {
             .setMessage("Desea cerrar sesion")
             .setPositiveButton("OK") { view, _ ->
                 super.onBackPressed()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
                 VariablesCompartidas.usuarioArtistaActual = null
                 VariablesCompartidas.usuarioArtistaVisitaMuro = null
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
                 finish()
                 view.dismiss()
             }
